@@ -1,0 +1,300 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 0 0% 3.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 0 0% 3.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 0 0% 3.9%;
+        --primary: 0 0% 9%;
+        --primary-foreground: 0 0% 98%;
+        --secondary: 0 0% 92.1%;
+        --secondary-foreground: 0 0% 9%;
+        --muted: 0 0% 96.1%;
+        --muted-foreground: 0 0% 45.1%;
+        --accent: 0 0% 96.1%;
+        --accent-foreground: 0 0% 9%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 92.8%;
+        --input: 0 0% 89.8%;
+        --ring: 0 0% 3.9%;
+        --chart-1: 12 76% 61%;
+        --chart-2: 173 58% 39%;
+        --chart-3: 197 37% 24%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 27 87% 67%;
+        --radius: 0.5rem;
+        --sidebar-background: 0 0% 98%;
+        --sidebar-foreground: 240 5.3% 26.1%;
+        --sidebar-primary: 0 0% 10%;
+        --sidebar-primary-foreground: 0 0% 98%;
+        --sidebar-accent: 0 0% 94%;
+        --sidebar-accent-foreground: 0 0% 30%;
+        --sidebar-border: 0 0% 91%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
+    }
+
+    .dark {
+        --background: 0 0% 3.9%;
+        --foreground: 0 0% 98%;
+        --card: 0 0% 3.9%;
+        --card-foreground: 0 0% 98%;
+        --popover: 0 0% 3.9%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 0 0% 98%;
+        --primary-foreground: 0 0% 9%;
+        --secondary: 0 0% 14.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 0 0% 6.9%;
+        --muted-foreground: 0 0% 63.9%;
+        --accent: 0 0% 14.9%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 14.9%;
+        --input: 0 0% 14.9%;
+        --ring: 0 0% 83.1%;
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+        --sidebar-background: 0 0% 7%;
+        --sidebar-foreground: 0 0% 95.9%;
+        --sidebar-primary: 360, 100%, 100%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 0 0% 15.9%;
+        --sidebar-accent-foreground: 240 4.8% 95.9%;
+        --sidebar-border: 0 0% 15.9%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
+    }
+
+    .kids {
+        --background: 275 100% 98.5%;
+        /* Lila pastel muy suave */
+        --foreground: 275 80% 20%;
+        /* Púrpura oscuro para texto infantil */
+        --card: 0 0% 100%;
+        --card-foreground: 275 80% 20%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 275 80% 20%;
+        --primary: 325 100% 65%;
+        /* Rosa chicle lúdico */
+        --primary-foreground: 0 0% 100%;
+        --secondary: 45 100% 75%;
+        /* Amarillo pastel */
+        --secondary-foreground: 275 80% 20%;
+        --muted: 275 50% 96%;
+        --muted-foreground: 275 40% 50%;
+        --accent: 180 100% 88%;
+        /* Turquesa pastel */
+        --accent-foreground: 275 80% 20%;
+        --border: 275 40% 88%;
+        --input: 275 40% 88%;
+        --ring: 325 100% 65%;
+        --radius: 1.25rem;
+        /* Bordes super redondeados */
+
+        --sidebar-background: 275 50% 96%;
+        --sidebar-foreground: 275 80% 25%;
+        --sidebar-primary: 325 100% 65%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 275 50% 90%;
+        --sidebar-accent-foreground: 275 80% 20%;
+        --sidebar-border: 275 40% 88%;
+        --sidebar-ring: 325 100% 65%;
+
+        --font-sans: 'Outfit', 'Comic Sans MS', cursive, sans-serif;
+    }
+
+    /* ─── Professional theme ──────────────────────────────────────────────────
+       Main area : off-white background (#F7F8FA) + dark slate text
+       Sidebar   : deep navy background + light text
+       The two zones use SEPARATE variable sets so foreground never bleeds
+       across the boundary and causes the white-on-white / white-on-light bug.
+    ─────────────────────────────────────────────────────────────────────── */
+    .elegant {
+        /* Main content area */
+        --background: 220 20% 97%;
+        /* near-white cool gray */
+        --foreground: 220 25% 15%;
+        /* deep navy-slate — dark on light ✓ */
+        --card: 0 0% 100%;
+        --card-foreground: 220 25% 15%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 220 25% 15%;
+
+        /* Primary action — indigo/navy */
+        --primary: 226 71% 40%;
+        --primary-foreground: 0 0% 100%;
+
+        /* Secondary — muted blue-gray */
+        --secondary: 220 15% 91%;
+        --secondary-foreground: 220 25% 20%;
+
+        /* Muted & accents */
+        --muted: 220 14% 93%;
+        --muted-foreground: 220 15% 46%;
+        --accent: 226 60% 94%;
+        --accent-foreground: 226 71% 30%;
+
+        --destructive: 0 72% 51%;
+        --destructive-foreground: 0 0% 98%;
+
+        --border: 220 16% 87%;
+        --input: 220 16% 87%;
+        --ring: 226 71% 40%;
+        --radius: 0.5rem;
+
+        /* Chart palette — professional blues/teals */
+        --chart-1: 226 71% 45%;
+        --chart-2: 195 65% 42%;
+        --chart-3: 250 55% 55%;
+        --chart-4: 170 55% 38%;
+        --chart-5: 210 40% 60%;
+
+        /* ── Sidebar — deep navy, light text ────────────────────────────────
+           --sidebar-foreground is ONLY used inside the sidebar element.
+           The main area uses --foreground (dark on light). No overlap.
+        ─────────────────────────────────────────────────────────────────── */
+        --sidebar-background: 222 47% 14%;
+        /* deep navy */
+        --sidebar-foreground: 220 20% 88%;
+        /* soft silver-white — light on dark ✓ */
+        --sidebar-primary: 226 80% 65%;
+        /* bright indigo for active items */
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 222 40% 22%;
+        /* slightly lighter navy for hover */
+        --sidebar-accent-foreground: 220 20% 95%;
+        --sidebar-border: 222 35% 22%;
+        --sidebar-ring: 226 80% 65%;
+
+        --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    }
+
+    /* ─── Forest theme ────────────────────────────────────────────────────────
+       Main area : warm cream background + deep earthy text
+       Sidebar   : deep forest green + soft sage text
+    ─────────────────────────────────────────────────────────────────────── */
+    .forest {
+        /* Main content area — warm parchment */
+        --background: 40 30% 96%;
+        --foreground: 30 25% 12%;
+
+        --card: 40 25% 99%;
+        --card-foreground: 30 25% 12%;
+        --popover: 40 25% 99%;
+        --popover-foreground: 30 25% 12%;
+
+        /* Primary — forest green */
+        --primary: 142 45% 30%;
+        --primary-foreground: 0 0% 100%;
+
+        /* Secondary — warm sand */
+        --secondary: 40 25% 90%;
+        --secondary-foreground: 30 25% 18%;
+
+        /* Muted & accents */
+        --muted: 40 20% 92%;
+        --muted-foreground: 35 18% 42%;
+        --accent: 142 30% 90%;
+        --accent-foreground: 142 45% 22%;
+
+        --destructive: 0 65% 48%;
+        --destructive-foreground: 0 0% 98%;
+
+        --border: 40 20% 86%;
+        --input: 40 20% 86%;
+        --ring: 142 45% 30%;
+        --radius: 0.5rem;
+
+        /* Chart palette — nature tones */
+        --chart-1: 142 45% 35%;
+        --chart-2: 80  50% 38%;
+        --chart-3: 35  65% 45%;
+        --chart-4: 170 40% 35%;
+        --chart-5: 55  55% 45%;
+
+        /* ── Sidebar — deep forest, light sage ─────────────────────────── */
+        --sidebar-background: 140 40% 12%;
+        --sidebar-foreground: 120 20% 85%;
+        --sidebar-primary: 142 55% 52%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 140 35% 20%;
+        --sidebar-accent-foreground: 120 20% 92%;
+        --sidebar-border: 140 30% 20%;
+        --sidebar-ring: 142 55% 52%;
+
+        --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    }
+
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+/* Modificadores estéticos y de micro-interacción para el tema infantil (.kids) */
+@layer utilities {
+
+    .kids button,
+    .kids a.button,
+    .kids [role="button"] {
+        border-width: 2px !important;
+        border-color: hsl(275 40% 82%) !important;
+        box-shadow: 3px 3px 0px 0px hsl(275 40% 78%) !important;
+        transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    }
+
+    .kids button:hover,
+    .kids a.button:hover {
+        transform: translateY(-2px);
+        box-shadow: 3px 5px 0px 0px hsl(275 40% 78%) !important;
+    }
+
+    .kids button:active,
+    .kids a.button:active {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0px 0px hsl(275 40% 78%) !important;
+    }
+
+    .kids input,
+    .kids select,
+    .kids textarea {
+        border-width: 2px !important;
+        border-color: hsl(275 40% 82%) !important;
+        box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .kids input:focus,
+    .kids select:focus,
+    .kids textarea:focus {
+        border-color: hsl(325 100% 65%) !important;
+        box-shadow: 0 0 0 3px hsla(325, 100%, 65%, 0.2) !important;
+    }
+
+    .kids .card,
+    .kids [class*="card"],
+    .kids [class*="rounded-xl"] {
+        border-width: 2px !important;
+        border-color: hsl(275 40% 86%) !important;
+        box-shadow: 4px 4px 0px 0px hsl(275 40% 90%) !important;
+    }
+}

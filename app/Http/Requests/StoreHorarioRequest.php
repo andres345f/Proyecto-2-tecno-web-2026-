@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Http\Requests;
+
+use App\Models\GrupoPeriodo;
+use App\Models\Horario;
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreHorarioRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'dia' => ['required', 'string', 'in:Lunes,Martes,Miércoles,Jueves,Viernes,Sábado,Domingo'],
+            'hora_inicio' => ['required', 'date_format:H:i'],
+            'hora_fin' => ['required', 'date_format:H:i', 'after:hora_inicio'],
+            'aula_id' => ['required', 'exists:aulas,id'],
+            'grupo_periodo_id' => ['nullable', 'exists:grupo_periodo,id'],
+        ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $dia = $this->input('dia');
+            $horaInicio = $this->input('hora_inicio');
+            $horaFin = $this->input('hora_fin');
+            $aulaId = $this->input('aula_id');
+            $grupoPeriodoId = $this->input('grupo_periodo_id');
+
+            if (!$dia || !$horaInicio || !$horaFin || !$aulaId) {
+                return;
+            }
+
+            // 1. Validar choque de aula
+            $aulaConflict = Horario::where('dia', $dia)
+                ->where('aula_id', $aulaId)
+                ->where(function ($query) use ($horaInicio, $horaFin) {
+                    $query->where('hora_inicio', '<', $horaFin)
+                          ->where('hora_fin', '>', $horaInicio);
+                })
+                ->exists();
+
+            if ($aulaConflict) {
+                $validator->errors()->add('aula_id', 'El aula seleccionada ya está ocupada en ese día y horario.');
+            }
+
+            // 2. Validar choque de docente
+            if ($grupoPeriodoId) {
+                $grupoPeriodo = GrupoPeriodo::find($grupoPeriodoId);
+                if ($grupoPeriodo && $grupoPeriodo->docente_id) {
+                    $docenteId = $grupoPeriodo->docente_id;
+
+                    $docenteConflict = Horario::where('dia', $dia)
+                        ->whereHas('grupoPeriodo', function ($query) use ($docenteId) {
+                            $query->where('docente_id', $docenteId);
+                        })
+                        ->where(function ($query) use ($horaInicio, $horaFin) {
+                            $query->where('hora_inicio', '<', $horaFin)
+                                  ->where('hora_fin', '>', $horaInicio);
+                        })
+                        ->exists();
+
+                    if ($docenteConflict) {
+                        $validator->errors()->add('grupo_periodo_id', 'El docente asignado a este grupo ya tiene una clase registrada en ese día y horario.');
+                    }
+                }
+            }
+        });
+    }
+}
