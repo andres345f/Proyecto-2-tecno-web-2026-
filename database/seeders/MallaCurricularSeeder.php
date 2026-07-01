@@ -13,8 +13,8 @@ class MallaCurricularSeeder extends Seeder
         /*
         $tsDs = OfertaAcademica::where('codigo', 'TS-DS')->first();
         $tmRt = OfertaAcademica::where('codigo', 'TS-RT')->first();
-        $tmDg = OfertaAcademica::where('codigo', 'TM-DG')->first();
         */
+        $tmDg = OfertaAcademica::where('codigo', 'TM-DG')->first();
         $taMd = OfertaAcademica::where('codigo', 'TA-MD')->first();
 
         // Retrieve all materias
@@ -74,6 +74,7 @@ class MallaCurricularSeeder extends Seeder
         $tmRt->materias()->attach($materias['RT-402']->id, ['semestre_orden' => 4]);
         $tmRt->materias()->attach($materias['RT-403']->id, ['semestre_orden' => 4]);
         $tmRt->materias()->attach($materias['RT-404']->id, ['semestre_orden' => 4]);
+        */
 
         // --- TM-DG SEMESTERS ---
         // Semestre 1
@@ -96,7 +97,6 @@ class MallaCurricularSeeder extends Seeder
         $tmDg->materias()->attach($materias['DG-402']->id, ['semestre_orden' => 4]);
         $tmDg->materias()->attach($materias['DG-403']->id, ['semestre_orden' => 4]);
         $tmDg->materias()->attach($materias['DG-404']->id, ['semestre_orden' => 4]);
-        */
 
         // --- TA-MD SEMESTERS ---
         // Semestre 1
@@ -152,6 +152,7 @@ class MallaCurricularSeeder extends Seeder
         $attachPrereq($tmRt, 'RT-304', 'RT-204');
         $attachPrereq($tmRt, 'RT-401', 'RT-302');
         $attachPrereq($tmRt, 'RT-402', 'RT-303');
+        */
 
         // --- PREREQUISITES (TM-DG) ---
         $attachPrereq($tmDg, 'DG-201', 'DG-101');
@@ -164,7 +165,6 @@ class MallaCurricularSeeder extends Seeder
         $attachPrereq($tmDg, 'DG-401', 'DG-301');
         $attachPrereq($tmDg, 'DG-402', 'DG-304');
         $attachPrereq($tmDg, 'DG-403', 'DG-204');
-        */
 
         // --- PREREQUISITES (TA-MD) ---
         $attachPrereq($taMd, 'MD-201', 'MD-101');

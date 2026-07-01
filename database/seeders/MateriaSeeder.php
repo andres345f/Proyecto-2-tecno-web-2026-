@@ -42,7 +42,7 @@ class MateriaSeeder extends Seeder
             ['nombre' => 'Calidad de Software', 'codigo' => 'DS-602', 'descripcion' => 'Pruebas de software unitarias, integración y sistemas.'],
             ['nombre' => 'Emprendimiento Tecnológico', 'codigo' => 'DS-603', 'descripcion' => 'Modelos de negocio y creación de Startups.'],
             ['nombre' => 'Práctica Profesional', 'codigo' => 'DS-604', 'descripcion' => 'Práctica supervisada en una empresa del sector.'],
-
+ 
             // --- REDES Y TELECOMUNICACIONES (TS-RT) ---
             // Semestre 1
             ['nombre' => 'Fundamentos de Redes', 'codigo' => 'RT-101', 'descripcion' => 'Conceptos básicos de redes cableadas e inalámbricas.'],
@@ -64,29 +64,29 @@ class MateriaSeeder extends Seeder
             ['nombre' => 'Servicios Cloud', 'codigo' => 'RT-402', 'descripcion' => 'Fundamentos de AWS, Azure e infraestructura como servicio.'],
             ['nombre' => 'Soporte Técnico y Helpdesk', 'codigo' => 'RT-403', 'descripcion' => 'Atención al usuario y metodologías ITIL.'],
             ['nombre' => 'Legislación Informática', 'codigo' => 'RT-404', 'descripcion' => 'Leyes de telecomunicaciones, derechos de autor y delitos informáticos.'],
-
+            */
+ 
             // --- DISEÑO GRÁFICO (TM-DG) ---
             // Semestre 1
-            ['nombre' => 'Fundamentos del Diseño', 'codigo' => 'DG-101', 'descripcion' => 'Elementos básicos visuales: punto, línea, color y composición.'],
-            ['nombre' => 'Dibujo Artístico', 'codigo' => 'DG-102', 'descripcion' => 'Técnicas de bocetado a mano alzada y perspectiva.'],
-            ['nombre' => 'Historia del Arte', 'codigo' => 'DG-103', 'descripcion' => 'Evolución de las corrientes artísticas y su influencia moderna.'],
-            ['nombre' => 'Herramientas Digitales I', 'codigo' => 'DG-104', 'descripcion' => 'Uso avanzado de Adobe Photoshop para retoque fotográfico.'],
+            ['nombre' => 'Fundamentos del Diseno', 'codigo' => 'DG-101', 'descripcion' => 'Elementos basicos visuales: punto, linea, color y composicion.'],
+            ['nombre' => 'Dibujo Artistico', 'codigo' => 'DG-102', 'descripcion' => 'Tecnicas de bocetado a mano alzada y perspectiva.'],
+            ['nombre' => 'Historia del Arte', 'codigo' => 'DG-103', 'descripcion' => 'Evolucion de las corrientes artisticas y su influencia moderna.'],
+            ['nombre' => 'Herramientas Digitales I', 'codigo' => 'DG-104', 'descripcion' => 'Uso avanzado de Adobe Photoshop para retoque fotografico.'],
             // Semestre 2
-            ['nombre' => 'Tipografía', 'codigo' => 'DG-201', 'descripcion' => 'Uso expresivo y legible del texto y familias tipográficas.'],
-            ['nombre' => 'Ilustración Vectorial', 'codigo' => 'DG-202', 'descripcion' => 'Ilustración digital con Adobe Illustrator.'],
-            ['nombre' => 'Fotografía Digital', 'codigo' => 'DG-203', 'descripcion' => 'Manejo de cámara réflex, composición e iluminación.'],
-            ['nombre' => 'Herramientas Digitales II', 'codigo' => 'DG-204', 'descripcion' => 'Técnicas avanzadas de pintura digital y fotomontaje.'],
+            ['nombre' => 'Tipografia', 'codigo' => 'DG-201', 'descripcion' => 'Uso expresivo y legible del texto y familias tipograficas.'],
+            ['nombre' => 'Ilustracion Vectorial', 'codigo' => 'DG-202', 'descripcion' => 'Ilustracion digital con Adobe Illustrator.'],
+            ['nombre' => 'Fotografia Digital', 'codigo' => 'DG-203', 'descripcion' => 'Manejo de camara reflex, composicion e iluminacion.'],
+            ['nombre' => 'Herramientas Digitales II', 'codigo' => 'DG-204', 'descripcion' => 'Tecnicas avanzadas de pintura digital y fotomontaje.'],
             // Semestre 3
-            ['nombre' => 'Diseño Editorial', 'codigo' => 'DG-301', 'descripcion' => 'Maquetación de revistas, libros y catálogos con Adobe InDesign.'],
-            ['nombre' => 'Identidad Corporativa', 'codigo' => 'DG-302', 'descripcion' => 'Creación de marcas, logotipos y manuales de marca.'],
-            ['nombre' => 'Diseño Publicitario', 'codigo' => 'DG-303', 'descripcion' => 'Estrategias de comunicación para anuncios impresos y digitales.'],
-            ['nombre' => 'Animación Digital', 'codigo' => 'DG-304', 'descripcion' => 'Principios de animación 2D con Adobe After Effects.'],
+            ['nombre' => 'Diseno Editorial', 'codigo' => 'DG-301', 'descripcion' => 'Maquetacion de revistas, libros y catalogos con Adobe InDesign.'],
+            ['nombre' => 'Identidad Corporativa', 'codigo' => 'DG-302', 'descripcion' => 'Creacion de marcas, logotipos y manuales de marca.'],
+            ['nombre' => 'Diseno Publicitario', 'codigo' => 'DG-303', 'descripcion' => 'Estrategias de comunicacion para anuncios impresos y digitales.'],
+            ['nombre' => 'Animacion Digital', 'codigo' => 'DG-304', 'descripcion' => 'Principios de animacion 2D con Adobe After Effects.'],
             // Semestre 4
-            ['nombre' => 'Portafolio Profesional', 'codigo' => 'DG-401', 'descripcion' => 'Preparación de proyectos personales para la inserción laboral.'],
-            ['nombre' => 'Producción Audiovisual', 'codigo' => 'DG-402', 'descripcion' => 'Edición de video y postproducción con Adobe Premiere.'],
-            ['nombre' => 'Diseño UX/UI', 'codigo' => 'DG-403', 'descripcion' => 'Diseño de interfaces web y móviles centradas en el usuario.'],
-            ['nombre' => 'Costos y Presupuestos de Diseño', 'codigo' => 'DG-404', 'descripcion' => 'Gestión financiera para diseñadores independientes (Freelance).'],
-            */
+            ['nombre' => 'Portafolio Profesional', 'codigo' => 'DG-401', 'descripcion' => 'Preparacion de proyectos personales para la insercion laboral.'],
+            ['nombre' => 'Produccion Audiovisual', 'codigo' => 'DG-402', 'descripcion' => 'Edicion de video y postproduccion con Adobe Premiere.'],
+            ['nombre' => 'Diseno UX/UI', 'codigo' => 'DG-403', 'descripcion' => 'Diseno de interfaces web y moviles centradas en el usuario.'],
+            ['nombre' => 'Costos y Presupuestos de Diseno', 'codigo' => 'DG-404', 'descripcion' => 'Gestion financiera para disenadores independientes (Freelance).'],
 
             // --- MARKETING DIGITAL (TA-MD) ---
             // Semestre 1

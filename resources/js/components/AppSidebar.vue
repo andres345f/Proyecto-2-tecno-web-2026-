@@ -42,8 +42,8 @@ const mainNavItems = computed<NavItem[]>(() => {
 
     if (!user.value) return items;
 
-    // Propietario / Director
-    if (user.value.is_propietario || user.value.is_director) {
+    // Propietario
+    if (user.value.is_propietario) {
         items.push(
             { title: 'Reportes', href: route('reportes.index'), icon: BarChart3 },
             { title: 'Aulas', href: route('aulas.index'), icon: Home },
@@ -51,8 +51,20 @@ const mainNavItems = computed<NavItem[]>(() => {
             { title: 'Ofertas Académicas', href: route('ofertas-academicas.index'), icon: GraduationCap },
             { title: 'Grupos', href: route('grupos.index'), icon: Users },
             { title: 'Pagos', href: route('pagos.index'), icon: CreditCard },
+            { title: 'Usuarios', href: route('usuarios.index'), icon: Users }
+        );
+    }
+
+    // Director
+    if (user.value.is_director) {
+        items.push(
+            { title: 'Reportes', href: route('reportes.index'), icon: BarChart3 },
+            { title: 'Aulas', href: route('aulas.index'), icon: Home },
+            { title: 'Materias', href: route('materias.index'), icon: BookOpen },
+            { title: 'Ofertas Académicas', href: route('ofertas-academicas.index'), icon: GraduationCap },
+            { title: 'Grupos', href: route('grupos.index'), icon: Users },
             { title: 'Usuarios', href: route('usuarios.index'), icon: Users },
-            //{ title: 'Inscripciones', href: route('matriculas.index'), icon: ClipboardList }
+            { title: 'Inscripciones', href: route('matriculas.index'), icon: ClipboardList }
         );
     }
 

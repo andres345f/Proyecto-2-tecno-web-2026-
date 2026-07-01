@@ -30,6 +30,12 @@ class OfertaAcademicaSeeder extends Seeder
         */
 
         OfertaAcademica::create([
+            'nombre' => 'Tecnico Medio en Diseno Grafico',
+            'codigo' => 'TM-DG',
+            'descripcion' => 'Carrera tecnica enfocada en la comunicacion visual, identidad de marca, ilustracion digital y diseno multimedia.',
+        ]);
+
+        OfertaAcademica::create([
             'nombre' => 'Técnico Auxiliar en Marketing Digital',
             'codigo' => 'TA-MD',
             'descripcion' => 'Carrera técnica corta dedicada al posicionamiento web, gestión de redes sociales, analítica y publicidad digital.',

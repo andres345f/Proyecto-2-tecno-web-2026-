@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/vue3';
+import { type BreadcrumbItem, type SharedData } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ClipboardList, Calendar, Users, ArrowRight } from 'lucide-vue-next';
+import { computed } from 'vue';
 
 defineProps<{
     stats: {
@@ -13,6 +14,9 @@ defineProps<{
         total_grupos: number;
     };
 }>();
+
+const page = usePage<SharedData>();
+const user = computed(() => page.props.auth.user);
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: route('dashboard') },
@@ -32,9 +36,12 @@ const breadcrumbs: BreadcrumbItem[] = [
                 </p>
             </div>
 
-            <div class="grid gap-6 md:grid-cols-3 mt-4">
+            <div :class="[
+                'grid gap-6 mt-4',
+                user?.is_director ? 'md:grid-cols-1 max-w-md w-full mx-auto' : 'md:grid-cols-3'
+            ]">
                 <!-- Carrera Enrollment Card -->
-                <Card class="relative overflow-hidden group hover:shadow-lg transition-all duration-300 border-border bg-card">
+                <Card v-if="!user?.is_director" class="relative overflow-hidden group hover:shadow-lg transition-all duration-300 border-border bg-card">
                     <CardHeader class="pb-2">
                         <div class="flex items-center justify-between">
                             <div class="p-2 rounded-lg bg-blue-500/10 text-blue-500">
@@ -58,7 +65,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                 </Card>
 
                 <!-- Period Enrollment Card -->
-                <Card class="relative overflow-hidden group hover:shadow-lg transition-all duration-300 border-border bg-card">
+                <Card v-if="!user?.is_director" class="relative overflow-hidden group hover:shadow-lg transition-all duration-300 border-border bg-card">
                     <CardHeader class="pb-2">
                         <div class="flex items-center justify-between">
                             <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-500">

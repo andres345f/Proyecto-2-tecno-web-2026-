@@ -61,18 +61,22 @@ Route::middleware(['auth', 'verified', EnsureUserIsActive::class, RoleMiddleware
     Route::resource('grupos', GrupoController::class)->parameters([
         'grupos' => 'grupo',
     ]);
-    Route::get('matriculas-carrera/plantilla', [MatriculaCarreraController::class, 'descargarPlantilla'])->name('matriculas-carrera.plantilla');
-    Route::post('matriculas-carrera/importar', [MatriculaCarreraController::class, 'importar'])->name('matriculas-carrera.importar');
-    Route::resource('matriculas-carrera', MatriculaCarreraController::class)->parameters([
-        'matriculas-carrera' => 'matriculaCarrera',
-    ]);
-    Route::resource('matriculas-periodo', MatriculaPeriodoController::class)->only(['update', 'destroy'])->parameters([
-        'matriculas-periodo' => 'matriculaPeriodo',
-    ]);
     Route::resource('usuarios', UserController::class)->parameters([
         'usuarios' => 'user',
     ]);
-    Route::get('matriculas', [MatriculaDashboardController::class, 'index'])->name('matriculas.index');
+
+    // Matriculas / Inscripciones (solo director y secretaria)
+    Route::middleware(RoleMiddleware::class . ':director,secretaria')->group(function () {
+        Route::get('matriculas-carrera/plantilla', [MatriculaCarreraController::class, 'descargarPlantilla'])->name('matriculas-carrera.plantilla');
+        Route::post('matriculas-carrera/importar', [MatriculaCarreraController::class, 'importar'])->name('matriculas-carrera.importar');
+        Route::resource('matriculas-carrera', MatriculaCarreraController::class)->parameters([
+            'matriculas-carrera' => 'matriculaCarrera',
+        ]);
+        Route::resource('matriculas-periodo', MatriculaPeriodoController::class)->only(['update', 'destroy'])->parameters([
+            'matriculas-periodo' => 'matriculaPeriodo',
+        ]);
+        Route::get('matriculas', [MatriculaDashboardController::class, 'index'])->name('matriculas.index');
+    });
 
     // Reports (director/owner only)
     Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');

@@ -20,8 +20,8 @@ class MatriculaCarreraSeeder extends Seeder
         /*
         $tsDs = OfertaAcademica::where('codigo', 'TS-DS')->first();
         $tmRt = OfertaAcademica::where('codigo', 'TS-RT')->first();
-        $tmDg = OfertaAcademica::where('codigo', 'TM-DG')->first();
         */
+        $tmDg = OfertaAcademica::where('codigo', 'TM-DG')->first();
         $taMd = OfertaAcademica::where('codigo', 'TA-MD')->first();
 
         // Enroll main students (historical since 2025)
@@ -47,7 +47,7 @@ class MatriculaCarreraSeeder extends Seeder
         ]);
 
         // 2. Generate 100 random student users and matriculate them
-        $careers = [$taMd];
+        $careers = [$taMd, $tmDg];
         $password = Hash::make('password');
 
         for ($i = 1; $i <= 100; $i++) {
