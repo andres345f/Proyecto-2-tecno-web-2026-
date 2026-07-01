@@ -13,10 +13,13 @@ interface Entrega {
         id: number;
         titulo: string;
         puntaje_maximo: string;
-        grupo: {
+        grupo_periodo: {
             id: number;
-            codigo: string;
-            materia: { nombre: string; codigo: string };
+            grupo: {
+                id: number;
+                codigo: string;
+                materia: { nombre: string; codigo: string };
+            };
         };
     };
     usuario: { id: number; name: string; email: string };
@@ -27,8 +30,8 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Entrega', href: `/entregas/${props.entrega.id}` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Entrega', href: route('entregas.show', props.entrega.id) },
 ];
 
 const formatDate = (date: string) =>
@@ -41,7 +44,7 @@ const formatDate = (date: string) =>
     });
 
 const downloadFile = () => {
-    window.location.href = `/entregas/${props.entrega.id}/download`;
+    window.location.href = route('entregas.download', props.entrega.id);
 };
 </script>
 
@@ -52,7 +55,7 @@ const downloadFile = () => {
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Detalle de Entrega</h1>
-                <p class="text-sm text-gray-500 dark:text-gray-400">{{ entrega.tarea.grupo.codigo }} — {{ entrega.tarea.titulo }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ entrega.tarea.grupo_periodo?.grupo?.codigo }} — {{ entrega.tarea.titulo }}</p>
             </div>
 
             <div class="rounded-xl border border-sidebar-border/70 p-6 dark:border-sidebar-border">
