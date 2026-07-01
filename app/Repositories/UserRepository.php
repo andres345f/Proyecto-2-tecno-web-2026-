@@ -26,6 +26,14 @@ class UserRepository
     }
 
     /**
+     * Get all users of a specific role.
+     */
+    public function obtenerTodosPorRol(string $role): Collection
+    {
+        return User::where("is_{$role}", true)->orderBy('name')->get();
+    }
+
+    /**
      * Store a new user in the database.
      */
     public function guardar(array $data): User

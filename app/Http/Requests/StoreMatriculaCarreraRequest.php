@@ -34,7 +34,7 @@ class StoreMatriculaCarreraRequest extends FormRequest
             if ($exists) {
                 $validator->errors()->add(
                     'usuario_id',
-                    'This student is already enrolled in this career.'
+                    'Este estudiante ya está inscrito en esta carrera'
                 );
             }
         });

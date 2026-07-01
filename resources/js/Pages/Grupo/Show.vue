@@ -35,9 +35,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Grupos', href: '/grupos' },
-    { title: props.grupo.codigo, href: `/grupos/${props.grupo.id}` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Grupos', href: route('grupos.index') },
+    { title: props.grupo.codigo, href: route('grupos.show', props.grupo.id) },
 ];
 </script>
 
@@ -53,10 +53,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                 </div>
                 <div class="flex gap-2">
                     <Button variant="outline" as-child>
-                        <Link :href="`/grupos/${grupo.id}/edit`">Editar Catálogo</Link>
+                        <Link :href="route('grupos.edit', grupo.id)">Editar Catálogo</Link>
                     </Button>
                     <Button variant="ghost" as-child>
-                        <Link href="/grupos">Volver al Catálogo</Link>
+                        <Link :href="route('grupos.index')">Volver al Catálogo</Link>
                     </Button>
                 </div>
             </div>
@@ -102,7 +102,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                                 <tbody class="divide-y divide-border">
                                     <tr v-for="gp in grupo.grupo_periodos" :key="gp.id" class="hover:bg-accent/15 transition-colors">
                                         <td class="px-4 py-3.5 font-medium text-foreground">
-                                            <Link :href="`/periodos-academicos/${gp.periodo_academico?.id}`" class="text-primary hover:underline font-semibold">
+                                            <Link :href="route('periodos-academicos.show', gp.periodo_academico?.id)" class="text-primary hover:underline font-semibold">
                                                 {{ gp.periodo_academico?.nombre }}
                                             </Link>
                                             <span class="text-xs text-muted-foreground block capitalize">{{ gp.periodo_academico?.tipo }}</span>

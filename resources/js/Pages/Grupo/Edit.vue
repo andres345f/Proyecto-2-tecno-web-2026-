@@ -34,9 +34,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Grupos', href: '/grupos' },
-    { title: 'Editar', href: `/grupos/${props.grupo.id}/edit` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Grupos', href: route('grupos.index') },
+    { title: 'Editar', href: route('grupos.edit', props.grupo.id) },
 ];
 
 const form = useForm({
@@ -46,7 +46,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(`/grupos/${props.grupo.id}`);
+    form.put(route('grupos.update', props.grupo.id));
 };
 </script>
 
@@ -61,7 +61,7 @@ const submit = () => {
                     <p class="text-sm text-muted-foreground mt-1">Modifica los detalles del catálogo del grupo.</p>
                 </div>
                 <Button variant="outline" as-child>
-                    <Link :href="oferta_id ? `/grupos?oferta_id=${oferta_id}` : '/grupos'">Volver</Link>
+                    <Link :href="oferta_id ? route('grupos.index', { oferta_id }) : route('grupos.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -108,7 +108,7 @@ const submit = () => {
                                 Actualizar Grupo
                             </Button>
                             <Button variant="ghost" as-child>
-                                <Link :href="oferta_id ? `/grupos?oferta_id=${oferta_id}` : '/grupos'">Cancelar</Link>
+                                <Link :href="oferta_id ? route('grupos.index', { oferta_id }) : route('grupos.index')">Cancelar</Link>
                             </Button>
                         </div>
                     </form>

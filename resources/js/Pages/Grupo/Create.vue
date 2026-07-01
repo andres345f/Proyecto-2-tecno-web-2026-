@@ -27,9 +27,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Grupos', href: '/grupos' },
-    { title: 'Crear', href: '/grupos/create' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Grupos', href: route('grupos.index') },
+    { title: 'Crear', href: route('grupos.create') },
 ];
 
 const form = useForm({
@@ -39,7 +39,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/grupos');
+    form.post(route('grupos.store'));
 };
 </script>
 
@@ -54,7 +54,7 @@ const submit = () => {
                     <p class="text-sm text-muted-foreground mt-1">Registra un nuevo grupo en el catálogo de asignaturas.</p>
                 </div>
                 <Button variant="outline" as-child>
-                    <Link :href="oferta_id ? `/grupos?oferta_id=${oferta_id}` : '/grupos'">Volver</Link>
+                    <Link :href="oferta_id ? route('grupos.index', { oferta_id }) : route('grupos.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -101,7 +101,7 @@ const submit = () => {
                                 Crear Grupo
                             </Button>
                             <Button variant="ghost" as-child>
-                                <Link :href="oferta_id ? `/grupos?oferta_id=${oferta_id}` : '/grupos'">Cancelar</Link>
+                                <Link :href="oferta_id ? route('grupos.index', { oferta_id }) : route('grupos.index')">Cancelar</Link>
                             </Button>
                         </div>
                     </form>

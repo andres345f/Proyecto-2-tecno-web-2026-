@@ -119,7 +119,7 @@ class PeriodoAcademicoController extends Controller
 
                 foreach ($gpAnterior->horarios as $horarioAnterior) {
                     // Restablecer u obtener horarios que no estén duplicados
-                    $horarioExists = $existing->horarios()->withTrashed()
+                    $horarioExists = $existing->horarios()
                         ->where('dia', $horarioAnterior->dia)
                         ->where('hora_inicio', $horarioAnterior->hora_inicio)
                         ->where('hora_fin', $horarioAnterior->hora_fin)

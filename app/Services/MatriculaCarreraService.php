@@ -31,7 +31,7 @@ class MatriculaCarreraService
      */
     public function listarMatriculas(User $user): Collection
     {
-        if ($user->is_estudiante && ! $user->is_secretaria && ! $user->is_director && ! $user->is_propietario) {
+        if ($user->is_estudiante && !$user->is_secretaria && !$user->is_director && !$user->is_propietario) {
             return $this->matriculaRepository->obtenerPorUsuarioConRelaciones($user->id);
         }
 
@@ -44,7 +44,7 @@ class MatriculaCarreraService
     public function listarMatriculasPaginadas(User $user, int $perPage, ?string $search = null, ?string $estado = null)
     {
         $usuarioId = null;
-        if ($user->is_estudiante && ! $user->is_secretaria && ! $user->is_director && ! $user->is_propietario) {
+        if ($user->is_estudiante && !$user->is_secretaria && !$user->is_director && !$user->is_propietario) {
             $usuarioId = $user->id;
         }
 
@@ -57,7 +57,7 @@ class MatriculaCarreraService
     public function obtenerDatosFormulario(): array
     {
         return [
-            'usuarios' => $this->userRepository->obtenerFiltrados(null, 'estudiante'),
+            'usuarios' => $this->userRepository->obtenerTodosPorRol('estudiante'),
             'ofertas' => $this->ofertaRepository->obtenerTodasConMateriasCount(),
         ];
     }
@@ -133,19 +133,22 @@ class MatriculaCarreraService
         $header[0] = preg_replace("/^$bom/", '', $header[0]);
 
         // Map headers
-        $header = array_map(function($h) {
+        $header = array_map(function ($h) {
             $cleaned = preg_replace('/[\x00-\x1F\x7F-\x9F]/u', '', $h);
             return strtolower(trim($cleaned, " \t\n\r\0\x0B\"'"));
         }, $header);
 
         $nameIdx = array_search('nombre', $header);
-        if ($nameIdx === false) $nameIdx = array_search('name', $header);
+        if ($nameIdx === false)
+            $nameIdx = array_search('name', $header);
 
         $emailIdx = array_search('email', $header);
 
         $ofertaIdx = array_search('codigo_oferta', $header);
-        if ($ofertaIdx === false) $ofertaIdx = array_search('carrera_codigo', $header);
-        if ($ofertaIdx === false) $ofertaIdx = array_search('carrera', $header);
+        if ($ofertaIdx === false)
+            $ofertaIdx = array_search('carrera_codigo', $header);
+        if ($ofertaIdx === false)
+            $ofertaIdx = array_search('carrera', $header);
 
         if ($nameIdx === false || $emailIdx === false || $ofertaIdx === false) {
             fclose($handle);
