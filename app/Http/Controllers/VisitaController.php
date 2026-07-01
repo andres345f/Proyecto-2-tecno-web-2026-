@@ -36,7 +36,7 @@ class VisitaController extends Controller
                 'visits_count' => $visitsCount,
             ]);
         } catch (\Exception $e) {
-            Log::error('Error registering visit: ' . $e->getMessage());
+            //  Log::error('Error registering visit: ' . $e->getMessage());
 
             return response()->json(['success' => false], 500);
         }

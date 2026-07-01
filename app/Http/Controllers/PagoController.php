@@ -38,11 +38,11 @@ class PagoController extends Controller
             if ($search) {
                 $query->where(function ($q) use ($search) {
                     $q->whereRaw('LOWER(transaccion_id) LIKE ?', ["%{$search}%"])
-                      ->orWhereHas('cuota.matriculaPeriodo.matriculaCarrera.usuario', function ($q) use ($search) {
-                          $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
-                            ->orWhereRaw('LOWER(email) LIKE ?', ["%{$search}%"])
-                            ->orWhereRaw('LOWER(codigo_estudiante) LIKE ?', ["%{$search}%"]);
-                      });
+                        ->orWhereHas('cuota.matriculaPeriodo.matriculaCarrera.usuario', function ($q) use ($search) {
+                            $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
+                                ->orWhereRaw('LOWER(email) LIKE ?', ["%{$search}%"])
+                                ->orWhereRaw('LOWER(codigo_estudiante) LIKE ?', ["%{$search}%"]);
+                        });
                 });
             }
 
@@ -121,9 +121,9 @@ class PagoController extends Controller
      */
     public function pagofacilCallback(Request $request): JsonResponse
     {
-        if (config('pagofacil.enable_logs', true)) {
-            \Illuminate\Support\Facades\Log::info('PagoFacil Webhook Callback received', $request->all());
-        }
+        // if (config('pagofacil.enable_logs', true)) {
+        //     \Illuminate\Support\Facades\Log::info('PagoFacil Webhook Callback received', $request->all());
+        // }
 
         $pedidoId = $request->input('tcPedidoID') ?? $request->input('PedidoID');
         $transaccionId = $request->input('tcTransaccionID') ?? $request->input('Identificador');

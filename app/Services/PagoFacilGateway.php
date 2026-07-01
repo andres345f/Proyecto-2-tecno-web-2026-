@@ -55,9 +55,9 @@ class PagoFacilGateway
                 }
             }
         } catch (\Throwable $e) {
-            if ($this->enableLogs) {
-                Log::warning('No se pudo listar los servicios habilitados de PagoFacil, usando ID por defecto (4)', ['msg' => $e->getMessage()]);
-            }
+            //if ($this->enableLogs) {
+            //  Log::warning('No se pudo listar los servicios habilitados de PagoFacil, usando ID por defecto (4)', ['msg' => $e->getMessage()]);
+            //}
         }
 
         $response = $client->post($this->baseUrl . '/generate-qr', [
@@ -94,9 +94,9 @@ class PagoFacilGateway
         $result = json_decode($response->getBody()->getContents(), true);
 
         if (json_last_error() !== JSON_ERROR_NONE || !isset($result['values'])) {
-            if ($this->enableLogs) {
-                Log::error('PagoFacil response invalid or error', ['result' => $result]);
-            }
+            // if ($this->enableLogs) {
+            //   Log::error('PagoFacil response invalid or error', ['result' => $result]);
+            // }
             throw new \Exception('Respuesta inválida de PagoFácil');
         }
 
@@ -162,9 +162,9 @@ class PagoFacilGateway
 
         $result = json_decode($response->getBody()->getContents(), true);
 
-        if ($this->enableLogs) {
-            Log::info('PagoFacil token OK');
-        }
+        // if ($this->enableLogs) {
+        //     Log::info('PagoFacil token OK');
+        // }
 
         $token = $result['values']['accessToken'] ?? null;
 

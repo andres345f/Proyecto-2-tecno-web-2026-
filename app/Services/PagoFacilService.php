@@ -83,7 +83,7 @@ class PagoFacilService
                 'status' => 'pending',
             ];
         } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::warning('PagoFacil Real API failed, falling back to mock QR', ['msg' => $e->getMessage()]);
+            //\Illuminate\Support\Facades\Log::warning('PagoFacil Real API failed, falling back to mock QR', ['msg' => $e->getMessage()]);
 
             $transaccionId = 'PF-' . strtoupper(uniqid());
 
@@ -136,7 +136,7 @@ class PagoFacilService
 
                     // Según el PDF de PagoFácil, el campo de estado de pago en la consulta es paymentStatus
                     $estado = $response['paymentStatus'] ?? $response['estado'] ?? $response['tcEstado'] ?? null;
-                    $estadoInt = $estado !== null ? (int)$estado : null;
+                    $estadoInt = $estado !== null ? (int) $estado : null;
 
                     // Únicamente el estado 2 (o los strings explícitos) indican que el pago fue completado
                     // El estado 1 significa "Pendiente/Generado", por lo que NO debe marcarse como pagado.
@@ -145,7 +145,7 @@ class PagoFacilService
                         $pago->cuota->update(['estado' => 'pagado']);
                     }
                 } catch (\Throwable $e) {
-                    \Illuminate\Support\Facades\Log::error('PagoFacil state query failed', ['msg' => $e->getMessage()]);
+                    // \Illuminate\Support\Facades\Log::error('PagoFacil state query failed', ['msg' => $e->getMessage()]);
                 }
             }
         }
