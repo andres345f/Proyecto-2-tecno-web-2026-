@@ -36,8 +36,8 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Mis Grupos', href: '/grupos-docente' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Mis Grupos', href: route('grupos.docente.index') },
 ];
 
 const formatHorarios = (horarios: Horario[]) => {
@@ -133,7 +133,7 @@ const allHorarios = computed(() => {
                                     <td class="px-6 py-4 align-middle text-muted-foreground">{{ grupo.periodo_academico?.nombre }}</td>
                                     <td class="px-6 py-4 align-middle text-right">
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/grupos-docente/${grupo.id}`">Ver Clases y Alumnos</Link>
+                                            <Link :href="route('grupos.docente.show', grupo.id)">Ver Clases y Alumnos</Link>
                                         </Button>
                                     </td>
                                 </tr>

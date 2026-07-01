@@ -38,9 +38,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Mis Grupos', href: '/grupos-docente' },
-    { title: props.grupo.codigo, href: `/grupos-docente/${props.grupo.id}` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Mis Grupos', href: route('grupos.docente.index') },
+    { title: props.grupo.codigo, href: route('grupos.docente.show', props.grupo.id) },
 ];
 
 const estadoBadge = (estado: string) => {
@@ -67,10 +67,10 @@ const estadoBadge = (estado: string) => {
                 </div>
                 <div class="flex gap-3">
                     <Button as-child>
-                        <Link :href="`/grupos/${grupo.id}/tareas`">Gestionar Tareas</Link>
+                        <Link :href="route('grupos.tareas.index', grupo.id)">Gestionar Tareas</Link>
                     </Button>
                     <Button variant="outline" as-child>
-                        <Link href="/grupos-docente">Volver</Link>
+                        <Link :href="route('grupos.docente.index')">Volver</Link>
                     </Button>
                 </div>
             </div>

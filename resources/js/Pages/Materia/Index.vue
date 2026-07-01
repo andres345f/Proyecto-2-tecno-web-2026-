@@ -13,7 +13,6 @@ interface Materia {
     nombre: string;
     codigo: string;
     descripcion: string | null;
-    prerrequisitos_count: number;
 }
 
 const props = defineProps<{
@@ -64,8 +63,7 @@ watch(search, (newVal) => {
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-3xl font-extrabold tracking-tight text-foreground">Materias</h1>
-                    <p class="text-sm text-muted-foreground mt-1">Gestión del catálogo global de asignaturas y sus
-                        prerrequisitos.</p>
+                    <p class="text-sm text-muted-foreground mt-1">Gestión del catálogo global de asignaturas.</p>
                 </div>
                 <Button as-child>
                     <Link :href="route('materias.create')">Crear Materia</Link>
@@ -77,8 +75,7 @@ watch(search, (newVal) => {
                     class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-6">
                     <div>
                         <CardTitle>Listado de Materias</CardTitle>
-                        <CardDescription>Visualiza las materias configuradas y la cantidad de prerrequisitos asignados.
-                        </CardDescription>
+                        <CardDescription>Visualiza las materias configuradas.</CardDescription>
                     </div>
                     <div class="w-full md:w-72">
                         <Input v-model="search" placeholder="Buscar materia por nombre o código..." />
@@ -96,9 +93,6 @@ watch(search, (newVal) => {
                                         class="h-12 px-6 text-left align-middle font-semibold text-muted-foreground uppercase tracking-wider">
                                         Nombre</th>
                                     <th
-                                        class="h-12 px-6 text-left align-middle font-semibold text-muted-foreground uppercase tracking-wider">
-                                        Prerrequisitos</th>
-                                    <th
                                         class="h-12 px-6 text-right align-middle font-semibold text-muted-foreground uppercase tracking-wider">
                                         Acciones</th>
                                 </tr>
@@ -110,12 +104,6 @@ watch(search, (newVal) => {
                                         materia.codigo }}</td>
                                     <td class="px-6 py-4 align-middle text-foreground font-semibold">{{ materia.nombre
                                         }}</td>
-                                    <td class="px-6 py-4 align-middle">
-                                        <span
-                                            class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-secondary text-secondary-foreground">
-                                            {{ materia.prerrequisitos_count }} prerequisitos
-                                        </span>
-                                    </td>
                                     <td class="px-6 py-4 align-middle text-right space-x-2">
                                         <!-- <Button variant="outline" size="sm" as-child>
                                             <Link :href="`/materias/${materia.id}`">Ver</Link>
@@ -132,10 +120,10 @@ watch(search, (newVal) => {
                                     </td>
                                 </tr>
                                 <tr v-if="materias.data.length === 0">
-                                    <td colspan="4" class="px-6 py-8 text-center text-muted-foreground">
-                                        No hay materias registradas en el sistema.
-                                    </td>
-                                </tr>
+                                        <td colspan="3" class="px-6 py-8 text-center text-muted-foreground">
+                                            No hay materias registradas en el sistema.
+                                        </td>
+                                    </tr>
                             </tbody>
                         </table>
                     </div>

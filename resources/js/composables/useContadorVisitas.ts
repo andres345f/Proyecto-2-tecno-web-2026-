@@ -6,7 +6,7 @@ export function useContadorVisitas() {
     function registrarVisita(url: string) {
         const cleanUrl = url.split('?')[0].split('#')[0];
 
-        fetch('/api/visitas', {
+        fetch(route('api.visitas.store'), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -16,13 +16,11 @@ class MateriaRepository
     }
 
     /**
-     * Get subjects filtered by search query and loaded with prerequisites count.
+     * Get subjects filtered by search query.
      */
-    public function obtenerFiltradasConPrerrequisitosCount(?string $search, int $perPage = 10)
+    public function obtenerFiltradas(?string $search, int $perPage = 10)
     {
-        $query = Materia::withCount(['mallaCurricular as prerrequisitos_count' => function ($query) {
-            $query->join('materia_prerequisito', 'materia_prerequisito.malla_curricular_id', '=', 'malla_curricular.id');
-        }]);
+        $query = Materia::query();
 
         if ($search) {
             $query->where(function ($q) use ($search) {

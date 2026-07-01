@@ -20,7 +20,7 @@ class MateriaService
      */
     public function listarMaterias(?string $search, int $perPage = 10)
     {
-        return $this->materiaRepository->obtenerFiltradasConPrerrequisitosCount($search, $perPage);
+        return $this->materiaRepository->obtenerFiltradas($search, $perPage);
     }
 
     /**
