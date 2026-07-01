@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/vue3';
-import { computed, ref, onMounted } from 'vue';
+import { Head, Link, router } from '@inertiajs/vue3';
+import { computed, ref, onMounted, watch } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import { type SharedData } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -46,9 +46,30 @@ interface GrupoAdmin {
 
 const props = defineProps<{
     matriculas?: MatriculaGrupo[];
-    grupos?: GrupoAdmin[];
+    grupos?: {
+        data: GrupoAdmin[];
+        links: Array<{
+            url: string | null;
+            label: string;
+            active: boolean;
+        }>;
+        current_page: number;
+        last_page: number;
+        per_page: number;
+        total: number;
+        from: number | null;
+        to: number | null;
+        prev_page_url: string | null;
+        next_page_url: string | null;
+    };
+    periodosDisponibles?: string[];
     canEnroll?: boolean;
     canEnrollPeriod?: boolean;
+    filters?: {
+        search?: string;
+        periodo?: string;
+        rendimiento?: string;
+    };
 }>();
 
 const page = usePage<SharedData>();
@@ -90,14 +111,13 @@ const studentHorarios = computed(() => {
 });
 
 // Filters state
-const searchQuery = ref('');
+const searchQuery = ref(props.filters?.search || '');
 const selectedEstado = ref('');
-const selectedPeriodo = ref('');
-const selectedRendimiento = ref('');
+const selectedPeriodo = ref(props.filters?.periodo || '');
+const selectedRendimiento = ref(props.filters?.rendimiento || '');
 
 const periodosDisponibles = computed(() => {
-    if (!props.grupos) return [];
-    return [...new Set(props.grupos.map((g) => g.periodo_nombre))].filter(Boolean);
+    return props.periodosDisponibles || [];
 });
 
 const filteredStudentMatriculas = computed(() => {
@@ -112,23 +132,6 @@ const filteredStudentMatriculas = computed(() => {
     });
 });
 
-const filteredGrupos = computed(() => {
-    if (!props.grupos) return [];
-    return props.grupos.filter((g) => {
-        const matchesQuery =
-            !searchQuery.value ||
-            (g.codigo || '').toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-            (g.materia?.nombre || '').toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-            (g.carrera_nombre || '').toLowerCase().includes(searchQuery.value.toLowerCase());
-        const matchesPeriodo = !selectedPeriodo.value || g.periodo_nombre === selectedPeriodo.value;
-        const matchesRendimiento =
-            selectedRendimiento.value === '' ||
-            (selectedRendimiento.value === 'con_notas' && g.tiene_notas) ||
-            (selectedRendimiento.value === 'sin_notas' && !g.tiene_notas);
-        return matchesQuery && matchesPeriodo && matchesRendimiento;
-    });
-});
-
 // Import grades dialog state
 const isImportModalOpen = ref(false);
 const activeImportGrupo = ref<GrupoAdmin | null>(null);
@@ -137,6 +140,36 @@ const openImportModal = (grupo: GrupoAdmin) => {
     activeImportGrupo.value = grupo;
     isImportModalOpen.value = true;
 };
+
+// Backend Filters and Search Debouncing for Admin View
+let searchTimeout: any = null;
+watch([searchQuery, selectedPeriodo, selectedRendimiento], ([newSearch, newPeriodo, newRendimiento], [oldSearch, oldPeriodo, oldRendimiento]) => {
+    if (user.value.is_estudiante) return;
+
+    if (searchTimeout) clearTimeout(searchTimeout);
+
+    const performSearch = () => {
+        router.get(
+            route('matriculas-grupo.index'),
+            {
+                search: newSearch,
+                periodo: newPeriodo,
+                rendimiento: newRendimiento,
+            },
+            {
+                preserveState: true,
+                replace: true,
+                preserveScroll: true,
+            }
+        );
+    };
+
+    if (newSearch !== oldSearch) {
+        searchTimeout = setTimeout(performSearch, 300);
+    } else {
+        performSearch();
+    }
+});
 </script>
 
 <template>
@@ -233,7 +266,62 @@ const openImportModal = (grupo: GrupoAdmin) => {
                 <CardContent class="p-0">
                     <div class="overflow-x-auto">
                         <StudentEnrollmentTable v-if="user.is_estudiante" :matriculas="filteredStudentMatriculas" />
-                        <AdminGruposTable v-else :grupos="filteredGrupos" @import-grades="openImportModal" />
+                        <AdminGruposTable v-else :grupos="grupos?.data || []" @import-grades="openImportModal" />
+                    </div>
+
+                    <!-- Pagination Links (Admin only) -->
+                    <div v-if="!user.is_estudiante && grupos && grupos.links && grupos.links.length > 3" class="flex items-center justify-between border-t border-border px-6 py-4 bg-card">
+                        <div class="flex flex-1 justify-between sm:hidden">
+                            <Link
+                                :href="grupos.prev_page_url || '#'"
+                                class="relative inline-flex items-center rounded-md border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
+                                :class="{ 'opacity-50 pointer-events-none': !grupos.prev_page_url }"
+                                preserve-scroll
+                            >
+                                Anterior
+                            </Link>
+                            <Link
+                                :href="grupos.next_page_url || '#'"
+                                class="relative ml-3 inline-flex items-center rounded-md border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
+                                :class="{ 'opacity-50 pointer-events-none': !grupos.next_page_url }"
+                                preserve-scroll
+                            >
+                                Siguiente
+                            </Link>
+                        </div>
+                        <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                            <div>
+                                <p class="text-sm text-muted-foreground">
+                                    Mostrando del
+                                    <span class="font-medium text-foreground">{{ grupos.from || 0 }}</span>
+                                    al
+                                    <span class="font-medium text-foreground">{{ grupos.to || 0 }}</span>
+                                    de
+                                    <span class="font-medium text-foreground">{{ grupos.total || 0 }}</span>
+                                    resultados
+                                </p>
+                            </div>
+                            <div>
+                                <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                                    <Link
+                                        v-for="(link, i) in grupos.links"
+                                        :key="i"
+                                        :href="link.url || '#'"
+                                        v-html="link.label"
+                                        class="relative inline-flex items-center px-3 py-2 text-sm font-semibold focus:z-20"
+                                        :class="[
+                                            link.active
+                                                ? 'z-10 bg-primary text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+                                                : 'text-foreground ring-1 ring-inset ring-border hover:bg-muted/50 focus:outline-offset-0',
+                                            !link.url ? 'opacity-50 pointer-events-none' : '',
+                                            i === 0 ? 'rounded-l-md' : '',
+                                            i === grupos.links.length - 1 ? 'rounded-r-md' : ''
+                                        ]"
+                                        preserve-scroll
+                                    />
+                                </nav>
+                            </div>
+                        </div>
                     </div>
                 </CardContent>
             </Card>

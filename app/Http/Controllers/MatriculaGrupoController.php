@@ -19,9 +19,14 @@ class MatriculaGrupoController extends Controller
 
     public function index()
     {
-        $data = $this->service->obtenerDatosIndex(auth()->user());
+        $search = request('search');
+        $periodo = request('periodo');
+        $rendimiento = request('rendimiento');
+        $data = $this->service->obtenerDatosIndex(auth()->user(), $search, $periodo, $rendimiento);
 
-        return Inertia::render('MatriculaGrupo/Index', $data);
+        return Inertia::render('MatriculaGrupo/Index', array_merge($data, [
+            'filters' => request()->only(['search', 'periodo', 'rendimiento']),
+        ]));
     }
 
     public function create()

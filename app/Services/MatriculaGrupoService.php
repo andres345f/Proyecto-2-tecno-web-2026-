@@ -29,7 +29,7 @@ class MatriculaGrupoService
     /**
      * Get index data based on user role.
      */
-    public function obtenerDatosIndex(User $user): array
+    public function obtenerDatosIndex(User $user, ?string $search = null, ?string $periodo = null, ?string $rendimiento = null): array
     {
         if ($user->is_estudiante) {
             $canEnroll = $this->verificarPermisoInscripcion($user);
@@ -81,7 +81,9 @@ class MatriculaGrupoService
             ];
         }
 
-        $grupos = $this->repository->obtenerGruposConEstadisticas()->map(function ($grupoPeriodo) {
+        $paginator = $this->repository->obtenerGruposConEstadisticasPaginado($search, $periodo, $rendimiento);
+
+        $paginator->through(function ($grupoPeriodo) {
             $periodoNombre = $grupoPeriodo->periodoAcademico ? $grupoPeriodo->periodoAcademico->nombre : 'Sin período';
 
             $carreraNombre = $grupoPeriodo->grupo->materia && $grupoPeriodo->grupo->materia->ofertasAcademicas && $grupoPeriodo->grupo->materia->ofertasAcademicas->isNotEmpty()
@@ -115,8 +117,11 @@ class MatriculaGrupoService
             ];
         });
 
+        $periodosDisponibles = \App\Models\PeriodoAcademico::orderBy('fecha_inicio', 'desc')->pluck('nombre')->unique()->values()->toArray();
+
         return [
-            'grupos' => $grupos,
+            'grupos' => $paginator,
+            'periodosDisponibles' => $periodosDisponibles,
         ];
     }
 

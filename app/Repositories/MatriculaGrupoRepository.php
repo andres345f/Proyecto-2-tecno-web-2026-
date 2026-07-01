@@ -55,6 +55,61 @@ class MatriculaGrupoRepository
             ->get();
     }
 
+    public function obtenerGruposConEstadisticasPaginado(?string $search = null, ?string $periodo = null, ?string $rendimiento = null, int $perPage = 10)
+    {
+        $query = GrupoPeriodo::query()
+            ->join('periodos_academicos', 'grupo_periodo.periodo_academico_id', '=', 'periodos_academicos.id')
+            ->whereNull('periodos_academicos.deleted_at')
+            ->select('grupo_periodo.*')
+            ->orderByRaw("CASE WHEN periodos_academicos.estado = 'terminado' THEN 1 ELSE 0 END ASC")
+            ->orderBy('periodos_academicos.fecha_inicio', 'desc')
+            ->with([
+                'grupo.materia.ofertasAcademicas',
+                'periodoAcademico',
+                'horarios.aula',
+                'matriculasGrupo' => function ($q) {
+                    $q->with('matriculaPeriodo.matriculaCarrera.usuario');
+                }
+            ])
+            ->withCount([
+                'matriculasGrupo as inscritos_count' => function ($sub) {
+                    $sub->where('estado', '!=', 'retirado');
+                }
+            ]);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('grupo', function ($sub) use ($search) {
+                    $sub->whereRaw('LOWER(codigo) LIKE ?', ["%{$search}%"])
+                        ->orWhereHas('materia', function ($m) use ($search) {
+                            $m->whereRaw('LOWER(nombre) LIKE ?', ["%{$search}%"])
+                              ->orWhereHas('ofertasAcademicas', function ($o) use ($search) {
+                                  $o->whereRaw('LOWER(nombre) LIKE ?', ["%{$search}%"]);
+                              });
+                        });
+                });
+            });
+        }
+
+        if ($periodo) {
+            $query->whereHas('periodoAcademico', function ($q) use ($periodo) {
+                $q->where('nombre', $periodo);
+            });
+        }
+
+        if ($rendimiento === 'con_notas') {
+            $query->whereHas('matriculasGrupo', function ($q) {
+                $q->whereNotNull('nota_final');
+            });
+        } elseif ($rendimiento === 'sin_notas') {
+            $query->whereDoesntHave('matriculasGrupo', function ($q) {
+                $q->whereNotNull('nota_final');
+            });
+        }
+
+        return $query->paginate($perPage)->withQueryString();
+    }
+
     /**
      * Get active matricula periodo for student.
      */
