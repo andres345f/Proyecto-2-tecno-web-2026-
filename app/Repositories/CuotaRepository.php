@@ -11,29 +11,53 @@ class CuotaRepository
     /**
      * Total amount collected from completed pagos.
      */
-    public function totalRecaudado(): float
+    public function totalRecaudado($periodoId = null, $fechaInicio = null, $fechaFin = null): float
     {
-        return (float) Pago::where('estado', 'completado')
-            ->sum('monto_pagado');
+        $query = Pago::where('estado', 'completado');
+        if ($periodoId) {
+            $query->whereHas('cuota.matriculaPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+        }
+        if ($fechaInicio && $fechaFin) {
+            $query->whereBetween('fecha_pago', [$fechaInicio, $fechaFin]);
+        }
+        return (float) $query->sum('monto_pagado');
     }
 
     /**
      * Total amount pending from cuotas in 'pendiente' state.
      */
-    public function totalPorCobrar(): float
+    public function totalPorCobrar($periodoId = null, $fechaInicio = null, $fechaFin = null): float
     {
-        return (float) Cuota::where('estado', 'pendiente')
-            ->sum('monto');
+        $query = Cuota::where('estado', 'pendiente');
+        if ($periodoId) {
+            $query->whereHas('matriculaPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+        }
+        if ($fechaInicio && $fechaFin) {
+            $query->whereBetween('fecha_vencimiento', [$fechaInicio, $fechaFin]);
+        }
+        return (float) $query->sum('monto');
     }
 
     /**
      * Cuotas that are overdue (pendiente AND fecha_vencimiento < now).
      */
-    public function cuotasVencidas(): Collection
+    public function cuotasVencidas($periodoId = null, $fechaInicio = null, $fechaFin = null): Collection
     {
-        return Cuota::where('estado', 'pendiente')
-            ->where('fecha_vencimiento', '<', now())
-            ->with('matriculaPeriodo.matriculaCarrera.usuario')
+        $query = Cuota::where('estado', 'pendiente')
+            ->where('fecha_vencimiento', '<', now());
+        if ($periodoId) {
+            $query->whereHas('matriculaPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+        }
+        if ($fechaInicio && $fechaFin) {
+            $query->whereBetween('fecha_vencimiento', [$fechaInicio, $fechaFin]);
+        }
+        return $query->with('matriculaPeriodo.matriculaCarrera.usuario')
             ->get();
     }
 
@@ -41,11 +65,19 @@ class CuotaRepository
      * Students with overdue cuotas, grouped by student.
      * Returns collection of users with their total overdue amount.
      */
-    public function alumnosDeudores(): Collection
+    public function alumnosDeudores($periodoId = null, $fechaInicio = null, $fechaFin = null): Collection
     {
-        $vencidas = Cuota::where('estado', 'pendiente')
-            ->where('fecha_vencimiento', '<', now())
-            ->with('matriculaPeriodo.matriculaCarrera.usuario')
+        $query = Cuota::where('estado', 'pendiente')
+            ->where('fecha_vencimiento', '<', now());
+        if ($periodoId) {
+            $query->whereHas('matriculaPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+        }
+        if ($fechaInicio && $fechaFin) {
+            $query->whereBetween('fecha_vencimiento', [$fechaInicio, $fechaFin]);
+        }
+        $vencidas = $query->with('matriculaPeriodo.matriculaCarrera.usuario')
             ->get();
 
         $grouped = $vencidas->groupBy(function ($cuota) {

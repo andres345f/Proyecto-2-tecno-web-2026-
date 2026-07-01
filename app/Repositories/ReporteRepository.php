@@ -15,15 +15,21 @@ class ReporteRepository
     /**
      * Percentage of matriculas_grupo with estado 'aprobado'.
      */
-    public function indiceAprobacion(): float
+    public function indiceAprobacion($periodoId = null, $fechaInicio = null, $fechaFin = null): float
     {
-        $total = MatriculaGrupo::count();
+        $query = MatriculaGrupo::query();
+        if ($periodoId) {
+            $query->whereHas('grupoPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+        }
+        $total = $query->count();
 
         if ($total === 0) {
             return 0.0;
         }
 
-        $aprobados = MatriculaGrupo::where('estado', 'aprobado')->count();
+        $aprobados = (clone $query)->where('estado', 'aprobado')->count();
 
         return round(($aprobados / $total) * 100, 2);
     }
@@ -31,15 +37,21 @@ class ReporteRepository
     /**
      * Percentage of matriculas_grupo with estado 'reprobado'.
      */
-    public function indiceReprobacion(): float
+    public function indiceReprobacion($periodoId = null, $fechaInicio = null, $fechaFin = null): float
     {
-        $total = MatriculaGrupo::count();
+        $query = MatriculaGrupo::query();
+        if ($periodoId) {
+            $query->whereHas('grupoPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+        }
+        $total = $query->count();
 
         if ($total === 0) {
             return 0.0;
         }
 
-        $reprobados = MatriculaGrupo::where('estado', 'reprobado')->count();
+        $reprobados = (clone $query)->where('estado', 'reprobado')->count();
 
         return round(($reprobados / $total) * 100, 2);
     }
@@ -47,30 +59,39 @@ class ReporteRepository
     /**
      * Combined financial stats.
      */
-    public function resumenFinanciero(): array
+    public function resumenFinanciero($periodoId = null, $fechaInicio = null, $fechaFin = null): array
     {
         $cuotaRepo = new CuotaRepository;
         $matriculaRepo = new MatriculaRepository;
 
         return [
-            'total_recaudado' => $cuotaRepo->totalRecaudado(),
-            'total_por_cobrar' => $cuotaRepo->totalPorCobrar(),
-            'total_matriculas_activas' => $matriculaRepo->totalMatriculasActivas(),
-            'indice_aprobacion' => $this->indiceAprobacion(),
-            'indice_reprobacion' => $this->indiceReprobacion(),
+            'total_recaudado' => $cuotaRepo->totalRecaudado($periodoId, $fechaInicio, $fechaFin),
+            'total_por_cobrar' => $cuotaRepo->totalPorCobrar($periodoId, $fechaInicio, $fechaFin),
+            'total_matriculas_activas' => $matriculaRepo->totalMatriculasActivas($periodoId, $fechaInicio, $fechaFin),
+            'indice_aprobacion' => $this->indiceAprobacion($periodoId, $fechaInicio, $fechaFin),
+            'indice_reprobacion' => $this->indiceReprobacion($periodoId, $fechaInicio, $fechaFin),
         ];
     }
 
     /**
      * Monthly revenue evolution.
      */
-    public function ingresosMensuales(): array
+    public function ingresosMensuales($periodoId = null, $fechaInicio = null, $fechaFin = null): array
     {
         $driver = DB::connection()->getDriverName();
         $dateExpr = $driver === 'sqlite' ? "strftime('%Y-%m', fecha_pago)" : "to_char(fecha_pago, 'YYYY-MM')";
 
-        $ingresos = Pago::where('estado', 'completado')
-            ->selectRaw("$dateExpr as mes, SUM(monto_pagado) as total")
+        $query = Pago::where('estado', 'completado');
+        if ($periodoId) {
+            $query->whereHas('cuota.matriculaPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+        }
+        if ($fechaInicio && $fechaFin) {
+            $query->whereBetween('fecha_pago', [$fechaInicio, $fechaFin]);
+        }
+
+        $ingresos = $query->selectRaw("$dateExpr as mes, SUM(monto_pagado) as total")
             ->groupBy(DB::raw($dateExpr))
             ->orderBy('mes', 'asc')
             ->get();
@@ -86,10 +107,19 @@ class ReporteRepository
     /**
      * Usage of payment methods.
      */
-    public function usoMetodosPago(): array
+    public function usoMetodosPago($periodoId = null, $fechaInicio = null, $fechaFin = null): array
     {
-        $metodos = Pago::where('estado', 'completado')
-            ->selectRaw('metodo_pago, COUNT(*) as cantidad, SUM(monto_pagado) as total')
+        $query = Pago::where('estado', 'completado');
+        if ($periodoId) {
+            $query->whereHas('cuota.matriculaPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+        }
+        if ($fechaInicio && $fechaFin) {
+            $query->whereBetween('fecha_pago', [$fechaInicio, $fechaFin]);
+        }
+
+        $metodos = $query->selectRaw('metodo_pago, COUNT(*) as cantidad, SUM(monto_pagado) as total')
             ->groupBy('metodo_pago')
             ->get();
 
@@ -105,12 +135,17 @@ class ReporteRepository
     /**
      * Performance breakdown by materia.
      */
-    public function rendimientoPorMateria(): array
+    public function rendimientoPorMateria($periodoId = null, $fechaInicio = null, $fechaFin = null): array
     {
-        $rendimiento = MatriculaGrupo::join('grupo_periodo', 'matriculas_grupo.grupo_periodo_id', '=', 'grupo_periodo.id')
+        $query = MatriculaGrupo::join('grupo_periodo', 'matriculas_grupo.grupo_periodo_id', '=', 'grupo_periodo.id')
             ->join('grupos', 'grupo_periodo.grupo_id', '=', 'grupos.id')
-            ->join('materias', 'grupos.materia_id', '=', 'materias.id')
-            ->selectRaw('
+            ->join('materias', 'grupos.materia_id', '=', 'materias.id');
+
+        if ($periodoId) {
+            $query->where('grupo_periodo.periodo_academico_id', $periodoId);
+        }
+
+        $rendimiento = $query->selectRaw('
                 materias.id as materia_id,
                 materias.nombre as materia_nombre,
                 materias.codigo as materia_codigo,
@@ -143,22 +178,48 @@ class ReporteRepository
     /**
      * Statistics of task assignments and submissions.
      */
-    public function estadisticasTareas(): array
+    public function estadisticasTareas($periodoId = null, $fechaInicio = null, $fechaFin = null): array
     {
-        $totalTareas = Tarea::count();
-        $totalEntregas = Entrega::count();
+        $tareasQuery = Tarea::query();
+        $entregasQuery = Entrega::query();
 
-        $entregasATiempo = Entrega::join('tareas', 'entregas.tarea_id', '=', 'tareas.id')
+        if ($periodoId) {
+            $tareasQuery->whereHas('grupoPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+            $entregasQuery->whereHas('tarea.grupoPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+        }
+        if ($fechaInicio && $fechaFin) {
+            $tareasQuery->whereBetween('fecha_vencimiento', [$fechaInicio, $fechaFin]);
+            $entregasQuery->whereBetween('fecha_entrega', [$fechaInicio, $fechaFin]);
+        }
+
+        $totalTareas = $tareasQuery->count();
+        $totalEntregas = $entregasQuery->count();
+
+        $entregasATiempo = (clone $entregasQuery)->join('tareas', 'entregas.tarea_id', '=', 'tareas.id')
             ->whereRaw('entregas.fecha_entrega <= tareas.fecha_vencimiento')
             ->count();
 
-        $entregasTarde = Entrega::join('tareas', 'entregas.tarea_id', '=', 'tareas.id')
+        $entregasTarde = (clone $entregasQuery)->join('tareas', 'entregas.tarea_id', '=', 'tareas.id')
             ->whereRaw('entregas.fecha_entrega > tareas.fecha_vencimiento')
             ->count();
 
         // Count expected submissions: sum of students in each group for all tasks
         $totalEsperado = 0;
-        $tareasConGrupos = Tarea::withCount(['grupoPeriodo as alumnos_inscritos' => function ($query) {
+        $tareasConGruposQuery = Tarea::query();
+        if ($periodoId) {
+            $tareasConGruposQuery->whereHas('grupoPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+        }
+        if ($fechaInicio && $fechaFin) {
+            $tareasConGruposQuery->whereBetween('fecha_vencimiento', [$fechaInicio, $fechaFin]);
+        }
+
+        $tareasConGrupos = $tareasConGruposQuery->withCount(['grupoPeriodo as alumnos_inscritos' => function ($query) {
             $query->join('matriculas_grupo', 'grupo_periodo.id', '=', 'matriculas_grupo.grupo_periodo_id');
         }])->get();
 
@@ -181,11 +242,24 @@ class ReporteRepository
     /**
      * Traffic and active users on the platform.
      */
-    public function visitasActivas(): array
+    public function visitasActivas($periodoId = null, $fechaInicio = null, $fechaFin = null): array
     {
         // Daily Active Users (DAU) last 30 days
-        $dauData = Visita::where('visitas.created_at', '>=', now()->subDays(30))
-            ->selectRaw('DATE(created_at) as fecha, COUNT(DISTINCT usuario_id) as usuarios')
+        $dauQuery = Visita::query();
+        $mauQuery = Visita::query();
+        $rolesQuery = DB::table('visitas')
+            ->join('users', 'visitas.usuario_id', '=', 'users.id');
+
+        if ($fechaInicio && $fechaFin) {
+            $dauQuery->whereBetween('visitas.created_at', [$fechaInicio, $fechaFin]);
+            $mauQuery->whereBetween('visitas.created_at', [$fechaInicio, $fechaFin]);
+            $rolesQuery->whereBetween('visitas.created_at', [$fechaInicio, $fechaFin]);
+        } else {
+            $dauQuery->where('visitas.created_at', '>=', now()->subDays(30));
+            $mauQuery->where('visitas.created_at', '>=', now()->subMonths(12));
+        }
+
+        $dauData = $dauQuery->selectRaw('DATE(created_at) as fecha, COUNT(DISTINCT usuario_id) as usuarios')
             ->groupBy(DB::raw('DATE(created_at)'))
             ->orderBy('fecha', 'asc')
             ->get();
@@ -194,16 +268,13 @@ class ReporteRepository
         $dateExpr = $driver === 'sqlite' ? "strftime('%Y-%m', created_at)" : "to_char(created_at, 'YYYY-MM')";
 
         // Monthly Active Users (MAU) last 12 months
-        $mauData = Visita::where('visitas.created_at', '>=', now()->subMonths(12))
-            ->selectRaw("$dateExpr as mes, COUNT(DISTINCT usuario_id) as usuarios")
+        $mauData = $mauQuery->selectRaw("$dateExpr as mes, COUNT(DISTINCT usuario_id) as usuarios")
             ->groupBy(DB::raw($dateExpr))
             ->orderBy('mes', 'asc')
             ->get();
 
         // breakdown by role
-        $rolesBreakdown = DB::table('visitas')
-            ->join('users', 'visitas.usuario_id', '=', 'users.id')
-            ->selectRaw('
+        $rolesBreakdown = $rolesQuery->selectRaw('
                 SUM(CASE WHEN users.is_estudiante THEN 1 ELSE 0 END) as estudiante,
                 SUM(CASE WHEN users.is_profesor THEN 1 ELSE 0 END) as profesor,
                 SUM(CASE WHEN users.is_director THEN 1 ELSE 0 END) as director,
@@ -232,9 +303,13 @@ class ReporteRepository
     /**
      * Top visited pages.
      */
-    public function paginasMasVisitadas(): array
+    public function paginasMasVisitadas($periodoId = null, $fechaInicio = null, $fechaFin = null): array
     {
-        $paginas = Visita::selectRaw('url, COUNT(*) as visitas_count')
+        $query = Visita::query();
+        if ($fechaInicio && $fechaFin) {
+            $query->whereBetween('created_at', [$fechaInicio, $fechaFin]);
+        }
+        $paginas = $query->selectRaw('url, COUNT(*) as visitas_count')
             ->groupBy('url')
             ->orderBy('visitas_count', 'desc')
             ->limit(10)
@@ -251,9 +326,13 @@ class ReporteRepository
     /**
      * Capacity occupancy of classroom groups.
      */
-    public function ocupacionGrupos(): array
+    public function ocupacionGrupos($periodoId = null, $fechaInicio = null, $fechaFin = null): array
     {
-        $grupos = GrupoPeriodo::withCount('matriculasGrupo')
+        $query = GrupoPeriodo::query();
+        if ($periodoId) {
+            $query->where('periodo_academico_id', $periodoId);
+        }
+        $grupos = $query->withCount('matriculasGrupo')
             ->with(['grupo.materia:id,nombre,codigo', 'docente:id,name'])
             ->get();
 

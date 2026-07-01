@@ -10,18 +10,35 @@ class MatriculaRepository
     /**
      * Total number of active career enrollments.
      */
-    public function totalMatriculasActivas(): int
+    public function totalMatriculasActivas($periodoId = null, $fechaInicio = null, $fechaFin = null): int
     {
-        return MatriculaCarrera::where('estado', 'activo')->count();
+        $query = MatriculaCarrera::where('estado', 'activo');
+        if ($periodoId) {
+            $query->whereHas('matriculasPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+        }
+        if ($fechaInicio && $fechaFin) {
+            $query->whereBetween('fecha_matricula', [$fechaInicio, $fechaFin]);
+        }
+        return $query->count();
     }
 
     /**
      * Count of matriculas grouped by OfertaAcademica.
      */
-    public function matriculasPorOferta(): Collection
+    public function matriculasPorOferta($periodoId = null, $fechaInicio = null, $fechaFin = null): Collection
     {
-        return MatriculaCarrera::where('estado', 'activo')
-            ->selectRaw('oferta_academica_id, COUNT(*) as oferta_count')
+        $query = MatriculaCarrera::where('estado', 'activo');
+        if ($periodoId) {
+            $query->whereHas('matriculasPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+        }
+        if ($fechaInicio && $fechaFin) {
+            $query->whereBetween('fecha_matricula', [$fechaInicio, $fechaFin]);
+        }
+        return $query->selectRaw('oferta_academica_id, COUNT(*) as oferta_count')
             ->groupBy('oferta_academica_id')
             ->with('ofertaAcademica:id,nombre,codigo')
             ->get();
@@ -30,10 +47,18 @@ class MatriculaRepository
     /**
      * Count of unique students enrolled per OfertaAcademica.
      */
-    public function alumnosPorOferta(): Collection
+    public function alumnosPorOferta($periodoId = null, $fechaInicio = null, $fechaFin = null): Collection
     {
-        return MatriculaCarrera::where('estado', 'activo')
-            ->selectRaw('oferta_academica_id, COUNT(DISTINCT usuario_id) as alumnos_count')
+        $query = MatriculaCarrera::where('estado', 'activo');
+        if ($periodoId) {
+            $query->whereHas('matriculasPeriodo', function ($q) use ($periodoId) {
+                $q->where('periodo_academico_id', $periodoId);
+            });
+        }
+        if ($fechaInicio && $fechaFin) {
+            $query->whereBetween('fecha_matricula', [$fechaInicio, $fechaFin]);
+        }
+        return $query->selectRaw('oferta_academica_id, COUNT(DISTINCT usuario_id) as alumnos_count')
             ->groupBy('oferta_academica_id')
             ->with('ofertaAcademica:id,nombre,codigo')
             ->get();

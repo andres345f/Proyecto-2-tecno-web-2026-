@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Bar, Doughnut, Pie, Line } from 'vue-chartjs';
 import {
@@ -18,7 +18,11 @@ import {
     CheckCircle2,
     Calendar,
     ArrowUpRight,
-    Search
+    Search,
+    FileSpreadsheet,
+    FileText,
+    Filter,
+    RotateCcw
 } from 'lucide-vue-next';
 import {
     Chart as ChartJS,
@@ -50,7 +54,7 @@ ChartJS.register(
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Reportes',
-        href: '/reportes',
+        href: route('reportes.index'),
     },
 ];
 
@@ -129,6 +133,14 @@ interface OcupacionGrupo {
 }
 
 const props = defineProps<{
+    // Filters and metadata
+    periodos: { id: number; nombre: string; fecha_inicio: string; fecha_fin: string; estado: string }[];
+    filters: {
+        periodo_academico_id: string | number | null;
+        fecha_inicio: string | null;
+        fecha_fin: string | null;
+    };
+
     // Existing
     totalRecaudado: number;
     totalPorCobrar: number;
@@ -149,6 +161,47 @@ const props = defineProps<{
     paginasMasVisitadas: PaginaVisitada[];
     ocupacionGrupos: OcupacionGrupo[];
 }>();
+
+// Filter State Refs
+const filterPeriodo = ref(props.filters?.periodo_academico_id || '');
+const filterFechaInicio = ref(props.filters?.fecha_inicio || '');
+const filterFechaFin = ref(props.filters?.fecha_fin || '');
+
+// Filter Methods
+const aplicarFiltros = () => {
+    router.get(route('reportes.index'), {
+        periodo_academico_id: filterPeriodo.value,
+        fecha_inicio: filterFechaInicio.value,
+        fecha_fin: filterFechaFin.value,
+    }, {
+        preserveState: true,
+        preserveScroll: true,
+    });
+};
+
+const limpiarFiltros = () => {
+    filterPeriodo.value = '';
+    filterFechaInicio.value = '';
+    filterFechaFin.value = '';
+    router.get(route('reportes.index'), {}, {
+        preserveState: true,
+        preserveScroll: true,
+    });
+};
+
+// Export Methods
+const exportarExcel = () => {
+    const url = route('reportes.export.csv', {
+        periodo_academico_id: filterPeriodo.value,
+        fecha_inicio: filterFechaInicio.value,
+        fecha_fin: filterFechaFin.value,
+    });
+    window.location.href = url;
+};
+
+const exportarPDF = () => {
+    window.print();
+};
 
 // Navigation Tabs
 const activeTab = ref('general');
@@ -477,6 +530,54 @@ const rolesChartData = {
                     </button>
                 </div>
             </div>
+
+            <!-- Modern Filter and Export Panel (no-print) -->
+            <Card class="no-print border border-border bg-card/60 backdrop-blur-md shadow-sm">
+                <CardContent class="p-4">
+                    <div class="grid gap-4 md:grid-cols-4 items-end">
+                        <!-- Periodo Académico Filter -->
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Periodo Académico</label>
+                            <select v-model="filterPeriodo" class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+                                <option value="">Todos los periodos</option>
+                                <option v-for="p in periodos" :key="p.id" :value="p.id">{{ p.nombre }}</option>
+                            </select>
+                        </div>
+
+                        <!-- Fecha Inicio Filter -->
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Fecha Inicio</label>
+                            <input type="date" v-model="filterFechaInicio" class="w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" />
+                        </div>
+
+                        <!-- Fecha Fin Filter -->
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Fecha Fin</label>
+                            <input type="date" v-model="filterFechaFin" class="w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" />
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-wrap gap-2 justify-end">
+                            <button @click="aplicarFiltros" class="inline-flex h-9 items-center justify-center gap-1.5 rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
+                                <Filter class="w-4 h-4" />
+                                <span>Filtrar</span>
+                            </button>
+                            <button @click="limpiarFiltros" class="inline-flex h-9 items-center justify-center gap-1.5 rounded-md border border-input bg-background px-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors">
+                                <RotateCcw class="w-4 h-4" />
+                                <span>Limpiar</span>
+                            </button>
+                            <button @click="exportarExcel" class="inline-flex h-9 items-center justify-center gap-1.5 rounded-md bg-emerald-600 px-3 text-sm font-medium text-white hover:bg-emerald-700 transition-colors">
+                                <FileSpreadsheet class="w-4 h-4" />
+                                <span>Excel</span>
+                            </button>
+                            <button @click="exportarPDF" class="inline-flex h-9 items-center justify-center gap-1.5 rounded-md bg-blue-600 px-3 text-sm font-medium text-white hover:bg-blue-700 transition-colors">
+                                <FileText class="w-4 h-4" />
+                                <span>PDF</span>
+                            </button>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
 
             <!-- Tab Content: GENERAL -->
             <div v-if="activeTab === 'general'" class="flex flex-col gap-6">
@@ -897,3 +998,44 @@ const rolesChartData = {
         </div>
     </AppLayout>
 </template>
+
+<style>
+@media print {
+    /* Hide layout elements like sidebar, navbar, tab selectors, and filter controls */
+    aside,
+    header,
+    nav,
+    .no-print,
+    button,
+    .inline-flex,
+    .tab-selector-container {
+        display: none !important;
+    }
+    
+    /* Ensure print content takes full width and backgrounds are visible */
+    body {
+        background: white !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    .flex-col, .grid {
+        display: block !important;
+        width: 100% !important;
+    }
+    
+    .card, Card {
+        break-inside: avoid;
+        margin-bottom: 24px !important;
+        box-shadow: none !important;
+        border: 1px solid #e2e8f0 !important;
+        background: white !important;
+    }
+    
+    canvas {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+}
+</style>

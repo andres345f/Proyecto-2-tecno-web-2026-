@@ -76,6 +76,7 @@ Route::middleware(['auth', 'verified', EnsureUserIsActive::class, RoleMiddleware
 
     // Reports (director/owner only)
     Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
+    Route::get('/reportes/export/csv', [ReporteController::class, 'exportCsv'])->name('reportes.export.csv');
 });
 
 // Student enrollment routes
