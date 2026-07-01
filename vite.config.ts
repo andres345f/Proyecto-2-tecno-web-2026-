@@ -6,6 +6,7 @@ import tailwindcss from 'tailwindcss';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+    base: process.env.VITE_BASE_PATH || '/build/',
     plugins: [
         laravel({
             input: ['resources/js/app.ts'],
