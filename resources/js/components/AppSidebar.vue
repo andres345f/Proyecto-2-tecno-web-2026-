@@ -39,23 +39,23 @@ const mainNavItems = computed<NavItem[]>(() => {
     // Propietario / Director
     if (user.value.is_propietario || user.value.is_director) {
         items.push(
-            { title: 'Reportes', href: '/reportes', icon: BarChart3 },
-            { title: 'Aulas', href: '/aulas', icon: Home },
-            { title: 'Materias', href: '/materias', icon: BookOpen },
-            { title: 'Ofertas Académicas', href: '/ofertas-academicas', icon: GraduationCap },
-            { title: 'Grupos', href: '/grupos', icon: Users },
-            { title: 'Pagos', href: '/pagos', icon: CreditCard },
-            { title: 'Usuarios', href: '/usuarios', icon: Users },
-            { title: 'Inscripciones', href: '/matriculas', icon: ClipboardList }
+            { title: 'Reportes', href: route('reportes.index'), icon: BarChart3 },
+            { title: 'Aulas', href: route('aulas.index'), icon: Home },
+            { title: 'Materias', href: route('materias.index'), icon: BookOpen },
+            { title: 'Ofertas Académicas', href: route('ofertas-academicas.index'), icon: GraduationCap },
+            { title: 'Grupos', href: route('grupos.index'), icon: Users },
+            { title: 'Pagos', href: route('pagos.index'), icon: CreditCard },
+            { title: 'Usuarios', href: route('usuarios.index'), icon: Users },
+            { title: 'Inscripciones', href: route('matriculas.index'), icon: ClipboardList }
         );
     }
 
     // Secretaria
     if (user.value.is_secretaria) {
         items.push(
-            { title: 'Usuarios', href: '/usuarios', icon: Users },
-            { title: 'Matrículas', href: '/matriculas', icon: ClipboardList },
-            { title: 'Pagos', href: '/pagos', icon: CreditCard }
+            { title: 'Usuarios', href: route('usuarios.index'), icon: Users },
+            { title: 'Matrículas', href: route('matriculas.index'), icon: ClipboardList },
+            { title: 'Pagos', href: route('pagos.index'), icon: CreditCard }
         );
         if (!items.some(i => i.href === '/aulas')) {
             items.push({ title: 'Aulas', href: '/aulas', icon: Home });
@@ -67,15 +67,15 @@ const mainNavItems = computed<NavItem[]>(() => {
 
     // Profesor
     if (user.value.is_profesor) {
-        items.push({ title: 'Mis Grupos', href: '/grupos-docente', icon: Users });
+        items.push({ title: 'Mis Grupos', href: route('grupos-docente.index'), icon: Users });
     }
 
     // Estudiante
     if (user.value.is_estudiante) {
         items.push(
-            { title: 'Mis Grupos', href: '/mis-grupos', icon: Users },
-            { title: 'Mi Malla Curricular', href: '/malla-curricular', icon: GraduationCap },
-            { title: 'Mis Pagos', href: '/pagos', icon: CreditCard }
+            { title: 'Mis Grupos', href: route('grupos.estudiante.index'), icon: Users },
+            { title: 'Mi Malla Curricular', href: route('malla-curricular.index'), icon: GraduationCap },
+            { title: 'Mis Pagos', href: route('pagos.estudiante.index'), icon: CreditCard }
         );
     }
 
