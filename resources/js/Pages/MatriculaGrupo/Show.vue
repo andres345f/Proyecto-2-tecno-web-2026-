@@ -22,7 +22,7 @@ interface MatriculaGrupo {
         id: number;
         codigo: string;
         materia: { nombre: string; codigo: string; descripcion: string };
-        docente: { name: string };
+        docente: { name: string; email?: string };
         horarios: Array<{
             dia: string;
             hora_inicio: string;
@@ -43,7 +43,7 @@ interface GrupoAdmin {
     id: number;
     codigo: string;
     materia: { nombre: string; codigo: string; descripcion: string };
-    docente: { name: string };
+    docente: { name: string; email?: string };
     inscritos_count: number;
     cupo_maximo: number;
     horarios: Array<{
@@ -229,6 +229,9 @@ const submitImportGrades = () => {
                                     <dd class="text-sm text-foreground mt-1 font-medium">
                                         {{ activeMatricula.grupo?.docente?.name }}
                                     </dd>
+                                    <dd v-if="activeMatricula.grupo?.docente?.email" class="text-xs text-muted-foreground">
+                                        {{ activeMatricula.grupo?.docente?.email }}
+                                    </dd>
                                 </div>
                                 <div>
                                     <dt class="text-sm font-semibold text-muted-foreground">Descripción</dt>
@@ -357,6 +360,9 @@ const submitImportGrades = () => {
                                     <dt class="text-sm font-semibold text-muted-foreground">Docente</dt>
                                     <dd class="text-sm text-foreground mt-1 font-medium">
                                         {{ grupo.docente?.name || 'No asignado' }}
+                                    </dd>
+                                    <dd v-if="grupo.docente?.email" class="text-xs text-muted-foreground">
+                                        {{ grupo.docente?.email }}
                                     </dd>
                                 </div>
                                 <div>

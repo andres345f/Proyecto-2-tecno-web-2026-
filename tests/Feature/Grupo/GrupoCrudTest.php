@@ -115,4 +115,21 @@ describe('Grupo CRUD operations', function () {
         $response = $this->post('/grupos', []);
         $response->assertSessionHasErrors(['codigo', 'materia_id']);
     });
+
+    it('prevents deleting a grupo with active period associations', function () {
+        $user = User::factory()->create(['is_secretaria' => true]);
+        $this->actingAs($user);
+
+        $grupo = Grupo::factory()->create();
+        \App\Models\GrupoPeriodo::factory()->create(['grupo_id' => $grupo->id]);
+
+        $response = $this->delete("/grupos/{$grupo->id}");
+        $response->assertRedirect();
+        $response->assertSessionHasErrors(['error']);
+
+        $this->assertDatabaseHas('grupos', [
+            'id' => $grupo->id,
+            'deleted_at' => null,
+        ]);
+    });
 });

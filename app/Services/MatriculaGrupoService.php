@@ -379,6 +379,7 @@ class MatriculaGrupoService
                         ],
                         'docente' => [
                             'name' => $m->grupoPeriodo->docente->name ?? 'Sin docente',
+                            'email' => $m->grupoPeriodo->docente->email ?? '',
                         ],
                         'horarios' => $m->grupoPeriodo->horarios->map(function ($h) {
                             return [
@@ -426,6 +427,7 @@ class MatriculaGrupoService
                 ],
                 'docente' => [
                     'name' => $gp->docente->name ?? 'No asignado',
+                    'email' => $gp->docente->email ?? '',
                 ],
                 'inscritos_count' => $gp->inscritos_count,
                 'cupo_maximo' => $gp->cupo_maximo,

@@ -107,6 +107,13 @@ class GrupoController extends Controller
     public function destroy(Grupo $grupo)
     {
         $ofertaId = request('oferta_id');
+
+        if ($grupo->grupoPeriodos()->exists()) {
+            return redirect()->back()->withErrors([
+                'error' => 'No se puede eliminar el grupo porque tiene relaciones activas (está asignado a períodos académicos).'
+            ]);
+        }
+
         $grupo->delete();
 
         return redirect()->route('grupos.index', ['oferta_id' => $ofertaId]);
@@ -128,7 +135,7 @@ class GrupoController extends Controller
                     'id' => $gp->id,
                     'codigo' => $gp->grupo->codigo,
                     'materia' => $gp->grupo->materia,
-                    'periodo' => $gp->periodoAcademico->nombre,
+                    'periodo_academico' => $gp->periodoAcademico,
                     'horarios' => $gp->horarios,
                 ];
             });
@@ -147,9 +154,10 @@ class GrupoController extends Controller
             abort(403);
         }
 
-        $grupoPeriodo->load(['grupo.materia', 'docente', 'horarios.aula']);
+        $grupoPeriodo->load(['grupo.materia', 'docente', 'horarios.aula', 'periodoAcademico']);
 
         $matriculas = \App\Models\MatriculaGrupo::where('grupo_periodo_id', $grupoPeriodo->id)
+            ->where('estado', '!=', 'retirado')
             ->with('matriculaPeriodo.matriculaCarrera.usuario')
             ->get();
 
@@ -157,6 +165,7 @@ class GrupoController extends Controller
             'id' => $grupoPeriodo->id,
             'codigo' => $grupoPeriodo->grupo->codigo,
             'materia' => $grupoPeriodo->grupo->materia,
+            'periodo_academico' => $grupoPeriodo->periodoAcademico,
             'docente' => $grupoPeriodo->docente,
             'horarios' => $grupoPeriodo->horarios,
         ];

@@ -5,22 +5,29 @@ import { Separator } from '@/components/ui/separator';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 
-const sidebarNavItems: NavItem[] = [
+interface SettingsNavItem {
+    title: string;
+    href: string;
+    routeName: string;
+}
+
+const sidebarNavItems: SettingsNavItem[] = [
     {
         title: 'Profile',
-        href: '/settings/profile',
+        href: route('profile.edit'),
+        routeName: 'profile.edit',
     },
     {
         title: 'Password',
-        href: '/settings/password',
+        href: route('password.edit'),
+        routeName: 'password.edit',
     },
     {
         title: 'Appearance',
-        href: '/settings/appearance',
+        href: route('appearance'),
+        routeName: 'appearance',
     },
 ];
-
-const currentPath = window.location.pathname;
 </script>
 
 <template>
@@ -34,7 +41,7 @@ const currentPath = window.location.pathname;
                         v-for="item in sidebarNavItems"
                         :key="item.href"
                         variant="ghost"
-                        :class="['w-full justify-start', { 'bg-muted': currentPath === item.href }]"
+                        :class="['w-full justify-start', { 'bg-muted': route().current(item.routeName) }]"
                         as-child
                     >
                         <Link :href="item.href">

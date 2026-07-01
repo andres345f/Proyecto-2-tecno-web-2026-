@@ -42,6 +42,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 </script>
 
 <template>
+
     <Head :title="`Grupo ${grupo.codigo}`" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
@@ -49,7 +50,8 @@ const breadcrumbs: BreadcrumbItem[] = [
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-3xl font-extrabold tracking-tight text-foreground">Grupo {{ grupo.codigo }}</h1>
-                    <p class="text-sm text-muted-foreground mt-1">Información de catálogo e instancias académicas activas.</p>
+                    <p class="text-sm text-muted-foreground mt-1">Información de catálogo e instancias académicas
+                        activas.</p>
                 </div>
                 <div class="flex gap-2">
                     <Button variant="outline" as-child>
@@ -70,13 +72,16 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </CardHeader>
                     <CardContent class="space-y-4">
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Código de Catálogo</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Código de
+                                Catálogo</span>
                             <p class="text-lg font-bold text-foreground mt-0.5">{{ grupo.codigo }}</p>
                         </div>
                         <div class="pt-2 border-t">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Materia / Asignatura</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Materia /
+                                Asignatura</span>
                             <p class="text-base font-semibold text-foreground mt-0.5">{{ grupo.materia?.nombre }}</p>
-                            <span class="text-xs font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded mt-1 inline-block">
+                            <span
+                                class="text-xs font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded mt-1 inline-block">
                                 {{ grupo.materia?.codigo }}
                             </span>
                         </div>
@@ -87,7 +92,8 @@ const breadcrumbs: BreadcrumbItem[] = [
                 <Card class="md:col-span-2 border border-muted">
                     <CardHeader>
                         <CardTitle>Instancias por Período Académico</CardTitle>
-                        <CardDescription>Períodos académicos en los que se ofrece este grupo con su respectivo docente y cupos.</CardDescription>
+                        <CardDescription>Períodos académicos en los que se ofrece este grupo con su respectivo docente y
+                            cupos.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div v-if="grupo.grupo_periodos && grupo.grupo_periodos.length > 0" class="overflow-x-auto">
@@ -100,12 +106,15 @@ const breadcrumbs: BreadcrumbItem[] = [
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-border">
-                                    <tr v-for="gp in grupo.grupo_periodos" :key="gp.id" class="hover:bg-accent/15 transition-colors">
+                                    <tr v-for="gp in grupo.grupo_periodos" :key="gp.id"
+                                        class="hover:bg-accent/15 transition-colors">
                                         <td class="px-4 py-3.5 font-medium text-foreground">
-                                            <Link :href="route('periodos-academicos.show', gp.periodo_academico?.id)" class="text-primary hover:underline font-semibold">
+                                            <Link :href="route('periodos-academicos.show', gp.periodo_academico?.id)"
+                                                class="text-primary hover:underline font-semibold">
                                                 {{ gp.periodo_academico?.nombre }}
                                             </Link>
-                                            <span class="text-xs text-muted-foreground block capitalize">{{ gp.periodo_academico?.tipo }}</span>
+                                            <span class="text-xs text-muted-foreground block capitalize">{{
+                                                gp.periodo_academico?.tipo }}</span>
                                         </td>
                                         <td class="px-4 py-3.5 text-muted-foreground">
                                             {{ gp.docente?.name || 'No asignado' }}
@@ -118,8 +127,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                             </table>
                         </div>
                         <div v-else class="text-center py-10 border border-dashed rounded-lg">
-                            <p class="text-muted-foreground text-sm">Este grupo no ha sido instanciado en ningún período académico.</p>
-                            <p class="text-xs text-muted-foreground/80 mt-1">Para ofrecer este grupo, agréguelo desde el detalle del Período Académico.</p>
+                            <p class="text-muted-foreground text-sm">Este grupo no ha sido instanciado en ningún período
+                                académico.</p>
+                            <p class="text-xs text-muted-foreground/80 mt-1">Para ofrecer este grupo, agréguelo desde el
+                                detalle del Período Académico.</p>
                         </div>
                     </CardContent>
                 </Card>

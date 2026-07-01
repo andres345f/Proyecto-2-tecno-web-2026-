@@ -27,7 +27,7 @@ interface Grupo {
     id: number;
     codigo: string;
     materia: { nombre: string; codigo: string };
-    periodo_academico: { nombre: string };
+    periodo_academico: { nombre: string; estado?: string };
     horarios: Horario[];
 }
 
@@ -49,17 +49,20 @@ const formatHorarios = (horarios: Horario[]) => {
 const allHorarios = computed(() => {
     const list: any[] = [];
     props.grupos.forEach(grupo => {
-        if (grupo.horarios) {
-            grupo.horarios.forEach(h => {
-                list.push({
-                    dia: h.dia,
-                    hora_inicio: h.hora_inicio,
-                    hora_fin: h.hora_fin,
-                    grupo_codigo: grupo.codigo,
-                    materia_nombre: grupo.materia?.nombre,
-                    aula_nombre: h.aula?.nombre
+        // Exclude schedules of periods that have finished
+        if (grupo.periodo_academico?.estado !== 'terminado') {
+            if (grupo.horarios) {
+                grupo.horarios.forEach(h => {
+                    list.push({
+                        dia: h.dia,
+                        hora_inicio: h.hora_inicio,
+                        hora_fin: h.hora_fin,
+                        grupo_codigo: grupo.codigo,
+                        materia_nombre: grupo.materia?.nombre,
+                        aula_nombre: h.aula?.nombre
+                    });
                 });
-            });
+            }
         }
     });
     return list;
