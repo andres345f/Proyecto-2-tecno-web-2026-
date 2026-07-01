@@ -57,11 +57,11 @@ const gradingEntregaId = ref<number | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Grupos', href: '/grupos' },
-    { title: props.grupo.codigo, href: `/grupos/${props.grupo.id}` },
-    { title: 'Tareas', href: `/grupos/${props.grupo.id}/tareas` },
-    { title: props.tarea.titulo, href: `/grupos/${props.grupo.id}/tareas/${props.tarea.id}` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Grupos', href: route('grupos.index') },
+    { title: props.grupo.codigo, href: route('grupos.show', props.grupo.id) },
+    { title: 'Tareas', href: route('grupos.tareas.index', props.grupo.id) },
+    { title: props.tarea.titulo, href: route('grupos.tareas.show', [props.grupo.id, props.tarea.id]) },
 ];
 
 const isPastDeadline = (fecha: string) => new Date(fecha) < new Date();
@@ -86,7 +86,7 @@ const clearFile = () => {
 };
 
 const submitFile = () => {
-    uploadForm.post('/entregas', {
+    uploadForm.post(route('entregas.store'), {
         preserveScroll: true,
         onSuccess: () => {
             uploadForm.archivo = null;
@@ -102,7 +102,7 @@ const startGrading = (entrega: Entrega) => {
 };
 
 const submitGrade = (entregaId: number) => {
-    gradeForm.put(`/entregas/${entregaId}/calificar`, {
+    gradeForm.put(route('entregas.calificar', entregaId), {
         preserveScroll: true,
         onSuccess: () => {
             gradingEntregaId.value = null;
@@ -111,7 +111,7 @@ const submitGrade = (entregaId: number) => {
 };
 
 const downloadFile = (entregaId: number) => {
-    window.location.href = `/entregas/${entregaId}/download`;
+    window.location.href = route('entregas.download', entregaId);
 };
 </script>
 
@@ -128,7 +128,7 @@ const downloadFile = (entregaId: number) => {
                     <p class="text-sm text-muted-foreground mt-1">{{ grupo.codigo }} — {{ grupo.materia?.nombre }}</p>
                 </div>
                 <Button variant="ghost" as-child>
-                    <Link :href="`/grupos/${grupo.id}/tareas`">Volver a tareas</Link>
+                    <Link :href="route('grupos.tareas.index', grupo.id)">Volver a tareas</Link>
                 </Button>
             </div>
 
@@ -296,7 +296,7 @@ const downloadFile = (entregaId: number) => {
                                             Descargar
                                         </Button>
                                         <Button variant="ghost" size="sm" as-child>
-                                            <Link :href="`/entregas/${entrega.id}`">Ver Ficha</Link>
+                                            <Link :href="route('entregas.show', entrega.id)">Ver Ficha</Link>
                                         </Button>
                                         <Button v-if="$page.props.auth.user?.is_profesor" variant="default" size="sm"
                                             @click="startGrading(entrega)">

@@ -30,10 +30,10 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Grupos', href: '/grupos' },
-    { title: props.grupo.codigo, href: `/grupos/${props.grupo.id}` },
-    { title: 'Tareas', href: `/grupos/${props.grupo.id}/tareas` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Grupos', href: route('grupos.index') },
+    { title: props.grupo.codigo, href: route('grupos.show', props.grupo.id) },
+    { title: 'Tareas', href: route('grupos.tareas.index', props.grupo.id) },
 ];
 
 const isPastDeadline = (fecha: string) => new Date(fecha) < new Date();
@@ -59,7 +59,7 @@ const formatDate = (date: string) =>
                     <p class="text-sm text-muted-foreground mt-1">{{ grupo.codigo }} — {{ grupo.materia?.nombre }}</p>
                 </div>
                 <Button v-if="$page.props.auth.user?.is_profesor" as-child>
-                    <Link :href="`/grupos/${grupo.id}/tareas/create`">Crear Tarea</Link>
+                    <Link :href="route('grupos.tareas.create', grupo.id)">Crear Tarea</Link>
                 </Button>
             </div>
 
@@ -105,7 +105,7 @@ const formatDate = (date: string) =>
                                     </td>
                                     <td class="px-6 py-4 align-middle text-right">
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/grupos/${grupo.id}/tareas/${tarea.id}`">Ver Detalle</Link>
+                                            <Link :href="route('grupos.tareas.show', [grupo.id, tarea.id])">Ver Detalle</Link>
                                         </Button>
                                     </td>
                                 </tr>

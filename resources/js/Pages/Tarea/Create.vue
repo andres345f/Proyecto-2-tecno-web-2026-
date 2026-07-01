@@ -26,15 +26,15 @@ const form = useForm({
 });
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Grupos', href: '/grupos' },
-    { title: props.grupo.codigo, href: `/grupos/${props.grupo.id}` },
-    { title: 'Tareas', href: `/grupos/${props.grupo.id}/tareas` },
-    { title: 'Crear', href: `/grupos/${props.grupo.id}/tareas/create` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Grupos', href: route('grupos.index') },
+    { title: props.grupo.codigo, href: route('grupos.show', props.grupo.id) },
+    { title: 'Tareas', href: route('grupos.tareas.index', props.grupo.id) },
+    { title: 'Crear', href: route('grupos.tareas.create', props.grupo.id) },
 ];
 
 const submit = () => {
-    form.post(`/grupos/${props.grupo.id}/tareas`);
+    form.post(route('grupos.tareas.store', props.grupo.id));
 };
 </script>
 
@@ -49,7 +49,7 @@ const submit = () => {
                     <p class="text-sm text-muted-foreground mt-1">{{ grupo.codigo }} — {{ grupo.materia?.nombre }}</p>
                 </div>
                 <Button variant="ghost" as-child>
-                    <Link :href="`/grupos/${grupo.id}/tareas`">Volver</Link>
+                    <Link :href="route('grupos.tareas.index', grupo.id)">Volver</Link>
                 </Button>
             </div>
 
@@ -116,7 +116,7 @@ const submit = () => {
                                 Crear Tarea
                             </Button>
                             <Button variant="ghost" as-child>
-                                <Link :href="`/grupos/${grupo.id}/tareas`">Cancelar</Link>
+                                <Link :href="route('grupos.tareas.index', grupo.id)">Cancelar</Link>
                             </Button>
                         </div>
                     </form>
