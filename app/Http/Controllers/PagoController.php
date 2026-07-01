@@ -22,6 +22,12 @@ class PagoController extends Controller
      */
     public function index(Request $request): Response
     {
+        // Actualizar cuotas que ya pasaron su fecha de vencimiento y no han sido pagadas
+        \App\Models\Cuota::where('estado', '!=', 'pagado')
+            ->where('fecha_vencimiento', '<', now()->toDateString())
+            ->where('estado', '!=', 'vencido')
+            ->update(['estado' => 'vencido']);
+
         $user = $request->user();
 
         if ($user->is_propietario || $user->is_director || $user->is_secretaria) {

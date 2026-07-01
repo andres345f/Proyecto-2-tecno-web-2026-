@@ -246,4 +246,42 @@ describe('PagoController — Index Page', function () {
         $response->assertStatus(200)
             ->assertInertia(fn ($page) => $page->component('Pago/AdminIndex'));
     });
+
+    it('automatically updates expired cuotas to vencido when visiting index', function () {
+        $student = User::factory()->create(['is_estudiante' => true]);
+        $oferta = OfertaAcademica::factory()->create();
+        $periodo = PeriodoAcademico::factory()->create(['oferta_academica_id' => $oferta->id]);
+        $plan = PlanPago::factory()->create(['oferta_academica_id' => $oferta->id]);
+
+        $carrera = MatriculaCarrera::create([
+            'usuario_id' => $student->id,
+            'oferta_academica_id' => $oferta->id,
+            'fecha_matricula' => now(),
+            'estado' => 'activo',
+        ]);
+
+        $matriculaPeriodo = MatriculaPeriodo::create([
+            'matricula_carrera_id' => $carrera->id,
+            'periodo_academico_id' => $periodo->id,
+            'plan_pago_id' => $plan->id,
+            'fecha_matricula' => now(),
+            'estado' => 'activo',
+        ]);
+
+        $cuota = Cuota::create([
+            'matricula_periodo_id' => $matriculaPeriodo->id,
+            'descripcion' => 'Cuota Vencida',
+            'monto' => 50.00,
+            'fecha_vencimiento' => now()->subDays(1),
+            'estado' => 'pendiente',
+        ]);
+
+        $response = $this->actingAs($student)
+            ->get(route('pagos.index'));
+
+        $response->assertStatus(200);
+
+        $cuota->refresh();
+        expect($cuota->estado)->toBe('vencido');
+    });
 });

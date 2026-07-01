@@ -26,6 +26,12 @@ const user = computed(() => page.props.auth.user);
 const { currentVisits } = useContadorVisitas();
 
 const mainNavItems = computed<NavItem[]>(() => {
+    if (page.props.auth.has_overdue) {
+        return [
+            { title: 'Mis Pagos', href: route('pagos.index'), icon: CreditCard }
+        ];
+    }
+
     const items: NavItem[] = [
         {
             title: 'Dashboard',
@@ -102,7 +108,7 @@ const footerNavItems: NavItem[] = [
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="route('dashboard')">
+                        <Link :href="page.props.auth.has_overdue ? route('pagos.index') : route('dashboard')">
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>

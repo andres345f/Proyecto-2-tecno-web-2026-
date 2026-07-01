@@ -38,12 +38,27 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
+        $user = $request->user();
+        $hasOverdue = false;
+        if ($user && $user->is_estudiante) {
+            $hasOverdue = \App\Models\Cuota::whereHas('matriculaPeriodo.matriculaCarrera', function ($query) use ($user) {
+                $query->where('usuario_id', $user->id);
+            })
+            ->where('estado', '!=', 'pagado')
+            ->where(function ($q) {
+                $q->where('estado', 'vencido')
+                  ->orWhere('fecha_vencimiento', '<', now()->toDateString());
+            })
+            ->exists();
+        }
+
         return array_merge(parent::share($request), [
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
+                'has_overdue' => $hasOverdue,
             ],
             'flash' => [
                 'success' => $request->session()->get('success'),

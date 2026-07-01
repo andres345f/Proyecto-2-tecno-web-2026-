@@ -164,7 +164,7 @@ function getEstadoBadgeClass(estado: string) {
                                     </td>
                                     <td class="px-6 py-4 align-middle text-right">
                                         <Button
-                                            v-if="cuota.estado === 'pendiente'"
+                                            v-if="cuota.estado === 'pendiente' || cuota.estado === 'vencido'"
                                             :disabled="isGenerating && generandoCuotaId === cuota.id"
                                             size="sm"
                                             @click="generarQr(cuota.id)"

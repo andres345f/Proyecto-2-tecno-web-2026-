@@ -14,7 +14,7 @@ class PagoFacilService
      */
     public function generarQr(Cuota $cuota): array
     {
-        if ($cuota->estado !== 'pendiente') {
+        if ($cuota->estado === 'pagado') {
             return ['error' => 'Esta cuota ya está pagada'];
         }
 
