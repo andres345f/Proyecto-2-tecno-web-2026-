@@ -44,7 +44,7 @@ async function generarQr(cuotaId: number) {
     generandoCuotaId.value = cuotaId;
 
     try {
-        const response = await fetch('/api/pagos/generar-qr', {
+        const response = await fetch(route('api.pagos.generar-qr'), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

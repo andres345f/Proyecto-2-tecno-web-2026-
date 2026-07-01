@@ -10,7 +10,7 @@ export function usePollingPago() {
 
         intervalId.value = window.setInterval(async () => {
             try {
-                const response = await fetch(`/api/pagos/estado/${transaccionId}`);
+                const response = await fetch(route('api.pagos.estado', { transaccion: transaccionId }));
                 const data = await response.json();
                 status.value = data.status;
 
