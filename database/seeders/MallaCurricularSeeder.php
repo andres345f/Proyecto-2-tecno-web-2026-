@@ -10,14 +10,17 @@ class MallaCurricularSeeder extends Seeder
 {
     public function run(): void
     {
+        /*
         $tsDs = OfertaAcademica::where('codigo', 'TS-DS')->first();
         $tmRt = OfertaAcademica::where('codigo', 'TS-RT')->first();
         $tmDg = OfertaAcademica::where('codigo', 'TM-DG')->first();
+        */
         $taMd = OfertaAcademica::where('codigo', 'TA-MD')->first();
 
         // Retrieve all materias
         $materias = Materia::all()->keyBy('codigo');
 
+        /*
         // --- TS-DS SEMESTERS ---
         // Semestre 1
         $tsDs->materias()->attach($materias['DS-101']->id, ['semestre_orden' => 1]);
@@ -93,6 +96,7 @@ class MallaCurricularSeeder extends Seeder
         $tmDg->materias()->attach($materias['DG-402']->id, ['semestre_orden' => 4]);
         $tmDg->materias()->attach($materias['DG-403']->id, ['semestre_orden' => 4]);
         $tmDg->materias()->attach($materias['DG-404']->id, ['semestre_orden' => 4]);
+        */
 
         // --- TA-MD SEMESTERS ---
         // Semestre 1
@@ -108,6 +112,7 @@ class MallaCurricularSeeder extends Seeder
 
         // Helper to attach prerequisite via MallaCurricular
         $attachPrereq = function ($oferta, $materiaCode, $prereqCode) use ($materias) {
+            if (!$oferta) return;
             $mallaEntry = \App\Models\MallaCurricular::where('oferta_academica_id', $oferta->id)
                 ->where('materia_id', $materias[$materiaCode]->id)
                 ->first();
@@ -121,6 +126,7 @@ class MallaCurricularSeeder extends Seeder
             }
         };
 
+        /*
         // --- PREREQUISITES (TS-DS) ---
         $attachPrereq($tsDs, 'DS-201', 'DS-101');
         $attachPrereq($tsDs, 'DS-202', 'DS-101');
@@ -158,6 +164,7 @@ class MallaCurricularSeeder extends Seeder
         $attachPrereq($tmDg, 'DG-401', 'DG-301');
         $attachPrereq($tmDg, 'DG-402', 'DG-304');
         $attachPrereq($tmDg, 'DG-403', 'DG-204');
+        */
 
         // --- PREREQUISITES (TA-MD) ---
         $attachPrereq($taMd, 'MD-201', 'MD-101');

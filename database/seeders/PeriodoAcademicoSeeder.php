@@ -61,7 +61,7 @@ class PeriodoAcademicoSeeder extends Seeder
                 'fecha_inicio_retiro' => '2026-02-15',
                 'fecha_fin_retiro' => '2026-03-15',
                 'numero_maximo_materias' => 6,
-                'estado' => 'cierre', // Active period in closing stage, not finished yet
+                'estado' => 'terminado',
             ]);
 
             // --- 2026-II (Inscripción) ---

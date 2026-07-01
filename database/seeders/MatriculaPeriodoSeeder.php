@@ -70,7 +70,7 @@ class MatriculaPeriodoSeeder extends Seeder
                         'periodo_academico_id' => $p2026_1->id,
                         'plan_pago_id' => $plan->id,
                         'fecha_matricula' => '2026-01-28 10:00:00',
-                        'estado' => 'activo',
+                        'estado' => 'completado',
                     ]);
                 }
             } else {
@@ -85,7 +85,7 @@ class MatriculaPeriodoSeeder extends Seeder
                         'periodo_academico_id' => $p2026_1->id,
                         'plan_pago_id' => $plan->id,
                         'fecha_matricula' => '2026-01-28 10:00:00',
-                        'estado' => 'activo',
+                        'estado' => 'completado',
                     ]);
                 }
             }

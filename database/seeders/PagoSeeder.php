@@ -15,7 +15,7 @@ class PagoSeeder extends Seeder
 
         foreach ($cuotas as $cuota) {
             $period = $cuota->matriculaPeriodo->periodoAcademico;
-            $isHistorical = str_contains($period->nombre, '2025-I') || str_contains($period->nombre, '2025-II');
+            $isHistorical = str_contains($period->nombre, '2025-I') || str_contains($period->nombre, '2025-II') || str_contains($period->nombre, '2026-I');
 
             if ($isHistorical) {
                 // All historical fees are paid

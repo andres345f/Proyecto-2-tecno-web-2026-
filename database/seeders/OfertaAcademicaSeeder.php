@@ -9,6 +9,7 @@ class OfertaAcademicaSeeder extends Seeder
 {
     public function run(): void
     {
+        /*
         OfertaAcademica::create([
             'nombre' => 'Técnico Superior en Desarrollo de Software',
             'codigo' => 'TS-DS',
@@ -26,6 +27,7 @@ class OfertaAcademicaSeeder extends Seeder
             'codigo' => 'TM-DG',
             'descripcion' => 'Carrera técnica enfocada en la comunicación visual, identidad de marca, ilustración digital y diseño multimedia.',
         ]);
+        */
 
         OfertaAcademica::create([
             'nombre' => 'Técnico Auxiliar en Marketing Digital',

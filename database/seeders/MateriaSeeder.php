@@ -10,6 +10,7 @@ class MateriaSeeder extends Seeder
     public function run(): void
     {
         $materias = [
+            /*
             // --- DESARROLLO DE SOFTWARE (TS-DS) ---
             // Semestre 1
             ['nombre' => 'Introducción a la Programación', 'codigo' => 'DS-101', 'descripcion' => 'Fundamentos de algoritmos y lógica de programación.'],
@@ -49,7 +50,7 @@ class MateriaSeeder extends Seeder
             ['nombre' => 'Introducción a la Electrónica', 'codigo' => 'RT-103', 'descripcion' => 'Principios de circuitos eléctricos y magnitudes electrónicas.'],
             ['nombre' => 'Introducción a la Programación (Redes)', 'codigo' => 'RT-104', 'descripcion' => 'Fundamentos de lógica y scripting para redes.'],
             // Semestre 2
-            ['nombre' => 'Enrutamiento y Conmutación', 'codigo' => 'RT-201', 'descripcion' => 'Configuración de switches y routers Cisco.'],
+            ['nombre' => 'Enrutamiento y Conmutación', 'codigo' => 'RT-201', 'descripcion' => 'Configuración de switches and routers Cisco.'],
             ['nombre' => 'Redes Inalámbricas', 'codigo' => 'RT-202', 'descripcion' => 'Configuración y mantenimiento de tecnologías WiFi y radio enlaces.'],
             ['nombre' => 'Sistemas Operativos de Red', 'codigo' => 'RT-203', 'descripcion' => 'Instalación y configuración de Linux y Windows Server.'],
             ['nombre' => 'Cableado Estructurado', 'codigo' => 'RT-204', 'descripcion' => 'Estándares y tendido de cable UTP, STP y canalización.'],
@@ -85,6 +86,7 @@ class MateriaSeeder extends Seeder
             ['nombre' => 'Producción Audiovisual', 'codigo' => 'DG-402', 'descripcion' => 'Edición de video y postproducción con Adobe Premiere.'],
             ['nombre' => 'Diseño UX/UI', 'codigo' => 'DG-403', 'descripcion' => 'Diseño de interfaces web y móviles centradas en el usuario.'],
             ['nombre' => 'Costos y Presupuestos de Diseño', 'codigo' => 'DG-404', 'descripcion' => 'Gestión financiera para diseñadores independientes (Freelance).'],
+            */
 
             // --- MARKETING DIGITAL (TA-MD) ---
             // Semestre 1
