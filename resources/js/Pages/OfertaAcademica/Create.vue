@@ -9,9 +9,9 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import InputError from '@/components/InputError.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Ofertas Académicas', href: '/ofertas-academicas' },
-    { title: 'Crear', href: '/ofertas-academicas/create' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Ofertas Académicas', href: route('ofertas-academicas.index') },
+    { title: 'Crear', href: route('ofertas-academicas.create') },
 ];
 
 const form = useForm({
@@ -21,7 +21,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/ofertas-academicas');
+    form.post(route('ofertas-academicas.store'));
 };
 </script>
 
@@ -36,7 +36,7 @@ const submit = () => {
                     <p class="text-sm text-muted-foreground mt-1">Registra una nueva carrera o programa académico.</p>
                 </div>
                 <Button variant="outline" as-child>
-                    <Link href="/ofertas-academicas">Volver</Link>
+                    <Link :href="route('ofertas-academicas.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -88,7 +88,7 @@ const submit = () => {
                                 Crear Oferta
                             </Button>
                             <Button variant="ghost" as-child>
-                                <Link href="/ofertas-academicas">Cancelar</Link>
+                                <Link :href="route('ofertas-academicas.index')">Cancelar</Link>
                             </Button>
                         </div>
                     </form>

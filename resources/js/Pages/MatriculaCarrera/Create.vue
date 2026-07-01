@@ -26,9 +26,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Matrículas de Carrera', href: '/matriculas-carrera' },
-    { title: 'Crear', href: '/matriculas-carrera/create' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Matrículas de Carrera', href: route('matriculas-carrera.index') },
+    { title: 'Crear', href: route('matriculas-carrera.create') },
 ];
 
 // Manual Enrollment Form
@@ -38,7 +38,7 @@ const form = useForm({
 });
 
 const submitManual = () => {
-    form.post('/matriculas-carrera');
+    form.post(route('matriculas-carrera.store'));
 };
 
 // Mass Import Form
@@ -59,7 +59,7 @@ const clearFile = () => {
 };
 
 const submitImport = () => {
-    importForm.post('/matriculas-carrera/importar', {
+    importForm.post(route('matriculas-carrera.importar'), {
         preserveScroll: true,
         onSuccess: () => {
             importForm.reset();
@@ -80,7 +80,7 @@ const submitImport = () => {
                     <p class="text-sm text-muted-foreground mt-1">Registra de manera individual o masiva la matrícula de estudiantes.</p>
                 </div>
                 <Button variant="outline" as-child>
-                    <Link href="/matriculas-carrera">Volver</Link>
+                    <Link :href="route('matriculas-carrera.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -132,7 +132,7 @@ const submitImport = () => {
                                     Inscribir Estudiante
                                 </Button>
                                 <Button variant="ghost" as-child>
-                                    <Link href="/matriculas-carrera">Cancelar</Link>
+                                    <Link :href="route('matriculas-carrera.index')">Cancelar</Link>
                                 </Button>
                             </div>
                         </form>
@@ -160,7 +160,7 @@ const submitImport = () => {
                             </p>
                             <div class="pt-2 border-t border-border/40 mt-2">
                                 <a 
-                                    href="/matriculas-carrera/plantilla" 
+                                    :href="route('matriculas-carrera.plantilla')" 
                                     class="inline-flex items-center gap-1.5 font-semibold text-primary hover:underline text-[11px]"
                                 >
                                     📥 Descargar plantilla CSV (.csv)

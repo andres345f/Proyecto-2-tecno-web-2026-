@@ -50,8 +50,8 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Matrículas de Carrera', href: '/matriculas-carrera' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Matrículas de Carrera', href: route('matriculas-carrera.index') },
 ];
 
 const searchQuery = ref(props.filters?.search || '');
@@ -61,7 +61,7 @@ let timeout: any = null;
 watch([searchQuery, selectedEstado], () => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
-        router.get('/matriculas-carrera', {
+        router.get(route('matriculas-carrera.index'), {
             search: searchQuery.value,
             estado: selectedEstado.value
         }, {
@@ -86,7 +86,7 @@ const estadoBadge = (estado: string) => {
 
 const confirmDelete = (matricula: MatriculaCarrera) => {
     if (confirm(`¿Eliminar matrícula de ${matricula.usuario?.name} en ${matricula.oferta_academica?.nombre}?`)) {
-        router.delete(`/matriculas-carrera/${matricula.id}`);
+        router.delete(route('matriculas-carrera.destroy', matricula.id));
     }
 };
 </script>
@@ -103,7 +103,7 @@ const confirmDelete = (matricula: MatriculaCarrera) => {
                     <p class="text-sm text-muted-foreground mt-1">Gestión y registro de inscripciones de estudiantes a ofertas académicas.</p>
                 </div>
                 <Button as-child>
-                    <Link href="/matriculas-carrera/create">Nueva Matrícula</Link>
+                    <Link :href="route('matriculas-carrera.create')">Nueva Matrícula</Link>
                 </Button>
             </div>
 
@@ -187,7 +187,7 @@ const confirmDelete = (matricula: MatriculaCarrera) => {
                                     </td>
                                     <td class="px-6 py-4 align-middle text-right space-x-2">
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/matriculas-carrera/${matricula.id}`">Ver</Link>
+                                            <Link :href="route('matriculas-carrera.show', matricula.id)">Ver</Link>
                                         </Button>
                                     </td>
                                 </tr>

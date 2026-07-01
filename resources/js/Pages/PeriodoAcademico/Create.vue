@@ -20,9 +20,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Períodos Académicos', href: '/periodos-academicos' },
-    { title: 'Crear', href: '/periodos-academicos/create' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Períodos Académicos', href: route('periodos-academicos.index') },
+    { title: 'Crear', href: route('periodos-academicos.create') },
 ];
 
 const form = useForm({
@@ -50,7 +50,7 @@ onMounted(() => {
 });
 
 const submit = () => {
-    form.post('/periodos-academicos');
+    form.post(route('periodos-academicos.store'));
 };
 </script>
 
@@ -65,7 +65,7 @@ const submit = () => {
                     <p class="text-sm text-muted-foreground mt-1">Registra un nuevo ciclo académico para tus ofertas de estudio.</p>
                 </div>
                 <Button variant="ghost" as-child>
-                    <Link href="/periodos-academicos">Volver</Link>
+                    <Link :href="route('periodos-academicos.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -259,7 +259,7 @@ const submit = () => {
                                 Crear Período
                             </Button>
                             <Button variant="ghost" as-child>
-                                <Link href="/periodos-academicos">Cancelar</Link>
+                                <Link :href="route('periodos-academicos.index')">Cancelar</Link>
                             </Button>
                         </div>
                     </form>

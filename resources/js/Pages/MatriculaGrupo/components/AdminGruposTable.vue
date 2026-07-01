@@ -90,7 +90,7 @@ const occupancyPercent = (grupo: GrupoAdmin) =>
                 </td>
                 <td class="px-6 py-4 align-middle text-right space-x-2">
                     <Button variant="outline" size="sm" as-child>
-                        <Link :href="`/matriculas-grupo/${grupo.id}`">Ver</Link>
+                        <Link :href="route('matriculas-grupo.show', grupo.id)">Ver</Link>
                     </Button>
                     <Button variant="outline" size="sm" @click="emit('import-grades', grupo)">
                         📥 Notas

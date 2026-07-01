@@ -20,9 +20,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Ofertas Académicas', href: '/ofertas-academicas' },
-    { title: 'Editar', href: `/ofertas-academicas/${props.oferta.id}/edit` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Ofertas Académicas', href: route('ofertas-academicas.index') },
+    { title: 'Editar', href: route('ofertas-academicas.edit', props.oferta.id) },
 ];
 
 const form = useForm({
@@ -32,7 +32,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(`/ofertas-academicas/${props.oferta.id}`);
+    form.put(route('ofertas-academicas.update', props.oferta.id));
 };
 </script>
 
@@ -47,7 +47,7 @@ const submit = () => {
                     <p class="text-sm text-muted-foreground mt-1">Actualiza los datos de la carrera o programa académico.</p>
                 </div>
                 <Button variant="outline" as-child>
-                    <Link href="/ofertas-academicas">Volver</Link>
+                    <Link :href="route('ofertas-academicas.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -99,7 +99,7 @@ const submit = () => {
                                 Actualizar Oferta
                             </Button>
                             <Button variant="ghost" as-child>
-                                <Link href="/ofertas-academicas">Cancelar</Link>
+                                <Link :href="route('ofertas-academicas.index')">Cancelar</Link>
                             </Button>
                         </div>
                     </form>

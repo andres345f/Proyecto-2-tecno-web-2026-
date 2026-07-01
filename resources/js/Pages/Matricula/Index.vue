@@ -15,8 +15,8 @@ defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Matrículas', href: '/matriculas' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Matrículas', href: route('matriculas.index') },
 ];
 </script>
 
@@ -49,7 +49,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </CardHeader>
                     <CardContent class="pt-4 flex justify-end">
                         <Button as-child variant="default" class="w-full justify-between">
-                            <Link href="/matriculas-carrera">
+                            <Link :href="route('matriculas-carrera.index')">
                                 Gestionar Carreras
                                 <ArrowRight class="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                             </Link>
@@ -73,7 +73,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </CardHeader>
                     <CardContent class="pt-4 flex justify-end">
                         <Button as-child variant="default" class="w-full justify-between">
-                            <Link href="/matriculas-periodo">
+                            <Link :href="route('matriculas-periodo.index')">
                                 Gestionar Períodos
                                 <ArrowRight class="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                             </Link>
@@ -97,7 +97,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </CardHeader>
                     <CardContent class="pt-4 flex justify-end">
                         <Button as-child variant="default" class="w-full justify-between">
-                            <Link href="/matriculas-grupo">
+                            <Link :href="route('matriculas-grupo.index')">
                                 Gestionar Grupos
                                 <ArrowRight class="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                             </Link>

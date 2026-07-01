@@ -9,9 +9,9 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import InputError from '@/components/InputError.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Usuarios', href: '/usuarios' },
-    { title: 'Crear', href: '/usuarios/create' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Usuarios', href: route('usuarios.index') },
+    { title: 'Crear', href: route('usuarios.create') },
 ];
 
 import { watch } from 'vue';
@@ -36,7 +36,7 @@ watch(() => form.is_estudiante, (val) => {
 });
 
 const submit = () => {
-    form.post('/usuarios');
+    form.post(route('usuarios.store'));
 };
 </script>
 
@@ -51,7 +51,7 @@ const submit = () => {
                     <p class="text-sm text-muted-foreground mt-1">Registra una nueva cuenta de usuario asignando sus roles.</p>
                 </div>
                 <Button variant="outline" as-child>
-                    <Link href="/usuarios">Volver</Link>
+                    <Link :href="route('usuarios.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -185,7 +185,7 @@ const submit = () => {
                                 Registrar Usuario
                             </Button>
                             <Button variant="ghost" as-child>
-                                <Link href="/usuarios">Cancelar</Link>
+                                <Link :href="route('usuarios.index')">Cancelar</Link>
                             </Button>
                         </div>
                     </form>

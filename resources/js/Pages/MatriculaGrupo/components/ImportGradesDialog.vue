@@ -60,7 +60,7 @@ const clearFile = () => {
 
 const submit = () => {
     if (!props.grupo) return;
-    importFileForm.post(`/matriculas-grupo/grupo/${props.grupo.id}/importar-notas`, {
+    importFileForm.post(route('matriculas-grupo.importar-notas', props.grupo.id), {
         preserveScroll: true,
         onSuccess: () => {
             importFileForm.reset();
@@ -90,7 +90,7 @@ const submit = () => {
                 <div class="p-3 bg-secondary/30 rounded-lg flex items-center justify-between text-xs border border-border">
                     <span class="text-foreground">Plantilla pre-rellenada:</span>
                     <Button variant="link" size="sm" as-child class="h-auto p-0 font-bold">
-                        <a :href="`/matriculas-grupo/grupo/${grupo.id}/plantilla-notas`" download>
+                        <a :href="route('matriculas-grupo.plantilla-notas', grupo.id)" download>
                             📥 Descargar Plantilla
                         </a>
                     </Button>

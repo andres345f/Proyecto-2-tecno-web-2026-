@@ -20,9 +20,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Aulas', href: '/aulas' },
-    { title: 'Editar', href: `/aulas/${props.aula.id}/edit` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Aulas', href: route('aulas.index') },
+    { title: 'Editar', href: route('aulas.edit', props.aula.id) },
 ];
 
 const form = useForm({
@@ -32,7 +32,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(`/aulas/${props.aula.id}`);
+    form.put(route('aulas.update', props.aula.id));
 };
 </script>
 
@@ -47,7 +47,7 @@ const submit = () => {
                     <p class="text-sm text-muted-foreground mt-1">Actualiza los datos del aula física en el sistema.</p>
                 </div>
                 <Button variant="outline" as-child>
-                    <Link href="/aulas">Volver</Link>
+                    <Link :href="route('aulas.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -100,7 +100,7 @@ const submit = () => {
                                 Actualizar Aula
                             </Button>
                             <Button variant="ghost" as-child>
-                                <Link href="/aulas">Cancelar</Link>
+                                <Link :href="route('aulas.index')">Cancelar</Link>
                             </Button>
                         </div>
                     </form>

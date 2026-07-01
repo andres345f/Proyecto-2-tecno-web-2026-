@@ -41,9 +41,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Matrículas de Carrera', href: '/matriculas-carrera' },
-    { title: props.matricula.usuario?.name || 'Detalle', href: `/matriculas-carrera/${props.matricula.id}` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Matrículas de Carrera', href: route('matriculas-carrera.index') },
+    { title: props.matricula.usuario?.name || 'Detalle', href: route('matriculas-carrera.show', props.matricula.id) },
 ];
 
 const estadoBadge = (estado: string) => {
@@ -62,7 +62,7 @@ const estadoBadge = (estado: string) => {
 };
 
 const updateEstado = (estado: string) => {
-    router.put(`/matriculas-carrera/${props.matricula.id}`, { estado });
+    router.put(route('matriculas-carrera.update', props.matricula.id), { estado });
 };
 </script>
 
@@ -78,12 +78,12 @@ const updateEstado = (estado: string) => {
                 </div>
                 <div class="flex gap-2">
                     <Button as-child>
-                        <Link :href="`/matriculas-periodo/create?matricula_carrera_id=${matricula.id}`">
+                        <Link :href="route('matriculas-periodo.create', { matricula_carrera_id: props.matricula.id })">
                             Inscribir Período
                         </Link>
                     </Button>
                     <Button variant="ghost" as-child>
-                        <Link href="/matriculas-carrera">Volver</Link>
+                        <Link :href="route('matriculas-carrera.index')">Volver</Link>
                     </Button>
                 </div>
             </div>
@@ -183,7 +183,7 @@ const updateEstado = (estado: string) => {
                                         </td>
                                         <td class="px-6 py-4 align-middle text-right">
                                             <Button variant="outline" size="sm" as-child>
-                                                <Link :href="`/matriculas-periodo/${mp.id}`">
+                                                <Link :href="route('matriculas-periodo.show', mp.id)">
                                                     Ver Cuotas
                                                 </Link>
                                             </Button>

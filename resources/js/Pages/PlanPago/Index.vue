@@ -27,13 +27,13 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Planes de Pago', href: '/planes-pago' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Planes de Pago', href: route('planes-pago.index') },
 ];
 
 const confirmDelete = (plan: PlanPago) => {
     if (confirm(`¿Eliminar plan "${plan.nombre}"?`)) {
-        router.delete(`/planes-pago/${plan.id}`);
+        router.delete(route('planes-pago.destroy', plan.id));
     }
 };
 </script>
@@ -49,7 +49,7 @@ const confirmDelete = (plan: PlanPago) => {
                     <p class="text-sm text-muted-foreground mt-1">Configuración y administración de tarifas, matrículas y planes de cuotas.</p>
                 </div>
                 <Button as-child>
-                    <Link href="/planes-pago/create">Crear Plan</Link>
+                    <Link :href="route('planes-pago.create')">Crear Plan</Link>
                 </Button>
             </div>
 
@@ -82,10 +82,10 @@ const confirmDelete = (plan: PlanPago) => {
                                     <td class="px-6 py-4 align-middle text-muted-foreground">{{ plan.cantidad_cuotas }}</td>
                                     <td class="px-6 py-4 align-middle text-right space-x-2">
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/planes-pago/${plan.id}`">Ver</Link>
+                                            <Link :href="route('planes-pago.show', plan.id)">Ver</Link>
                                         </Button>
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/planes-pago/${plan.id}/edit`">Editar</Link>
+                                            <Link :href="route('planes-pago.edit', plan.id)">Editar</Link>
                                         </Button>
                                         <Button variant="destructive" size="sm" @click="confirmDelete(plan)">
                                             Eliminar

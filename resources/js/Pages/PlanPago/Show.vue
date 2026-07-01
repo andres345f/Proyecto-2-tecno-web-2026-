@@ -26,9 +26,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Planes de Pago', href: '/planes-pago' },
-    { title: props.plan.nombre, href: `/planes-pago/${props.plan.id}` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Planes de Pago', href: route('planes-pago.index') },
+    { title: props.plan.nombre, href: route('planes-pago.show', props.plan.id) },
 ];
 </script>
 
@@ -44,10 +44,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                 </div>
                 <div class="flex gap-2">
                     <Button variant="outline" as-child>
-                        <Link :href="`/planes-pago/${plan.id}/edit`">Editar</Link>
+                        <Link :href="route('planes-pago.edit', props.plan.id)">Editar</Link>
                     </Button>
                     <Button variant="ghost" as-child>
-                        <Link href="/planes-pago">Volver</Link>
+                        <Link :href="route('planes-pago.index')">Volver</Link>
                     </Button>
                 </div>
             </div>

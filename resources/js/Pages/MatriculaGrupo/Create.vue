@@ -80,9 +80,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Matrículas de Grupo', href: '/matriculas-grupo' },
-    { title: 'Inscribirse', href: '/matriculas-grupo/create' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Matrículas de Grupo', href: route('matriculas-grupo.index') },
+    { title: 'Inscribirse', href: route('matriculas-grupo.create') },
 ];
 
 const form = useForm({
@@ -93,7 +93,7 @@ const form = useForm({
 // Reactively load groups when enrollment period is changed
 watch(() => form.matricula_periodo_id, (newVal) => {
     if (newVal) {
-        router.get('/matriculas-grupo/create', { matricula_periodo_id: newVal }, {
+        router.get(route('matriculas-grupo.create'), { matricula_periodo_id: newVal }, {
             preserveState: true,
             replace: true,
             onSuccess: () => {
@@ -153,7 +153,7 @@ const formatDay = (day: string) => {
 };
 
 const submit = () => {
-    form.post('/matriculas-grupo', {
+    form.post(route('matriculas-grupo.store'), {
         onError: (errors) => {
             console.error('Validation errors:', errors);
         }
@@ -174,7 +174,7 @@ const submit = () => {
                         que querés inscribirte.</p>
                 </div>
                 <Button variant="outline" as-child>
-                    <Link href="/matriculas-grupo">Volver</Link>
+                    <Link :href="route('matriculas-grupo.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -309,7 +309,7 @@ const submit = () => {
 
                 <div class="flex items-center justify-end gap-4 pt-4">
                     <Button variant="ghost" as-child>
-                        <Link href="/matriculas-grupo">Cancelar</Link>
+                        <Link :href="route('matriculas-grupo.index')">Cancelar</Link>
                     </Button>
                     <Button type="submit" :disabled="form.processing || form.grupo_ids.length === 0">
                         {{ form.processing ? 'Registrando...' : 'Confirmar Inscripciones' }}

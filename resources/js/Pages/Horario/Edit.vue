@@ -30,9 +30,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Horarios', href: '/horarios' },
-    { title: 'Editar', href: `/horarios/${props.horario.id}/edit` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Horarios', href: route('horarios.index') },
+    { title: 'Editar', href: route('horarios.edit', props.horario.id) },
 ];
 
 const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -46,7 +46,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(`/horarios/${props.horario.id}`);
+    form.put(route('horarios.update', props.horario.id));
 };
 </script>
 
@@ -57,7 +57,7 @@ const submit = () => {
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="flex items-center justify-between">
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Editar Horario</h1>
-                <Link href="/horarios" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"> Volver </Link>
+                <Link :href="route('horarios.index')" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"> Volver </Link>
             </div>
 
             <div class="rounded-xl border border-sidebar-border/70 p-6 dark:border-sidebar-border">
@@ -137,7 +137,7 @@ const submit = () => {
                         >
                             Actualizar
                         </button>
-                        <Link href="/horarios" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                        <Link :href="route('horarios.index')" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                             Cancelar
                         </Link>
                     </div>

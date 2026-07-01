@@ -64,9 +64,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Períodos Académicos', href: '/periodos-academicos' },
-    { title: props.periodo.nombre, href: `/periodos-academicos/${props.periodo.id}` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Períodos Académicos', href: route('periodos-academicos.index') },
+    { title: props.periodo.nombre, href: route('periodos-academicos.show', props.periodo.id) },
 ];
 
 const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
@@ -112,7 +112,7 @@ const openAddGroupModal = () => {
 };
 
 const submitAddGroup = () => {
-    addGroupForm.post('/grupo-periodo', {
+    addGroupForm.post(route('grupo-periodo.store'), {
         onSuccess: () => {
             showAddGroupModal.value = false;
             addGroupForm.reset();
@@ -129,7 +129,7 @@ const openEditGroupModal = (gp: GrupoPeriodo) => {
 
 const submitEditGroup = () => {
     if (!selectedGrupoPeriodo.value) return;
-    editGroupForm.put(`/grupo-periodo/${selectedGrupoPeriodo.value.id}`, {
+    editGroupForm.put(route('grupo-periodo.update', selectedGrupoPeriodo.value.id), {
         onSuccess: () => {
             showEditGroupModal.value = false;
             selectedGrupoPeriodo.value = null;
@@ -139,7 +139,7 @@ const submitEditGroup = () => {
 
 const deleteGrupoPeriodo = (id: number) => {
     if (confirm('¿Estás seguro de que deseas quitar este grupo del período académico? Esto también eliminará las matrículas y entregas relacionadas.')) {
-        router.delete(`/grupo-periodo/${id}`);
+        router.delete(route('grupo-periodo.destroy', id));
     }
 };
 
@@ -151,7 +151,7 @@ const openAddHorarioModal = (gp: GrupoPeriodo) => {
 };
 
 const submitAddHorario = () => {
-    addHorarioForm.post('/horarios', {
+    addHorarioForm.post(route('horarios.store'), {
         onSuccess: () => {
             showAddHorarioModal.value = false;
             addHorarioForm.reset();
@@ -161,13 +161,13 @@ const submitAddHorario = () => {
 
 const deleteHorario = (id: number) => {
     if (confirm('¿Estás seguro de que deseas eliminar este horario?')) {
-        router.delete(`/horarios/${id}`);
+        router.delete(route('horarios.destroy', id));
     }
 };
 
 const copiarDesdeAnterior = () => {
     if (confirm('¿Deseas clonar todos los grupos y horarios del período anterior? No se duplicarán los grupos que ya estén asignados en el período actual.')) {
-        router.post(`/periodos-academicos/${props.periodo.id}/copiar-grupos`);
+        router.post(route('periodos-academicos.copiar-grupos', props.periodo.id));
     }
 };
 
@@ -191,10 +191,10 @@ const formatTime = (time: string) => {
                 </div>
                 <div class="flex items-center gap-2">
                     <Button variant="outline" as-child>
-                        <Link :href="`/periodos-academicos/${periodo.id}/edit`">Editar Período</Link>
+                        <Link :href="route('periodos-academicos.edit', props.periodo.id)">Editar Período</Link>
                     </Button>
                     <Button variant="ghost" as-child>
-                        <Link href="/periodos-academicos">Volver</Link>
+                        <Link :href="route('periodos-academicos.index')">Volver</Link>
                     </Button>
                 </div>
             </div>

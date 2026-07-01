@@ -9,9 +9,9 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import InputError from '@/components/InputError.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Materias', href: '/materias' },
-    { title: 'Crear', href: '/materias/create' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Materias', href: route('materias.index') },
+    { title: 'Crear', href: route('materias.create') },
 ];
 
 const form = useForm({
@@ -21,7 +21,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/materias');
+    form.post(route('materias.store'));
 };
 </script>
 
@@ -36,7 +36,7 @@ const submit = () => {
                     <p class="text-sm text-muted-foreground mt-1">Registra una nueva asignatura en el plan de estudios.</p>
                 </div>
                 <Button variant="outline" as-child>
-                    <Link href="/materias">Volver</Link>
+                    <Link :href="route('materias.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -88,7 +88,7 @@ const submit = () => {
                                 Crear Materia
                             </Button>
                             <Button variant="ghost" as-child>
-                                <Link href="/materias">Cancelar</Link>
+                                <Link :href="route('materias.index')">Cancelar</Link>
                             </Button>
                         </div>
                     </form>

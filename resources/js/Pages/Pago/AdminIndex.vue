@@ -55,8 +55,8 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Pagos', href: '/pagos' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Pagos', href: route('pagos.index') },
 ];
 
 const search = ref(props.filters?.search || '');
@@ -67,7 +67,7 @@ let timeout: any = null;
 watch([search, metodoPago, estado], ([newSearch, newMetodo, newEstado]) => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
-        router.get('/pagos', {
+        router.get(route('pagos.index'), {
             search: newSearch,
             metodo_pago: newMetodo,
             estado: newEstado
@@ -118,7 +118,7 @@ function getEstadoBadgeClass(estado: string) {
                     <p class="text-sm text-muted-foreground mt-1">Historial completo de transacciones de la plataforma.</p>
                 </div>
                 <Button as-child variant="outline">
-                    <Link href="/planes-pago">Gestionar Planes de Pago</Link>
+                    <Link :href="route('planes-pago.index')">Gestionar Planes de Pago</Link>
                 </Button>
             </div>
 

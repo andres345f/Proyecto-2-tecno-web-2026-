@@ -23,9 +23,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Materias', href: '/materias' },
-    { title: props.materia.nombre, href: `/materias/${props.materia.id}` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Materias', href: route('materias.index') },
+    { title: props.materia.nombre, href: route('materias.show', props.materia.id) },
 ];
 </script>
 
@@ -38,12 +38,12 @@ const breadcrumbs: BreadcrumbItem[] = [
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ materia.nombre }}</h1>
                 <div class="flex gap-2">
                     <Link
-                        :href="`/materias/${materia.id}/edit`"
+                        :href="route('materias.edit', props.materia.id)"
                         class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                     >
                         Editar
                     </Link>
-                    <Link href="/materias" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"> Volver </Link>
+                    <Link :href="route('materias.index')" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"> Volver </Link>
                 </div>
             </div>
 

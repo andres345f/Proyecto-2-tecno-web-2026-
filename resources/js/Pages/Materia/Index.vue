@@ -37,8 +37,8 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Materias', href: '/materias' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Materias', href: route('materias.index') },
 ];
 
 const search = ref(props.filters?.search || '');
@@ -47,7 +47,7 @@ let timeout: any = null;
 watch(search, (newVal) => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
-        router.get('/materias', { search: newVal }, {
+        router.get(route('materias.index'), { search: newVal }, {
             preserveState: true,
             replace: true,
         });
@@ -68,7 +68,7 @@ watch(search, (newVal) => {
                         prerrequisitos.</p>
                 </div>
                 <Button as-child>
-                    <Link href="/materias/create">Crear Materia</Link>
+                    <Link :href="route('materias.create')">Crear Materia</Link>
                 </Button>
             </div>
 
@@ -121,10 +121,10 @@ watch(search, (newVal) => {
                                             <Link :href="`/materias/${materia.id}`">Ver</Link>
                                         </Button> -->
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/materias/${materia.id}/edit`">Editar</Link>
+                                            <Link :href="route('materias.edit', materia.id)">Editar</Link>
                                         </Button>
                                         <Button variant="destructive" size="sm" as-child>
-                                            <Link :href="`/materias/${materia.id}`" method="delete" as="button"
+                                            <Link :href="route('materias.destroy', materia.id)" method="delete" as="button"
                                                 onclick="return confirm('¿Eliminar materia?');">
                                                 Eliminar
                                             </Link>

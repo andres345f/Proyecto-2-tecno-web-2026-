@@ -52,8 +52,8 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Usuarios', href: '/usuarios' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Usuarios', href: route('usuarios.index') },
 ];
 
 const search = ref(props.filters.search || '');
@@ -61,7 +61,7 @@ const role = ref(props.filters.role || '');
 
 const updateFilters = debounce(() => {
     router.get(
-        '/usuarios',
+        route('usuarios.index'),
         { search: search.value, role: role.value },
         { preserveState: true, replace: true }
     );
@@ -73,7 +73,7 @@ watch([search, role], () => {
 
 const deleteUsuario = (id: number) => {
     if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
-        router.delete(`/usuarios/${id}`);
+        router.delete(route('usuarios.destroy', id));
     }
 };
 
@@ -101,7 +101,7 @@ const getRolesList = (usuario: Usuario) => {
                         administrativo.</p>
                 </div>
                 <Button as-child>
-                    <Link href="/usuarios/create">Crear Usuario</Link>
+                    <Link :href="route('usuarios.create')">Crear Usuario</Link>
                 </Button>
             </div>
 
@@ -182,7 +182,7 @@ const getRolesList = (usuario: Usuario) => {
                                     </td>
                                     <td class="px-6 py-4 align-middle text-right space-x-2">
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/usuarios/${usuario.id}/edit`">Editar</Link>
+                                            <Link :href="route('usuarios.edit', usuario.id)">Editar</Link>
                                         </Button>
                                         <Button variant="destructive" size="sm" @click="deleteUsuario(usuario.id)"
                                             :disabled="$page.props.auth.user.id === usuario.id">

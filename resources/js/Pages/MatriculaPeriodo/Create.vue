@@ -43,15 +43,15 @@ const user = computed(() => page.props.auth.user);
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     if (user.value.is_estudiante) {
         return [
-            { title: 'Dashboard', href: '/dashboard' },
-            { title: 'Mis Grupos', href: '/mis-grupos' },
-            { title: 'Inscribir Período', href: '/matriculas-periodo/create' },
+            { title: 'Dashboard', href: route('dashboard') },
+            { title: 'Mis Grupos', href: route('mis-grupos') },
+            { title: 'Inscribir Período', href: route('matriculas-periodo.create') },
         ];
     }
     return [
-        { title: 'Dashboard', href: '/dashboard' },
-        { title: 'Matrículas de Carrera', href: '/matriculas-carrera' },
-        { title: 'Inscribir Período', href: '/matriculas-periodo/create' },
+        { title: 'Dashboard', href: route('dashboard') },
+        { title: 'Matrículas de Carrera', href: route('matriculas-carrera.index') },
+        { title: 'Inscribir Período', href: route('matriculas-periodo.create') },
     ];
 });
 
@@ -82,7 +82,7 @@ onMounted(() => {
 });
 
 const submit = () => {
-    form.post('/matriculas-periodo');
+    form.post(route('matriculas-periodo.store'));
 };
 </script>
 
@@ -99,7 +99,7 @@ const submit = () => {
                         período académico.</p>
                 </div>
                 <Button variant="outline" as-child>
-                    <Link :href="user.is_estudiante ? '/mis-grupos' : `/matriculas-carrera/${matriculaCarrera.id}`">
+                    <Link :href="user.is_estudiante ? route('mis-grupos') : route('matriculas-carrera.show', props.matriculaCarrera.id)">
                         Volver</Link>
                 </Button>
             </div>
@@ -146,7 +146,7 @@ const submit = () => {
                             </Button>
                             <Button variant="ghost" as-child>
                                 <Link
-                                    :href="user.is_estudiante ? '/mis-grupos' : `/matriculas-carrera/${matriculaCarrera.id}`">
+                                    :href="user.is_estudiante ? route('mis-grupos') : route('matriculas-carrera.show', props.matriculaCarrera.id)">
                                     Cancelar</Link>
                             </Button>
                         </div>

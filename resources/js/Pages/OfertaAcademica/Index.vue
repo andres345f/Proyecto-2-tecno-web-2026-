@@ -18,13 +18,13 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Ofertas Académicas', href: '/ofertas-academicas' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Ofertas Académicas', href: route('ofertas-academicas.index') },
 ];
 
 const confirmDelete = (oferta: OfertaAcademica) => {
     if (confirm(`¿Eliminar oferta "${oferta.nombre}"?`)) {
-        router.delete(`/ofertas-academicas/${oferta.id}`);
+        router.delete(route('ofertas-academicas.destroy', oferta.id));
     }
 };
 </script>
@@ -41,10 +41,10 @@ const confirmDelete = (oferta: OfertaAcademica) => {
                 </div>
                 <div class="flex gap-2">
                     <Button variant="outline" as-child>
-                        <Link href="/periodos-academicos">Períodos Académicos</Link>
+                        <Link :href="route('periodos-academicos.index')">Períodos Académicos</Link>
                     </Button>
                     <Button as-child>
-                        <Link href="/ofertas-academicas/create">Crear Oferta</Link>
+                        <Link :href="route('ofertas-academicas.create')">Crear Oferta</Link>
                     </Button>
                 </div>
             </div>
@@ -68,7 +68,7 @@ const confirmDelete = (oferta: OfertaAcademica) => {
                             <tbody class="divide-y divide-border">
                                 <tr v-for="oferta in ofertas" :key="oferta.id" class="hover:bg-muted/30 transition-colors">
                                     <td class="px-6 py-4 align-middle font-semibold text-foreground">
-                                        <Link :href="`/ofertas-academicas/${oferta.id}`" class="hover:underline text-primary">
+                                        <Link :href="route('ofertas-academicas.show', oferta.id)" class="hover:underline text-primary">
                                             {{ oferta.nombre }}
                                         </Link>
                                     </td>
@@ -76,10 +76,10 @@ const confirmDelete = (oferta: OfertaAcademica) => {
                                     <td class="px-6 py-4 align-middle text-muted-foreground">{{ oferta.materias_count }} materias</td>
                                     <td class="px-6 py-4 align-middle text-right space-x-2">
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/ofertas-academicas/${oferta.id}`">Ver</Link>
+                                            <Link :href="route('ofertas-academicas.show', oferta.id)">Ver</Link>
                                         </Button>
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/ofertas-academicas/${oferta.id}/edit`">Editar</Link>
+                                            <Link :href="route('ofertas-academicas.edit', oferta.id)">Editar</Link>
                                         </Button>
                                         <Button variant="destructive" size="sm" @click="confirmDelete(oferta)">
                                             Eliminar

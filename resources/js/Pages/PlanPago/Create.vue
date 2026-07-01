@@ -19,9 +19,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Planes de Pago', href: '/planes-pago' },
-    { title: 'Crear', href: '/planes-pago/create' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Planes de Pago', href: route('planes-pago.index') },
+    { title: 'Crear', href: route('planes-pago.create') },
 ];
 
 const form = useForm({
@@ -34,7 +34,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/planes-pago');
+    form.post(route('planes-pago.store'));
 };
 </script>
 
@@ -49,7 +49,7 @@ const submit = () => {
                     <p class="text-sm text-muted-foreground mt-1">Registra un nuevo esquema de cobros y financiamiento.</p>
                 </div>
                 <Button variant="outline" as-child>
-                    <Link href="/planes-pago">Volver</Link>
+                    <Link :href="route('planes-pago.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -149,7 +149,7 @@ const submit = () => {
                                 Crear Plan
                             </Button>
                             <Button variant="ghost" as-child>
-                                <Link href="/planes-pago">Cancelar</Link>
+                                <Link :href="route('planes-pago.index')">Cancelar</Link>
                             </Button>
                         </div>
                     </form>

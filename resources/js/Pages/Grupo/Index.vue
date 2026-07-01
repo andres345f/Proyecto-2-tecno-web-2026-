@@ -37,8 +37,8 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Grupos', href: '/grupos' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Grupos', href: route('grupos.index') },
 ];
 
 const search = ref(props.filters?.search || '');
@@ -47,7 +47,7 @@ let timeout: any = null;
 watch(search, (newVal) => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
-        router.get('/grupos', { search: newVal }, {
+        router.get(route('grupos.index'), { search: newVal }, {
             preserveState: true,
             replace: true,
         });
@@ -56,7 +56,7 @@ watch(search, (newVal) => {
 
 const confirmDelete = (grupo: Grupo) => {
     if (confirm(`¿Eliminar grupo "${grupo.codigo}"?`)) {
-        router.delete(`/grupos/${grupo.id}`);
+        router.delete(route('grupos.destroy', grupo.id));
     }
 };
 </script>
@@ -74,7 +74,7 @@ const confirmDelete = (grupo: Grupo) => {
                         docentes.</p>
                 </div>
                 <Button as-child>
-                    <Link href="/grupos/create">Crear Grupo</Link>
+                    <Link :href="route('grupos.create')">Crear Grupo</Link>
                 </Button>
             </div>
 
@@ -122,10 +122,10 @@ const confirmDelete = (grupo: Grupo) => {
 
                                     <td class="px-6 py-4 align-middle text-right space-x-2">
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/grupos/${grupo.id}`">Ver</Link>
+                                            <Link :href="route('grupos.show', grupo.id)">Ver</Link>
                                         </Button>
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/grupos/${grupo.id}/edit`">Editar</Link>
+                                            <Link :href="route('grupos.edit', grupo.id)">Editar</Link>
                                         </Button>
                                         <Button variant="destructive" size="sm" @click="confirmDelete(grupo)">
                                             Eliminar

@@ -20,9 +20,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Materias', href: '/materias' },
-    { title: 'Editar', href: `/materias/${props.materia.id}/edit` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Materias', href: route('materias.index') },
+    { title: 'Editar', href: route('materias.edit', props.materia.id) },
 ];
 
 const form = useForm({
@@ -32,7 +32,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(`/materias/${props.materia.id}`);
+    form.put(route('materias.update', props.materia.id));
 };
 </script>
 
@@ -47,7 +47,7 @@ const submit = () => {
                     <p class="text-sm text-muted-foreground mt-1">Actualiza los datos de la asignatura en el catálogo lectivo.</p>
                 </div>
                 <Button variant="outline" as-child>
-                    <Link href="/materias">Volver</Link>
+                    <Link :href="route('materias.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -99,7 +99,7 @@ const submit = () => {
                                 Actualizar Materia
                             </Button>
                             <Button variant="ghost" as-child>
-                                <Link href="/materias">Cancelar</Link>
+                                <Link :href="route('materias.index')">Cancelar</Link>
                             </Button>
                         </div>
                     </form>

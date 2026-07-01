@@ -28,13 +28,13 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Períodos Académicos', href: '/periodos-academicos' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Períodos Académicos', href: route('periodos-academicos.index') },
 ];
 
 const confirmDelete = (periodo: PeriodoAcademico) => {
     if (confirm(`¿Eliminar período "${periodo.nombre}"?`)) {
-        router.delete(`/periodos-academicos/${periodo.id}`);
+        router.delete(route('periodos-academicos.destroy', periodo.id));
     }
 };
 </script>
@@ -50,7 +50,7 @@ const confirmDelete = (periodo: PeriodoAcademico) => {
                     <p class="text-sm text-muted-foreground mt-1">Gestión de ciclos y calendarios académicos registrados.</p>
                 </div>
                 <Button as-child>
-                    <Link href="/periodos-academicos/create">Crear Período</Link>
+                    <Link :href="route('periodos-academicos.create')">Crear Período</Link>
                 </Button>
             </div>
 
@@ -103,10 +103,10 @@ const confirmDelete = (periodo: PeriodoAcademico) => {
                                     </td>
                                     <td class="px-6 py-4 align-middle text-right space-x-2">
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/periodos-academicos/${periodo.id}`">Ver</Link>
+                                            <Link :href="route('periodos-academicos.show', periodo.id)">Ver</Link>
                                         </Button>
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/periodos-academicos/${periodo.id}/edit`">Editar</Link>
+                                            <Link :href="route('periodos-academicos.edit', periodo.id)">Editar</Link>
                                         </Button>
                                         <Button variant="destructive" size="sm" @click="confirmDelete(periodo)">
                                             Eliminar

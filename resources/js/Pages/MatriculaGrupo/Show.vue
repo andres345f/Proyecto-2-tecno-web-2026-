@@ -83,15 +83,15 @@ const activeMatricula = computed(() => props.matricula || props.matric);
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     if (isEstudiante.value) {
         return [
-            { title: 'Dashboard', href: '/dashboard' },
-            { title: 'Mis Grupos', href: '/matriculas-grupo' },
-            { title: activeMatricula.value?.grupo?.codigo || '', href: `/matriculas-grupo/${activeMatricula.value?.id}` },
+            { title: 'Dashboard', href: route('dashboard') },
+            { title: 'Mis Grupos', href: route('matriculas-grupo.index') },
+            { title: activeMatricula.value?.grupo?.codigo || '', href: route('matriculas-grupo.show', activeMatricula.value?.id || 0) },
         ];
     } else {
         return [
-            { title: 'Dashboard', href: '/dashboard' },
-            { title: 'Inscripciones a Grupos', href: '/matriculas-grupo' },
-            { title: props.grupo?.codigo || '', href: `/matriculas-grupo/${props.grupo?.id}` },
+            { title: 'Dashboard', href: route('dashboard') },
+            { title: 'Inscripciones a Grupos', href: route('matriculas-grupo.index') },
+            { title: props.grupo?.codigo || '', href: route('matriculas-grupo.show', props.grupo?.id || 0) },
         ];
     }
 });
@@ -118,7 +118,7 @@ const confirmWithdraw = (id: number, isStudent: boolean = false) => {
         ? '¿Estás seguro de que deseas retirarte de este grupo?' 
         : '¿Estás seguro de que deseas retirar a este estudiante del grupo?';
     if (confirm(text)) {
-        router.delete(`/matriculas-grupo/${id}`);
+        router.delete(route('matriculas-grupo.destroy', id));
     }
 };
 
@@ -151,7 +151,7 @@ const clearImportFile = () => {
 
 const submitImportGrades = () => {
     if (!props.grupo) return;
-    importFileForm.post(`/matriculas-grupo/grupo/${props.grupo.id}/importar-notas`, {
+    importFileForm.post(route('matriculas-grupo.importar-notas', props.grupo.id), {
         preserveScroll: true,
         onSuccess: () => {
             importFileForm.reset();
@@ -200,7 +200,7 @@ const submitImportGrades = () => {
                             v-if="activeMatricula.estado === 'en_curso' || activeMatricula.estado === 'inscrito'"
                             as-child
                         >
-                            <Link :href="`/grupos/${activeMatricula.grupo?.id}/tareas`">Ver Tareas</Link>
+                            <Link :href="route('grupos.tareas.index', activeMatricula.grupo?.id)">Ver Tareas</Link>
                         </Button>
                         <span :class="['inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider', estadoBadge(activeMatricula.estado)]">
                             {{ activeMatricula.estado }}
@@ -316,7 +316,7 @@ const submitImportGrades = () => {
 
                 <div>
                     <Button variant="ghost" as-child>
-                        <Link href="/matriculas-grupo">
+                        <Link :href="route('matriculas-grupo.index')">
                             ← Volver a Mis Grupos
                         </Link>
                     </Button>
@@ -332,7 +332,7 @@ const submitImportGrades = () => {
                     </div>
                     <div class="flex items-center gap-3">
                         <Button as-child>
-                            <Link :href="`/grupos/${grupo.id}/tareas`">Gestionar Tareas</Link>
+                            <Link :href="route('grupos.tareas.index', grupo.id)">Gestionar Tareas</Link>
                         </Button>
                     </div>
                 </div>
@@ -447,7 +447,7 @@ const submitImportGrades = () => {
                                         </td>
                                         <td class="px-6 py-4 align-middle text-right">
                                             <Button variant="outline" size="sm" as-child>
-                                                <Link :href="`/grupos/${grupo.id}/tareas/${tarea.id}`">Ver Detalle</Link>
+                                                <Link :href="route('grupos.tareas.show', { grupo: grupo.id, tarea: tarea.id })">Ver Detalle</Link>
                                             </Button>
                                         </td>
                                     </tr>
@@ -467,7 +467,7 @@ const submitImportGrades = () => {
                         </div>
                         <div class="flex items-center gap-2">
                             <Button variant="outline" size="sm" as-child>
-                                <a :href="`/matriculas-grupo/grupo/${grupo.id}/plantilla-notas`" download>
+                                <a :href="route('matriculas-grupo.plantilla-notas', grupo.id)" download>
                                     📥 Descargar Plantilla de Notas
                                 </a>
                             </Button>
@@ -552,7 +552,7 @@ const submitImportGrades = () => {
 
                 <div>
                     <Button variant="ghost" as-child>
-                        <Link href="/matriculas-grupo">
+                        <Link :href="route('matriculas-grupo.index')">
                             ← Volver a Grupos
                         </Link>
                     </Button>

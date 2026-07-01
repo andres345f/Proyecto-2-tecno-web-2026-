@@ -53,9 +53,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Ofertas Académicas', href: '/ofertas-academicas' },
-    { title: props.oferta.nombre, href: `/ofertas-academicas/${props.oferta.id}` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Ofertas Académicas', href: route('ofertas-academicas.index') },
+    { title: props.oferta.nombre, href: route('ofertas-academicas.show', props.oferta.id) },
 ];
 
 const form = useForm({
@@ -70,7 +70,7 @@ const availableMaterias = computed(() => {
 });
 
 const submit = () => {
-    form.post(`/ofertas-academicas/${props.oferta.id}/materias`, {
+    form.post(route('ofertas-academicas.materias.store', props.oferta.id), {
         onSuccess: () => {
             form.reset('materia_id');
         },
@@ -114,7 +114,7 @@ const addPrereqForm = useForm({
 const addPrereq = () => {
     if (!activeMateriaForPrereq.value || !newPrereqId.value) return;
     addPrereqForm.prerequisito_id = String(newPrereqId.value);
-    addPrereqForm.post(`/ofertas-academicas/${props.oferta.id}/materias/${activeMateriaForPrereq.value.id}/prerrequisitos`, {
+    addPrereqForm.post(route('ofertas-academicas.materias.prerrequisitos.store', [props.oferta.id, activeMateriaForPrereq.value.id]), {
         onSuccess: () => {
             const targetMateria = props.oferta.materias.find((m) => m.id === activeMateriaForPrereq.value!.id);
             const addedMateria = props.oferta.materias.find((m) => m.id === Number(newPrereqId.value));
@@ -137,7 +137,7 @@ const addPrereq = () => {
 
 const removePrereq = (materia: Materia, prereq: MateriaPrerequisito) => {
     if (!confirm(`¿Remover ${prereq.nombre} como prerrequisito de ${materia.nombre}?`)) return;
-    addPrereqForm.delete(`/ofertas-academicas/${props.oferta.id}/materias/${materia.id}/prerrequisitos/${prereq.id}`, {
+    addPrereqForm.delete(route('ofertas-academicas.materias.prerrequisitos.destroy', [props.oferta.id, materia.id, prereq.id]), {
         onSuccess: () => {
             const targetMateria = props.oferta.materias.find((m) => m.id === materia.id);
             if (targetMateria && targetMateria.prerrequisitos) {
@@ -160,13 +160,13 @@ const removePrereq = (materia: Materia, prereq: MateriaPrerequisito) => {
                 </div>
                 <div class="flex gap-2">
                     <Button variant="outline" as-child>
-                        <Link :href="`/grupos?oferta_id=${oferta.id}`">Ver Grupos</Link>
+                        <Link :href="route('grupos.index', { oferta_id: props.oferta.id })">Ver Grupos</Link>
                     </Button>
                     <Button variant="outline" as-child>
-                        <Link :href="`/ofertas-academicas/${oferta.id}/edit`">Editar</Link>
+                        <Link :href="route('ofertas-academicas.edit', props.oferta.id)">Editar</Link>
                     </Button>
                     <Button variant="ghost" as-child>
-                        <Link href="/ofertas-academicas">Volver</Link>
+                        <Link :href="route('ofertas-academicas.index')">Volver</Link>
                     </Button>
                 </div>
             </div>
@@ -260,13 +260,13 @@ const removePrereq = (materia: Materia, prereq: MateriaPrerequisito) => {
                                         </button>
                                         <span class="text-neutral-300 dark:text-neutral-700">|</span>
                                         <Link
-                                            :href="`/ofertas-academicas/${oferta.id}/materias/${materia.id}`"
+                                            :href="route('ofertas-academicas.materias.destroy', [props.oferta.id, materia.id])"
                                             method="delete"
                                             as="button"
                                             class="text-xs text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 font-medium"
                                             @click.prevent="
                                                 if (confirm('¿Remover esta materia de la malla?'))
-                                                    $inertia.delete(`/ofertas-academicas/${oferta.id}/materias/${materia.id}`);
+                                                    $inertia.delete(route('ofertas-academicas.materias.destroy', [props.oferta.id, materia.id]));
                                             "
                                         >
                                             Remover

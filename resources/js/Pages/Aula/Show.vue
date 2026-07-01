@@ -56,9 +56,9 @@ onMounted(() => {
 });
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Aulas', href: '/aulas' },
-    { title: props.aula.nombre, href: `/aulas/${props.aula.id}` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Aulas', href: route('aulas.index') },
+    { title: props.aula.nombre, href: route('aulas.show', props.aula.id) },
 ];
 
 const mappedHorarios = computed(() => {
@@ -94,11 +94,11 @@ const mappedHorarios = computed(() => {
                         horarios.</p>
                 </div>
                 <div class="flex gap-3">
-                    <Link :href="`/aulas/${aula.id}/edit`"
+                    <Link :href="route('aulas.edit', props.aula.id)"
                         class="rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors">
                         Editar Aula
                     </Link>
-                    <Link href="/aulas"
+                    <Link :href="route('aulas.index')"
                         class="rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary/80 transition-colors">
                         Volver
                     </Link>

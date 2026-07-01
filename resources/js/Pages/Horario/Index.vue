@@ -36,13 +36,13 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Horarios', href: '/horarios' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Horarios', href: route('horarios.index') },
 ];
 
 const confirmDelete = (horario: Horario) => {
     if (confirm(`¿Eliminar horario de ${horario.dia} ${horario.hora_inicio} - ${horario.hora_fin}?`)) {
-        router.delete(`/horarios/${horario.id}`);
+        router.delete(route('horarios.destroy', horario.id));
     }
 };
 </script>
@@ -55,7 +55,7 @@ const confirmDelete = (horario: Horario) => {
             <div class="flex items-center justify-between">
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Horarios</h1>
                 <Link
-                    href="/horarios/create"
+                    :href="route('horarios.create')"
                     class="inline-flex items-center rounded-md bg-gray-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
                 >
                     Crear Horario
@@ -91,7 +91,7 @@ const confirmDelete = (horario: Horario) => {
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                                 <Link
-                                    :href="`/horarios/${horario.id}/edit`"
+                                    :href="route('horarios.edit', horario.id)"
                                     class="mr-3 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                                 >
                                     Editar

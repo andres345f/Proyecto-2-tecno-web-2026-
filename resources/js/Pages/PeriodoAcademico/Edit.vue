@@ -37,9 +37,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Períodos Académicos', href: '/periodos-academicos' },
-    { title: 'Editar', href: `/periodos-academicos/${props.periodo.id}/edit` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Períodos Académicos', href: route('periodos-academicos.index') },
+    { title: 'Editar', href: route('periodos-academicos.edit', props.periodo.id) },
 ];
 
 const formatDate = (dateStr: any) => {
@@ -72,7 +72,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(`/periodos-academicos/${props.periodo.id}`);
+    form.put(route('periodos-academicos.update', props.periodo.id));
 };
 </script>
 
@@ -87,7 +87,7 @@ const submit = () => {
                     <p class="text-sm text-muted-foreground mt-1">Actualiza los detalles y la configuración del ciclo académico.</p>
                 </div>
                 <Button variant="ghost" as-child>
-                    <Link href="/periodos-academicos">Volver</Link>
+                    <Link :href="route('periodos-academicos.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -280,7 +280,7 @@ const submit = () => {
                                 Actualizar Período
                             </Button>
                             <Button variant="ghost" as-child>
-                                <Link href="/periodos-academicos">Cancelar</Link>
+                                <Link :href="route('periodos-academicos.index')">Cancelar</Link>
                             </Button>
                         </div>
                     </form>

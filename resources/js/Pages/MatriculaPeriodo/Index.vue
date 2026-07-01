@@ -49,8 +49,8 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Matrículas de Período', href: '/matriculas-periodo' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Matrículas de Período', href: route('matriculas-periodo.index') },
 ];
 
 const searchQuery = ref(props.filters?.search || '');
@@ -60,7 +60,7 @@ let timeout: any = null;
 watch([searchQuery, selectedEstado], () => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
-        router.get('/matriculas-periodo', {
+        router.get(route('matriculas-periodo.index'), {
             matricula_carrera_id: props.filters?.matricula_carrera_id,
             search: searchQuery.value,
             estado: selectedEstado.value
@@ -86,7 +86,7 @@ const estadoBadge = (estado: string) => {
 
 const confirmDelete = (matricula: MatriculaPeriodo) => {
     if (confirm(`¿Eliminar matrícula de período?`)) {
-        router.delete(`/matriculas-periodo/${matricula.id}`);
+        router.delete(route('matriculas-periodo.destroy', matricula.id));
     }
 };
 </script>
@@ -105,7 +105,7 @@ const confirmDelete = (matricula: MatriculaPeriodo) => {
                     </p>
                 </div>
                 <Button v-if="user.is_estudiante && canEnroll" as-child>
-                    <Link href="/matriculas-periodo/create">
+                    <Link :href="route('matriculas-periodo.create')">
                         Inscribir Período
                     </Link>
                 </Button>
@@ -203,7 +203,7 @@ const confirmDelete = (matricula: MatriculaPeriodo) => {
                                     </td>
                                     <td class="px-6 py-4 align-middle text-right space-x-2">
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/matriculas-periodo/${matricula.id}`">Ver</Link>
+                                            <Link :href="route('matriculas-periodo.show', matricula.id)">Ver</Link>
                                         </Button>
                                     </td>
                                 </tr>

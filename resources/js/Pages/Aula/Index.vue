@@ -36,8 +36,8 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Aulas', href: '/aulas' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Aulas', href: route('aulas.index') },
 ];
 
 const search = ref(props.filters?.search || '');
@@ -46,7 +46,7 @@ let timeout: any = null;
 watch(search, (newVal) => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
-        router.get('/aulas', { search: newVal }, {
+        router.get(route('aulas.index'), { search: newVal }, {
             preserveState: true,
             replace: true,
         });
@@ -55,7 +55,7 @@ watch(search, (newVal) => {
 
 const confirmDelete = (aula: Aula) => {
     if (confirm(`¿Eliminar aula "${aula.nombre}"?`)) {
-        router.delete(`/aulas/${aula.id}`);
+        router.delete(route('aulas.destroy', aula.id));
     }
 };
 </script>
@@ -71,7 +71,7 @@ const confirmDelete = (aula: Aula) => {
                     <p class="text-sm text-muted-foreground mt-1">Gestión de aulas físicas y ambientes de aprendizaje.</p>
                 </div>
                 <Button as-child>
-                    <Link href="/aulas/create">Crear Aula</Link>
+                    <Link :href="route('aulas.create')">Crear Aula</Link>
                 </Button>
             </div>
 
@@ -103,10 +103,10 @@ const confirmDelete = (aula: Aula) => {
                                     <td class="px-6 py-4 align-middle text-muted-foreground">{{ aula.capacidad }} personas</td>
                                     <td class="px-6 py-4 align-middle text-right space-x-2">
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/aulas/${aula.id}`">Ver Horario</Link>
+                                            <Link :href="route('aulas.show', aula.id)">Ver Horario</Link>
                                         </Button>
                                         <Button variant="outline" size="sm" as-child>
-                                            <Link :href="`/aulas/${aula.id}/edit`">Editar</Link>
+                                            <Link :href="route('aulas.edit', aula.id)">Editar</Link>
                                         </Button>
                                         <Button variant="destructive" size="sm" @click="confirmDelete(aula)">
                                             Eliminar

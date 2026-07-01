@@ -38,15 +38,15 @@ const isEstudiante = computed(() => !!(page.props.auth as any)?.user?.is_estudia
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     if (isEstudiante.value) {
         return [
-            { title: 'Dashboard', href: '/dashboard' },
-            { title: 'Mis Grupos', href: '/mis-grupos' },
-            { title: `Período - ${props.matricula.periodo_academico?.nombre}`, href: `/matriculas-periodo/${props.matricula.id}` },
+            { title: 'Dashboard', href: route('dashboard') },
+            { title: 'Mis Grupos', href: route('mis-grupos') },
+            { title: `Período - ${props.matricula.periodo_academico?.nombre}`, href: route('matriculas-periodo.show', props.matricula.id) },
         ];
     }
     return [
-        { title: 'Dashboard', href: '/dashboard' },
-        { title: 'Matrículas de Carrera', href: '/matriculas-carrera' },
-        { title: `Período - ${props.matricula.periodo_academico?.nombre}`, href: `/matriculas-periodo/${props.matricula.id}` },
+        { title: 'Dashboard', href: route('dashboard') },
+        { title: 'Matrículas de Carrera', href: route('matriculas-carrera.index') },
+        { title: `Período - ${props.matricula.periodo_academico?.nombre}`, href: route('matriculas-periodo.show', props.matricula.id) },
     ];
 });
 

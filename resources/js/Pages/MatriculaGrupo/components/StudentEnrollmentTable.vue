@@ -38,7 +38,7 @@ const formatHorarios = (horarios: Array<{ dia: string; hora_inicio: string; hora
 
 const confirmWithdraw = (matricula: MatriculaGrupo) => {
     if (confirm('¿Estás seguro de que deseas retirarte de este grupo?')) {
-        router.delete(`/matriculas-grupo/${matricula.id}`);
+        router.delete(route('matriculas-grupo.destroy', matricula.id));
     }
 };
 </script>
@@ -80,7 +80,7 @@ const confirmWithdraw = (matricula: MatriculaGrupo) => {
                 </td>
                 <td class="px-6 py-4 align-middle text-right space-x-2">
                     <Button variant="outline" size="sm" as-child>
-                        <Link :href="`/matriculas-grupo/${matricula.id}`">Ver</Link>
+                        <Link :href="route('matriculas-grupo.show', matricula.id)">Ver</Link>
                     </Button>
                     <Button
                         v-if="matricula.estado === 'en_curso' || matricula.estado === 'inscrito'"
@@ -88,7 +88,7 @@ const confirmWithdraw = (matricula: MatriculaGrupo) => {
                         size="sm"
                         as-child
                     >
-                        <Link :href="`/grupos/${matricula.grupo?.id}/tareas`">Tareas</Link>
+                        <Link :href="route('grupos.tareas.index', matricula.grupo?.id)">Tareas</Link>
                     </Button>
                     <Button
                         v-if="matricula.estado === 'en_curso' || matricula.estado === 'inscrito'"

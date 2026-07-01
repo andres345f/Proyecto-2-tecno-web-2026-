@@ -26,9 +26,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Usuarios', href: '/usuarios' },
-    { title: 'Editar', href: `/usuarios/${props.usuario.id}/edit` },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Usuarios', href: route('usuarios.index') },
+    { title: 'Editar', href: route('usuarios.edit', props.usuario.id) },
 ];
 
 import { watch } from 'vue';
@@ -53,7 +53,7 @@ watch(() => form.is_estudiante, (val) => {
 });
 
 const submit = () => {
-    form.put(`/usuarios/${props.usuario.id}`);
+    form.put(route('usuarios.update', props.usuario.id));
 };
 </script>
 
@@ -68,7 +68,7 @@ const submit = () => {
                     <p class="text-sm text-muted-foreground mt-1">Actualiza los datos y permisos de {{ usuario.name }}.</p>
                 </div>
                 <Button variant="outline" as-child>
-                    <Link href="/usuarios">Volver</Link>
+                    <Link :href="route('usuarios.index')">Volver</Link>
                 </Button>
             </div>
 
@@ -201,7 +201,7 @@ const submit = () => {
                                 Guardar Cambios
                             </Button>
                             <Button variant="ghost" as-child>
-                                <Link href="/usuarios">Cancelar</Link>
+                                <Link :href="route('usuarios.index')">Cancelar</Link>
                             </Button>
                         </div>
                     </form>

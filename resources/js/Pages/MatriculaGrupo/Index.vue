@@ -64,8 +64,8 @@ onMounted(() => {
 });
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: user.value?.is_estudiante ? 'Mis Grupos' : 'Inscripciones a Grupos', href: '/matriculas-grupo' },
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: user.value?.is_estudiante ? 'Mis Grupos' : 'Inscripciones a Grupos', href: route('matriculas-grupo.index') },
 ]);
 
 // Weekly schedule data for student view
@@ -162,10 +162,10 @@ const openImportModal = (grupo: GrupoAdmin) => {
                     <WeeklyScheduleDialog v-if="user.is_estudiante && studentHorarios.length > 0"
                         :horarios="studentHorarios" />
                     <Button v-if="user.is_estudiante && canEnrollPeriod" as-child variant="outline">
-                        <Link href="/matriculas-periodo/create">Inscribir Período</Link>
+                        <Link :href="route('matriculas-periodo.create')">Inscribir Período</Link>
                     </Button>
                     <Button v-if="user.is_estudiante && canEnroll" as-child>
-                        <Link href="/matriculas-grupo/create">
+                        <Link :href="route('matriculas-grupo.create')">
                             Inscribir Grupo
                         </Link>
                     </Button>
