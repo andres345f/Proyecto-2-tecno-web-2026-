@@ -52,23 +52,20 @@ const mainNavItems = computed<NavItem[]>(() => {
             { title: 'Grupos', href: route('grupos.index'), icon: Users },
             { title: 'Pagos', href: route('pagos.index'), icon: CreditCard },
             { title: 'Usuarios', href: route('usuarios.index'), icon: Users },
-            { title: 'Inscripciones', href: route('matriculas.index'), icon: ClipboardList }
+            //{ title: 'Inscripciones', href: route('matriculas.index'), icon: ClipboardList }
         );
     }
 
     // Secretaria
     if (user.value.is_secretaria) {
         items.push(
-            { title: 'Usuarios', href: route('usuarios.index'), icon: Users },
-            { title: 'Matrículas', href: route('matriculas.index'), icon: ClipboardList },
-            { title: 'Pagos', href: route('pagos.index'), icon: CreditCard }
+            { title: 'Inscripciones', href: route('matriculas.index'), icon: ClipboardList },
+            { title: 'Pagos', href: route('pagos.index'), icon: CreditCard },
+            { title: 'Reportes', href: route('reportes.index'), icon: BarChart3 },
+            { title: 'Ofertas Académicas', href: route('ofertas-academicas.index'), icon: GraduationCap },
         );
-        if (!items.some(i => i.href === route('aulas.index'))) {
-            items.push({ title: 'Aulas', href: route('aulas.index'), icon: Home });
-        }
-        if (!items.some(i => i.href === route('materias.index'))) {
-            items.push({ title: 'Materias', href: route('materias.index'), icon: BookOpen });
-        }
+
+
     }
 
     // Profesor

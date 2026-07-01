@@ -24,7 +24,7 @@ const emit = defineEmits<{
                 type="text"
                 :value="searchQuery"
                 @input="emit('update:searchQuery', ($event.target as HTMLInputElement).value)"
-                :placeholder="isStudent ? 'Buscar por grupo o materia...' : 'Buscar por grupo, materia, carrera...'"
+                :placeholder="isStudent ? 'Buscar por grupo o materia...' : 'Buscar por grupo, materia, estudiante, carrera...'"
                 class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground"
             />
         </div>

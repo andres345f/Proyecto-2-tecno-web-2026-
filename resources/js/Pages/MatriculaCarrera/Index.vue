@@ -10,6 +10,7 @@ interface Usuario {
     id: number;
     name: string;
     email: string;
+    codigo_estudiante?: string;
 }
 
 interface OfertaAcademica {
@@ -153,6 +154,9 @@ const confirmDelete = (matricula: MatriculaCarrera) => {
                                         Estudiante</th>
                                     <th
                                         class="h-12 px-6 text-left align-middle font-semibold text-muted-foreground uppercase tracking-wider">
+                                        Código Estudiante</th>
+                                    <th
+                                        class="h-12 px-6 text-left align-middle font-semibold text-muted-foreground uppercase tracking-wider">
                                         Carrera / Oferta</th>
                                     <th
                                         class="h-12 px-6 text-left align-middle font-semibold text-muted-foreground uppercase tracking-wider">
@@ -170,6 +174,9 @@ const confirmDelete = (matricula: MatriculaCarrera) => {
                                     class="hover:bg-muted/30 transition-colors">
                                     <td class="px-6 py-4 align-middle font-semibold text-foreground">
                                         {{ matricula.usuario?.name }}
+                                    </td>
+                                    <td class="px-6 py-4 align-middle text-muted-foreground font-mono text-xs">
+                                        {{ matricula.usuario?.codigo_estudiante || 'N/A' }}
                                     </td>
                                     <td class="px-6 py-4 align-middle text-muted-foreground">
                                         {{ matricula.oferta_academica?.nombre }} ({{ matricula.oferta_academica?.codigo }})
@@ -192,7 +199,7 @@ const confirmDelete = (matricula: MatriculaCarrera) => {
                                     </td>
                                 </tr>
                                 <tr v-if="matriculas.data.length === 0">
-                                    <td colspan="5" class="px-6 py-8 text-center text-muted-foreground">No hay matrículas registradas.</td>
+                                    <td colspan="6" class="px-6 py-8 text-center text-muted-foreground">No hay matrículas registradas.</td>
                                 </tr>
                             </tbody>
                         </table>

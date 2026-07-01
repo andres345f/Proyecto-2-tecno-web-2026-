@@ -87,6 +87,10 @@ class MatriculaGrupoRepository
                                   $o->whereRaw('LOWER(nombre) LIKE ?', ["%{$search}%"]);
                               });
                         });
+                })->orWhereHas('matriculasGrupo.matriculaPeriodo.matriculaCarrera.usuario', function ($u) use ($search) {
+                    $u->where('name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%")
+                      ->orWhere('codigo_estudiante', 'like', "%{$search}%");
                 });
             });
         }
