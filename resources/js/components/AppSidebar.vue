@@ -29,7 +29,7 @@ const mainNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
         {
             title: 'Dashboard',
-            href: '/dashboard',
+            href: route('dashboard'),
             icon: LayoutGrid,
         },
     ];
@@ -57,25 +57,25 @@ const mainNavItems = computed<NavItem[]>(() => {
             { title: 'Matrículas', href: route('matriculas.index'), icon: ClipboardList },
             { title: 'Pagos', href: route('pagos.index'), icon: CreditCard }
         );
-        if (!items.some(i => i.href === '/aulas')) {
-            items.push({ title: 'Aulas', href: '/aulas', icon: Home });
+        if (!items.some(i => i.href === route('aulas.index'))) {
+            items.push({ title: 'Aulas', href: route('aulas.index'), icon: Home });
         }
-        if (!items.some(i => i.href === '/materias')) {
-            items.push({ title: 'Materias', href: '/materias', icon: BookOpen });
+        if (!items.some(i => i.href === route('materias.index'))) {
+            items.push({ title: 'Materias', href: route('materias.index'), icon: BookOpen });
         }
     }
 
     // Profesor
     if (user.value.is_profesor) {
-        items.push({ title: 'Mis Grupos', href: route('grupos-docente.index'), icon: Users });
+        items.push({ title: 'Mis Grupos', href: route('grupos.docente.index'), icon: Users });
     }
 
     // Estudiante
     if (user.value.is_estudiante) {
         items.push(
-            { title: 'Mis Grupos', href: route('grupos.estudiante.index'), icon: Users },
-            { title: 'Mi Malla Curricular', href: route('malla-curricular.index'), icon: GraduationCap },
-            { title: 'Mis Pagos', href: route('pagos.estudiante.index'), icon: CreditCard }
+            { title: 'Mis Grupos', href: route('mis-grupos'), icon: Users },
+            { title: 'Mi Malla Curricular', href: route('malla-curricular.estudiante'), icon: GraduationCap },
+            { title: 'Mis Pagos', href: route('pagos.index'), icon: CreditCard }
         );
     }
 
