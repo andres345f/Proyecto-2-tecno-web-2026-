@@ -3,7 +3,7 @@ import ModalPagoQr from '@/Components/Pagos/ModalPagoQr.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 
@@ -28,10 +28,10 @@ const props = defineProps<{
     cuotas: Cuota[];
 }>();
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Pagos', href: '/pagos' },
-];
+const breadcrumbs = computed<BreadcrumbItem[]>(() => [
+    { title: 'Dashboard', href: route('dashboard') },
+    { title: 'Pagos', href: route('pagos.index') },
+]);
 
 const showModal = ref(false);
 const qrImage = ref<string | null>(null);
