@@ -13,17 +13,17 @@ interface SettingsNavItem {
 
 const sidebarNavItems: SettingsNavItem[] = [
     {
-        title: 'Profile',
+        title: 'Perfil',
         href: route('profile.edit'),
         routeName: 'profile.edit',
     },
     {
-        title: 'Password',
+        title: 'Contraseña',
         href: route('password.edit'),
         routeName: 'password.edit',
     },
     {
-        title: 'Appearance',
+        title: 'Apariencia',
         href: route('appearance'),
         routeName: 'appearance',
     },
@@ -37,13 +37,8 @@ const sidebarNavItems: SettingsNavItem[] = [
         <div class="flex flex-col space-y-8 md:space-y-0 lg:flex-row lg:space-x-12 lg:space-y-0">
             <aside class="w-full max-w-xl lg:w-48">
                 <nav class="flex flex-col space-x-0 space-y-1">
-                    <Button
-                        v-for="item in sidebarNavItems"
-                        :key="item.href"
-                        variant="ghost"
-                        :class="['w-full justify-start', { 'bg-muted': route().current(item.routeName) }]"
-                        as-child
-                    >
+                    <Button v-for="item in sidebarNavItems" :key="item.href" variant="ghost"
+                        :class="['w-full justify-start', { 'bg-muted': route().current(item.routeName) }]" as-child>
                         <Link :href="item.href">
                             {{ item.title }}
                         </Link>
