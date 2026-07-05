@@ -53,7 +53,7 @@ class StoreEntregaRequest extends FormRequest
             if (! $enrolled) {
                 $validator->errors()->add(
                     'tarea_id',
-                    'You are not enrolled in this group.'
+                    'No estás inscrito en este grupo.'
                 );
             }
 
@@ -61,7 +61,7 @@ class StoreEntregaRequest extends FormRequest
             if ($tarea->fecha_vencimiento->isPast()) {
                 $validator->errors()->add(
                     'tarea_id',
-                    'The submission deadline has passed.'
+                    'La fecha límite de entrega ha pasado.'
                 );
             }
 
@@ -73,9 +73,21 @@ class StoreEntregaRequest extends FormRequest
             if ($existingEntrega) {
                 $validator->errors()->add(
                     'tarea_id',
-                    'You have already submitted for this task.'
+                    'Ya has entregado esta tarea.'
                 );
             }
         });
+    }
+
+    public function messages(): array
+    {
+        return [
+            'tarea_id.required' => 'La tarea es obligatoria.',
+            'tarea_id.exists' => 'La tarea seleccionada no existe.',
+            'archivo.required' => 'El archivo es obligatorio.',
+            'archivo.file' => 'Debe subir un archivo válido.',
+            'archivo.max' => 'El archivo no puede pesar más de 10 MB.',
+            'archivo.mimes' => 'El archivo debe tener uno de los siguientes formatos: pdf, doc, docx.',
+        ];
     }
 }

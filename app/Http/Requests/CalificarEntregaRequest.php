@@ -27,4 +27,15 @@ class CalificarEntregaRequest extends FormRequest
             'retroalimentacion' => ['nullable', 'string'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'nota.required' => 'La nota es obligatoria.',
+            'nota.numeric' => 'La nota debe ser un valor numérico.',
+            'nota.min' => 'La nota no puede ser menor que 0.',
+            'nota.max' => 'La nota no puede superar el puntaje máximo de la tarea.',
+            'retroalimentacion.string' => 'La retroalimentación debe ser una cadena de texto.',
+        ];
+    }
 }

@@ -82,4 +82,16 @@ class StoreMatriculaPeriodoRequest extends FormRequest
             }
         });
     }
+
+    public function messages(): array
+    {
+        return [
+            'matricula_carrera_id.required' => 'La matrícula de carrera es obligatoria.',
+            'matricula_carrera_id.exists' => 'La matrícula de carrera seleccionada no existe.',
+            'periodo_academico_id.required' => 'El período académico es obligatorio.',
+            'periodo_academico_id.exists' => 'El período académico seleccionado no existe.',
+            'plan_pago_id.required' => 'El plan de pago es obligatorio.',
+            'plan_pago_id.exists' => 'El plan de pago seleccionado no existe.',
+        ];
+    }
 }

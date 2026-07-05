@@ -47,7 +47,7 @@ class UpdateHorarioRequest extends FormRequest
                 })
                 ->where(function ($query) use ($horaInicio, $horaFin) {
                     $query->where('hora_inicio', '<', $horaFin)
-                          ->where('hora_fin', '>', $horaInicio);
+                        ->where('hora_fin', '>', $horaInicio);
                 })
                 ->exists();
 
@@ -70,7 +70,7 @@ class UpdateHorarioRequest extends FormRequest
                         })
                         ->where(function ($query) use ($horaInicio, $horaFin) {
                             $query->where('hora_inicio', '<', $horaFin)
-                                  ->where('hora_fin', '>', $horaInicio);
+                                ->where('hora_fin', '>', $horaInicio);
                         })
                         ->exists();
 
@@ -80,5 +80,22 @@ class UpdateHorarioRequest extends FormRequest
                 }
             }
         });
+    }
+
+    public function messages(): array
+    {
+        return [
+            'dia.required' => 'El día es obligatorio.',
+            'dia.string' => 'El día debe ser una cadena de texto.',
+            'dia.in' => 'El día seleccionado no es válido.',
+            'hora_inicio.required' => 'La hora de inicio es obligatoria.',
+            'hora_inicio.date_format' => 'La hora de inicio debe tener el formato HH:MM.',
+            'hora_fin.required' => 'La hora de fin es obligatoria.',
+            'hora_fin.date_format' => 'La hora de fin debe tener el formato HH:MM.',
+            'hora_fin.after' => 'La hora de fin debe ser posterior a la hora de inicio.',
+            'aula_id.required' => 'El aula es obligatoria.',
+            'aula_id.exists' => 'El aula seleccionada no existe.',
+            'grupo_periodo_id.exists' => 'El grupo periodo seleccionado no existe.',
+        ];
     }
 }

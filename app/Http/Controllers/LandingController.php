@@ -13,64 +13,37 @@ class LandingController extends Controller
     public function show(): Response
     {
         return Inertia::render('Landing', [
-            'institutionName' => 'Instituto Educativo Futuro',
+            'institutionName' => 'Instituto Educa Y Forma',
             'tagline' => 'Formando el futuro de la educación',
             'features' => [
                 [
-                    'title' => 'Gestión Académica',
-                    'description' => 'Administra carreras, materias, grupos y horarios de forma eficiente.',
+                    'title' => 'Oferta Académica y Mallas',
+                    'description' => 'Programas de estudio como Diseño Gráfico y Marketing Digital con control estricto de prerrequisitos y malla curricular.',
                     'icon' => 'academic',
                 ],
                 [
-                    'title' => 'Pagos y Finanzas',
-                    'description' => 'Controla matrículas, cuotas y pagos con reportes detallados.',
+                    'title' => 'Inscripciones y Matrículas',
+                    'description' => 'Gestión completa del ciclo de vida del estudiante desde su matriculación en carrera hasta la asignación de grupos.',
+                    'icon' => 'enrollment',
+                ],
+                [
+                    'title' => 'Planes de Pago y Cuotas',
+                    'description' => 'Control financiero con planes de pago personalizados, control de vencimientos y generación de códigos QR para transacciones.',
                     'icon' => 'payment',
                 ],
                 [
-                    'title' => 'Reportes y Estadísticas',
-                    'description' => 'Obtén insights valiosos sobre el rendimiento académico y financiero.',
-                    'icon' => 'reports',
+                    'title' => 'Planificación de Horarios',
+                    'description' => 'Programación eficiente de turnos y aulas con validación automática de choques de docentes y disponibilidad física.',
+                    'icon' => 'schedule',
                 ],
                 [
-                    'title' => 'Reportes y Estadísticas',
-                    'description' => 'Obtén insights valiosos sobre el rendimiento académico y financiero.',
-                    'icon' => 'reports',
+                    'title' => 'Gestión de Tareas y Entregas',
+                    'description' => 'Plataforma para que docentes publiquen actividades y califiquen entregas con retroalimentación personalizada.',
+                    'icon' => 'homework',
                 ],
                 [
-                    'title' => 'Reportes y Estadísticas',
-                    'description' => 'Obtén insights valiosos sobre el rendimiento académico y financiero.',
-                    'icon' => 'reports',
-                ],
-                [
-                    'title' => 'Reportes y Estadísticas',
-                    'description' => 'Obtén insights valiosos sobre el rendimiento académico y financiero.',
-                    'icon' => 'reports',
-                ],
-
-                [
-                    'title' => 'Reportes y Estadísticas',
-                    'description' => 'Obtén insights valiosos sobre el rendimiento académico y financiero.',
-                    'icon' => 'reports',
-                ],
-                [
-                    'title' => 'Reportes y Estadísticas',
-                    'description' => 'Obtén insights valiosos sobre el rendimiento académico y financiero.',
-                    'icon' => 'reports',
-                ],
-
-                [
-                    'title' => 'Reportes y Estadísticas',
-                    'description' => 'Obtén insights valiosos sobre el rendimiento académico y financiero.',
-                    'icon' => 'reports',
-                ],
-                [
-                    'title' => 'Reportes y Estadísticas',
-                    'description' => 'Obtén insights valiosos sobre el rendimiento académico y financiero.',
-                    'icon' => 'reports',
-                ],
-                [
-                    'title' => 'Reportes y Estadísticas',
-                    'description' => 'Obtén insights valiosos sobre el rendimiento académico y financiero.',
+                    'title' => 'Reportes y Analíticas',
+                    'description' => 'Visualización de estadísticas en tiempo real y exportación de reportes de rendimiento académico y cobranza.',
                     'icon' => 'reports',
                 ],
             ],

@@ -40,4 +40,34 @@ class StorePeriodoAcademicoRequest extends FormRequest
             'estado' => ['nullable', 'string', 'in:inscripcion,cierre,retiro,terminado'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'oferta_academica_id.required' => 'La oferta académica es obligatoria.',
+            'oferta_academica_id.exists' => 'La oferta académica seleccionada no existe.',
+            'nombre.required' => 'El nombre del período académico es obligatorio.',
+            'nombre.string' => 'El nombre debe ser una cadena de texto.',
+            'nombre.max' => 'El nombre no puede tener más de 255 caracteres.',
+            'tipo.required' => 'El tipo de período es obligatorio.',
+            'tipo.in' => 'El tipo de período seleccionado no es válido (debe ser semestral o anual).',
+            'fecha_inicio.required' => 'La fecha de inicio es obligatoria.',
+            'fecha_inicio.date' => 'La fecha de inicio debe ser una fecha válida.',
+            'fecha_fin.required' => 'La fecha de fin es obligatoria.',
+            'fecha_fin.date' => 'La fecha de fin debe ser una fecha válida.',
+            'fecha_fin.after' => 'La fecha de fin debe ser posterior a la fecha de inicio.',
+            'fecha_inicio_inscripcion.date' => 'La fecha de inicio de inscripción debe ser una fecha válida.',
+            'fecha_fin_inscripcion.date' => 'La fecha de fin de inscripción debe ser una fecha válida.',
+            'fecha_fin_inscripcion.after_or_equal' => 'La fecha de fin de inscripción debe ser posterior o igual a la fecha de inicio de inscripción.',
+            'fecha_inicio_cierre.date' => 'La fecha de inicio de cierre debe ser una fecha válida.',
+            'fecha_fin_cierre.date' => 'La fecha de fin de cierre debe ser una fecha válida.',
+            'fecha_fin_cierre.after_or_equal' => 'La fecha de fin de cierre debe ser posterior o igual a la fecha de inicio de cierre.',
+            'fecha_inicio_retiro.date' => 'La fecha de inicio de retiro debe ser una fecha válida.',
+            'fecha_fin_retiro.date' => 'La fecha de fin de retiro debe ser una fecha válida.',
+            'fecha_fin_retiro.after_or_equal' => 'La fecha de fin de retiro debe ser posterior o igual a la fecha de inicio de retiro.',
+            'numero_maximo_materias.integer' => 'El número máximo de materias debe ser un número entero.',
+            'numero_maximo_materias.min' => 'El número máximo de materias debe ser de al menos 1.',
+            'estado.in' => 'El estado seleccionado no es válido.',
+        ];
+    }
 }

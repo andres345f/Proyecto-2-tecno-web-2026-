@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'inactive' => 'Your account is inactive. Please contact the administrator.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed' => 'Estas credenciales no coinciden con nuestros registros.',
+    'inactive' => 'Tu cuenta está inactiva. Por favor, contacta al administrador.',
+    'throttle' => 'Demasiados intentos de inicio de sesión. Por favor, intenta nuevamente en :seconds segundos.',
 ];

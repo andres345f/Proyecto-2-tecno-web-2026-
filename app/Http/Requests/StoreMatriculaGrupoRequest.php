@@ -34,7 +34,7 @@ class StoreMatriculaGrupoRequest extends FormRequest
             if ($matriculaPeriodo && $this->user()->is_estudiante && $matriculaPeriodo->matriculaCarrera->usuario_id !== $this->user()->id) {
                 $validator->errors()->add(
                     'matricula_periodo_id',
-                    'This enrollment period does not belong to you.'
+                    'Este período de matrícula no le pertenece.'
                 );
             }
 
@@ -42,7 +42,7 @@ class StoreMatriculaGrupoRequest extends FormRequest
             if ($matriculaPeriodo && $matriculaPeriodo->estado !== 'activo') {
                 $validator->errors()->add(
                     'matricula_periodo_id',
-                    'This enrollment period is not active.'
+                    'Este período de matrícula no está activo.'
                 );
             }
 
@@ -96,5 +96,17 @@ class StoreMatriculaGrupoRequest extends FormRequest
                 }
             }
         });
+    }
+
+    public function messages(): array
+    {
+        return [
+            'matricula_periodo_id.required' => 'El periodo de matrícula es obligatorio.',
+            'matricula_periodo_id.exists' => 'El periodo de matrícula seleccionado no existe.',
+            'grupo_ids.required' => 'Debe seleccionar al menos un grupo.',
+            'grupo_ids.array' => 'Los grupos seleccionados deben ser un arreglo.',
+            'grupo_ids.min' => 'Debe seleccionar al menos un grupo.',
+            'grupo_ids.*.exists' => 'Uno de los grupos seleccionados no es válido.',
+        ];
     }
 }

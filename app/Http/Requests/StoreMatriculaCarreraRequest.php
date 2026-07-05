@@ -39,4 +39,14 @@ class StoreMatriculaCarreraRequest extends FormRequest
             }
         });
     }
+
+    public function messages(): array
+    {
+        return [
+            'usuario_id.required' => 'El estudiante es obligatorio.',
+            'usuario_id.exists' => 'El estudiante seleccionado no existe.',
+            'oferta_academica_id.required' => 'La oferta académica es obligatoria.',
+            'oferta_academica_id.exists' => 'La oferta académica seleccionada no existe.',
+        ];
+    }
 }
