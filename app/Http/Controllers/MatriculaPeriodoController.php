@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMatriculaPeriodoRequest;
 use App\Models\MatriculaPeriodo;
 use App\Services\MatriculaPeriodoService;
-use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class MatriculaPeriodoController extends Controller
 {
@@ -27,7 +27,7 @@ class MatriculaPeriodoController extends Controller
         $matriculas = $this->matriculaPeriodoService->listarMatriculasPaginadas(
             $user,
             10,
-            $matriculaCarreraId ? (int)$matriculaCarreraId : null,
+            $matriculaCarreraId ? (int) $matriculaCarreraId : null,
             $search,
             $estado
         );
@@ -52,11 +52,12 @@ class MatriculaPeriodoController extends Controller
 
         $data = $this->matriculaPeriodoService->obtenerDatosCreacion(
             $user,
-            $matriculaCarreraId ? (int)$matriculaCarreraId : null
+            $matriculaCarreraId ? (int) $matriculaCarreraId : null
         );
 
         return Inertia::render('MatriculaPeriodo/Create', [
             'matriculaCarrera' => $data['matriculaCarrera'],
+            'matriculasCarrera' => $data['matriculasCarrera'] ?? [],
             'periodos' => $data['periodos'],
             'planes' => $data['planes'],
         ]);

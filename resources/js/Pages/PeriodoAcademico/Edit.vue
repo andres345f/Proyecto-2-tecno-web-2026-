@@ -77,6 +77,7 @@ const submit = () => {
 </script>
 
 <template>
+
     <Head title="Editar Período Académico" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
@@ -84,7 +85,8 @@ const submit = () => {
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-3xl font-extrabold tracking-tight text-foreground">Editar Período Académico</h1>
-                    <p class="text-sm text-muted-foreground mt-1">Actualiza los detalles y la configuración del ciclo académico.</p>
+                    <p class="text-sm text-muted-foreground mt-1">Actualiza los detalles y la configuración del ciclo
+                        académico.</p>
                 </div>
                 <Button variant="ghost" as-child>
                     <Link :href="route('periodos-academicos.index')">Volver</Link>
@@ -94,35 +96,29 @@ const submit = () => {
             <Card>
                 <CardHeader>
                     <CardTitle>Información del Período</CardTitle>
-                    <CardDescription>Modifica los campos del período, límites de inscripción y estados del ciclo.</CardDescription>
+                    <CardDescription>Modifica los campos del período, límites de inscripción y estados del ciclo.
+                    </CardDescription>
                 </CardHeader>
                 <CardContent class="p-6">
                     <form @submit.prevent="submit" class="space-y-6">
-                        
+
                         <!-- Oferta Académica y Nombre -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-2">
                                 <Label for="oferta_academica_id">Oferta Académica</Label>
-                                <select
-                                    id="oferta_academica_id"
-                                    v-model="form.oferta_academica_id"
+                                <select id="oferta_academica_id" v-model="form.oferta_academica_id"
                                     class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-sidebar-border dark:bg-neutral-900 dark:text-white"
-                                    required
-                                >
+                                    required>
                                     <option value="" disabled>Seleccionar oferta...</option>
-                                    <option v-for="oferta in ofertas" :key="oferta.id" :value="oferta.id">{{ oferta.nombre }} ({{ oferta.codigo }})</option>
+                                    <option v-for="oferta in ofertas" :key="oferta.id" :value="oferta.id">{{
+                                        oferta.nombre }} ({{ oferta.codigo }})</option>
                                 </select>
                                 <InputError :message="form.errors.oferta_academica_id" />
                             </div>
 
                             <div class="space-y-2">
                                 <Label for="nombre">Nombre del Período</Label>
-                                <Input
-                                    id="nombre"
-                                    v-model="form.nombre"
-                                    type="text"
-                                    required
-                                />
+                                <Input id="nombre" v-model="form.nombre" type="text" required />
                                 <InputError :message="form.errors.nombre" />
                             </div>
                         </div>
@@ -131,38 +127,29 @@ const submit = () => {
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div class="space-y-2">
                                 <Label for="tipo">Tipo</Label>
-                                <select
-                                    id="tipo"
-                                    v-model="form.tipo"
+                                <select id="tipo" v-model="form.tipo"
                                     class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-sidebar-border dark:bg-neutral-900 dark:text-white"
-                                    required
-                                >
+                                    required>
                                     <option value="" disabled>Seleccionar tipo...</option>
                                     <option value="semestral">Semestral</option>
                                     <option value="anual">Anual</option>
+                                    <option value="trimestral">Trimestral</option>
+                                    <option value="bimestral">Bimestral</option>
+                                    <option value="cuatrimestral">Cuatrimestral</option>
+                                    <option value="mensual">Mensual</option>
                                 </select>
                                 <InputError :message="form.errors.tipo" />
                             </div>
 
                             <div class="space-y-2">
                                 <Label for="fecha_inicio">Fecha Inicio</Label>
-                                <Input
-                                    id="fecha_inicio"
-                                    v-model="form.fecha_inicio"
-                                    type="date"
-                                    required
-                                />
+                                <Input id="fecha_inicio" v-model="form.fecha_inicio" type="date" required />
                                 <InputError :message="form.errors.fecha_inicio" />
                             </div>
 
                             <div class="space-y-2">
                                 <Label for="fecha_fin">Fecha Fin</Label>
-                                <Input
-                                    id="fecha_fin"
-                                    v-model="form.fecha_fin"
-                                    type="date"
-                                    required
-                                />
+                                <Input id="fecha_fin" v-model="form.fecha_fin" type="date" required />
                                 <InputError :message="form.errors.fecha_fin" />
                             </div>
                         </div>
@@ -170,25 +157,19 @@ const submit = () => {
                         <!-- Fechas de Procesos (Opcionales) -->
                         <div class="border-t border-border pt-6">
                             <h3 class="text-lg font-semibold text-foreground mb-4">Fechas de Procesos (Opcionales)</h3>
-                            
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="space-y-4">
                                     <div class="space-y-2">
                                         <Label for="fecha_inicio_inscripcion">Inicio Inscripción</Label>
-                                        <Input
-                                            id="fecha_inicio_inscripcion"
-                                            v-model="form.fecha_inicio_inscripcion"
-                                            type="date"
-                                        />
+                                        <Input id="fecha_inicio_inscripcion" v-model="form.fecha_inicio_inscripcion"
+                                            type="date" />
                                         <InputError :message="form.errors.fecha_inicio_inscripcion" />
                                     </div>
                                     <div class="space-y-2">
                                         <Label for="fecha_fin_inscripcion">Fin Inscripción</Label>
-                                        <Input
-                                            id="fecha_fin_inscripcion"
-                                            v-model="form.fecha_fin_inscripcion"
-                                            type="date"
-                                        />
+                                        <Input id="fecha_fin_inscripcion" v-model="form.fecha_fin_inscripcion"
+                                            type="date" />
                                         <InputError :message="form.errors.fecha_fin_inscripcion" />
                                     </div>
                                 </div>
@@ -196,20 +177,13 @@ const submit = () => {
                                 <div class="space-y-4">
                                     <div class="space-y-2">
                                         <Label for="fecha_inicio_cierre">Inicio Cierre</Label>
-                                        <Input
-                                            id="fecha_inicio_cierre"
-                                            v-model="form.fecha_inicio_cierre"
-                                            type="date"
-                                        />
+                                        <Input id="fecha_inicio_cierre" v-model="form.fecha_inicio_cierre"
+                                            type="date" />
                                         <InputError :message="form.errors.fecha_inicio_cierre" />
                                     </div>
                                     <div class="space-y-2">
                                         <Label for="fecha_fin_cierre">Fin Cierre</Label>
-                                        <Input
-                                            id="fecha_fin_cierre"
-                                            v-model="form.fecha_fin_cierre"
-                                            type="date"
-                                        />
+                                        <Input id="fecha_fin_cierre" v-model="form.fecha_fin_cierre" type="date" />
                                         <InputError :message="form.errors.fecha_fin_cierre" />
                                     </div>
                                 </div>
@@ -218,20 +192,13 @@ const submit = () => {
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div class="space-y-2">
                                             <Label for="fecha_inicio_retiro">Inicio Retiro</Label>
-                                            <Input
-                                                id="fecha_inicio_retiro"
-                                                v-model="form.fecha_inicio_retiro"
-                                                type="date"
-                                            />
+                                            <Input id="fecha_inicio_retiro" v-model="form.fecha_inicio_retiro"
+                                                type="date" />
                                             <InputError :message="form.errors.fecha_inicio_retiro" />
                                         </div>
                                         <div class="space-y-2">
                                             <Label for="fecha_fin_retiro">Fin Retiro</Label>
-                                            <Input
-                                                id="fecha_fin_retiro"
-                                                v-model="form.fecha_fin_retiro"
-                                                type="date"
-                                            />
+                                            <Input id="fecha_fin_retiro" v-model="form.fecha_fin_retiro" type="date" />
                                             <InputError :message="form.errors.fecha_fin_retiro" />
                                         </div>
                                     </div>
@@ -246,24 +213,16 @@ const submit = () => {
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="space-y-2">
                                     <Label for="numero_maximo_materias">Nº Máximo de Materias</Label>
-                                    <Input
-                                        id="numero_maximo_materias"
-                                        v-model="form.numero_maximo_materias"
-                                        type="number"
-                                        min="1"
-                                        placeholder="Sin límite"
-                                    />
+                                    <Input id="numero_maximo_materias" v-model="form.numero_maximo_materias"
+                                        type="number" min="1" placeholder="Sin límite" />
                                     <InputError :message="form.errors.numero_maximo_materias" />
                                 </div>
 
                                 <div class="space-y-2">
                                     <Label for="estado">Estado del Período</Label>
-                                    <select
-                                        id="estado"
-                                        v-model="form.estado"
+                                    <select id="estado" v-model="form.estado"
                                         class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-sidebar-border dark:bg-neutral-900 dark:text-white"
-                                        required
-                                    >
+                                        required>
                                         <option value="inscripcion">Inscripción</option>
                                         <option value="cierre">Cierre</option>
                                         <option value="retiro">Retiro</option>

@@ -28,7 +28,9 @@ const submit = () => {
 </script>
 
 <template>
-    <AuthBase title="Inicia sesión en tu cuenta" description="Ingresa tu correo electrónico y contraseña a continuación para iniciar sesión">
+    <AuthBase title="Inicia sesión en tu cuenta"
+        description="Ingresa tu correo electrónico y contraseña a continuación para iniciar sesión">
+
         <Head title="Iniciar sesión" />
 
         <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
@@ -39,35 +41,21 @@ const submit = () => {
             <div class="grid gap-6">
                 <div class="grid gap-2">
                     <Label for="email">Correo electrónico</Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        required
-                        autofocus
-                        tabindex="1"
-                        autocomplete="email"
-                        v-model="form.email"
-                        placeholder="email@example.com"
-                    />
+                    <Input id="email" type="email" required autofocus tabindex="1" autocomplete="email"
+                        v-model="form.email" placeholder="email@example.com" />
                     <InputError :message="form.errors.email" />
                 </div>
 
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
                         <Label for="password">Contraseña</Label>
-                        <TextLink v-if="canResetPassword" :href="route('password.request')" class="text-sm" tabindex="5">
+                        <TextLink v-if="canResetPassword" :href="route('password.request')" class="text-sm"
+                            tabindex="5">
                             ¿Olvidaste tu contraseña?
                         </TextLink>
                     </div>
-                    <Input
-                        id="password"
-                        type="password"
-                        required
-                        tabindex="2"
-                        autocomplete="current-password"
-                        v-model="form.password"
-                        placeholder="Contraseña"
-                    />
+                    <Input id="password" type="password" required tabindex="2" autocomplete="current-password"
+                        v-model="form.password" placeholder="Contraseña" />
                     <InputError :message="form.errors.password" />
                 </div>
 
@@ -84,10 +72,10 @@ const submit = () => {
                 </Button>
             </div>
 
-            <div class="text-center text-sm text-muted-foreground">
+            <!-- <div class="text-center text-sm text-muted-foreground">
                 ¿No tienes una cuenta?
                 <TextLink :href="route('register')" :tabindex="5">Registrarse</TextLink>
-            </div>
+            </div> -->
         </form>
     </AuthBase>
 </template>

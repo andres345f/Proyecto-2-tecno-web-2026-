@@ -8,11 +8,11 @@ use App\Models\PeriodoAcademico;
 use App\Models\PlanPago;
 use App\Models\User;
 use App\Repositories\MatriculaPeriodoRepository;
-use Illuminate\Support\Collection;
 
 class MatriculaPeriodoService
 {
     protected MatriculaPeriodoRepository $matriculaPeriodoRepository;
+
     protected GeneradorCuotasService $generadorCuotasService;
 
     public function __construct(
@@ -47,27 +47,38 @@ class MatriculaPeriodoService
      */
     public function determinarCanEnroll(User $user): bool
     {
-        if (!$user->is_estudiante) {
+        if (! $user->is_estudiante) {
             return true;
         }
 
-        $matriculaCarrera = MatriculaCarrera::where('usuario_id', $user->id)
+        $matriculasCarrera = MatriculaCarrera::where('usuario_id', $user->id)
             ->where('estado', 'activo')
-            ->first();
+            ->get();
 
-        if (!$matriculaCarrera) {
-            return false;
+        foreach ($matriculasCarrera as $matriculaCarrera) {
+            if ($this->canEnrollInCareer($matriculaCarrera)) {
+                return true;
+            }
         }
 
+        return false;
+    }
+
+    /**
+     * Check if enrollment is active for a specific career matricula.
+     */
+    public function canEnrollInCareer(MatriculaCarrera $matriculaCarrera): bool
+    {
         $periodoInCurso = PeriodoAcademico::where('oferta_academica_id', $matriculaCarrera->oferta_academica_id)
             ->where('estado', '!=', 'terminado')
             ->first();
 
-        if (!$periodoInCurso) {
+        if (! $periodoInCurso) {
             return false;
         }
 
         $today = now()->toDateString();
+
         return $periodoInCurso->fecha_inicio_inscripcion
             && $periodoInCurso->fecha_fin_inscripcion
             && $today >= $periodoInCurso->fecha_inicio_inscripcion
@@ -80,21 +91,42 @@ class MatriculaPeriodoService
     public function obtenerDatosCreacion(User $user, ?int $matriculaCarreraId): array
     {
         if ($user->is_estudiante) {
+            $matriculasCarrera = MatriculaCarrera::with('ofertaAcademica')
+                ->where('usuario_id', $user->id)
+                ->where('estado', 'activo')
+                ->get();
+
             if ($matriculaCarreraId) {
                 $matriculaCarrera = MatriculaCarrera::where('id', $matriculaCarreraId)
                     ->where('usuario_id', $user->id)
                     ->firstOrFail();
             } else {
-                $matriculaCarrera = MatriculaCarrera::where('usuario_id', $user->id)
-                    ->where('estado', 'activo')
-                    ->firstOrFail();
+                // Try to find a career that has an active enrollment period first
+                foreach ($matriculasCarrera as $mc) {
+                    if ($this->canEnrollInCareer($mc)) {
+                        $matriculaCarrera = $mc;
+                        break;
+                    }
+                }
+                // Fallback to first if none match
+                if (! isset($matriculaCarrera)) {
+                    $matriculaCarrera = $matriculasCarrera->first();
+                }
+
+                if (! $matriculaCarrera) {
+                    abort(404, 'No tienes matrículas de carrera activas.');
+                }
             }
 
-            if (!$this->determinarCanEnroll($user)) {
-                abort(403, 'El período de inscripción no está activo o ha finalizado.');
+            if (! $this->canEnrollInCareer($matriculaCarrera)) {
+                abort(403, 'El período de inscripción para esta carrera no está activo o ha finalizado.');
             }
         } else {
             $matriculaCarrera = MatriculaCarrera::findOrFail($matriculaCarreraId);
+            $matriculasCarrera = MatriculaCarrera::with('ofertaAcademica')
+                ->where('usuario_id', $matriculaCarrera->usuario_id)
+                ->where('estado', 'activo')
+                ->get();
         }
 
         $periodos = PeriodoAcademico::with('ofertaAcademica')
@@ -113,6 +145,7 @@ class MatriculaPeriodoService
 
         return [
             'matriculaCarrera' => $matriculaCarrera,
+            'matriculasCarrera' => $matriculasCarrera,
             'periodos' => $periodos,
             'planes' => $planes,
         ];
@@ -128,8 +161,8 @@ class MatriculaPeriodoService
                 ->where('usuario_id', $user->id)
                 ->firstOrFail();
 
-            if (!$this->determinarCanEnroll($user)) {
-                abort(403, 'El período de inscripción no está activo o ha finalizado.');
+            if (! $this->canEnrollInCareer($matriculaCarrera)) {
+                abort(403, 'El período de inscripción para esta carrera no está activo o ha finalizado.');
             }
         }
 
