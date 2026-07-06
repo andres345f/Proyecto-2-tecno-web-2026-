@@ -33,7 +33,7 @@ class UpdatePeriodoAcademicoRequest extends FormRequest
                 }
             ],
             'nombre' => ['required', 'string', 'max:255'],
-            'tipo' => ['required', 'in:semestral,anual'],
+            'tipo' => ['required', 'in:semestral,anual,trimestral,cuatrimestral,bimestral,mensual'],
             'fecha_inicio' => ['required', 'date'],
             'fecha_fin' => ['required', 'date', 'after:fecha_inicio'],
             'fecha_inicio_inscripcion' => ['nullable', 'date'],
@@ -56,7 +56,7 @@ class UpdatePeriodoAcademicoRequest extends FormRequest
             'nombre.string' => 'El nombre debe ser una cadena de texto.',
             'nombre.max' => 'El nombre no puede tener más de 255 caracteres.',
             'tipo.required' => 'El tipo de período es obligatorio.',
-            'tipo.in' => 'El tipo de período seleccionado no es válido (debe ser semestral o anual).',
+            'tipo.in' => 'El tipo de período seleccionado no es válido.',
             'fecha_inicio.required' => 'La fecha de inicio es obligatoria.',
             'fecha_inicio.date' => 'La fecha de inicio debe ser una fecha válida.',
             'fecha_fin.required' => 'La fecha de fin es obligatoria.',
