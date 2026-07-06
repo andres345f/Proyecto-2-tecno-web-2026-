@@ -27,7 +27,7 @@ class StorePeriodoAcademicoRequest extends FormRequest
                 }
             ],
             'nombre' => ['required', 'string', 'max:255'],
-            'tipo' => ['required', 'in:semestral,anual'],
+            'tipo' => ['required', 'in:semestral,anual,trimestral,cuatrimestral,bimestral,mensual'],
             'fecha_inicio' => ['required', 'date'],
             'fecha_fin' => ['required', 'date', 'after:fecha_inicio'],
             'fecha_inicio_inscripcion' => ['nullable', 'date'],
