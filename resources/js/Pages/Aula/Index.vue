@@ -67,7 +67,7 @@ const confirmDelete = (aula: Aula) => {
         <div class="flex h-full flex-1 flex-col gap-6 p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-extrabold tracking-tight text-foreground">Aulas Luis</h1>
+                    <h1 class="text-3xl font-extrabold tracking-tight text-foreground">Aulas</h1>
                     <p class="text-sm text-muted-foreground mt-1">Gestión de aulas físicas y ambientes de aprendizaje.</p>
                 </div>
                 <Button as-child>
