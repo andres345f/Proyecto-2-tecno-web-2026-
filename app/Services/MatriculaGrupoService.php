@@ -174,7 +174,7 @@ class MatriculaGrupoService
                 abort(403, 'El período académico ha terminado.');
             }
 
-            $today = now()->toDateString();
+            $today = now()->toDate();
             $canEnroll = $periodoInCurso->fecha_inicio_inscripcion
                 && $periodoInCurso->fecha_fin_inscripcion
                 && $today >= $periodoInCurso->fecha_inicio_inscripcion
