@@ -47,7 +47,7 @@ class MatriculaPeriodoService
      */
     public function determinarCanEnroll(User $user): bool
     {
-        if (! $user->is_estudiante) {
+        if (!$user->is_estudiante) {
             return true;
         }
 
@@ -73,11 +73,11 @@ class MatriculaPeriodoService
             ->where('estado', '!=', 'terminado')
             ->first();
 
-        if (! $periodoInCurso) {
+        if (!$periodoInCurso) {
             return false;
         }
 
-        $today = now()->toDateString();
+        $today = now()->toDate();
 
         return $periodoInCurso->fecha_inicio_inscripcion
             && $periodoInCurso->fecha_fin_inscripcion
@@ -109,16 +109,16 @@ class MatriculaPeriodoService
                     }
                 }
                 // Fallback to first if none match
-                if (! isset($matriculaCarrera)) {
+                if (!isset($matriculaCarrera)) {
                     $matriculaCarrera = $matriculasCarrera->first();
                 }
 
-                if (! $matriculaCarrera) {
+                if (!$matriculaCarrera) {
                     abort(404, 'No tienes matrículas de carrera activas.');
                 }
             }
 
-            if (! $this->canEnrollInCareer($matriculaCarrera)) {
+            if (!$this->canEnrollInCareer($matriculaCarrera)) {
                 abort(403, 'El período de inscripción para esta carrera no está activo o ha finalizado.');
             }
         } else {
@@ -161,7 +161,7 @@ class MatriculaPeriodoService
                 ->where('usuario_id', $user->id)
                 ->firstOrFail();
 
-            if (! $this->canEnrollInCareer($matriculaCarrera)) {
+            if (!$this->canEnrollInCareer($matriculaCarrera)) {
                 abort(403, 'El período de inscripción para esta carrera no está activo o ha finalizado.');
             }
         }

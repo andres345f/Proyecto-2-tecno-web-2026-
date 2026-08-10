@@ -140,7 +140,7 @@ class MatriculaGrupoService
             return false;
         }
 
-        $today = now()->toDateString();
+        $today = now()->toDate();
         return $periodo->fecha_inicio_inscripcion
             && $periodo->fecha_fin_inscripcion
             && $today >= $periodo->fecha_inicio_inscripcion
@@ -292,7 +292,7 @@ class MatriculaGrupoService
             if ($periodoInCurso->estado === 'terminado') {
                 abort(403, 'El período académico ha terminado.');
             }
-            $today = now()->toDateString();
+            $today = now()->toDate();
             $canEnroll = $periodoInCurso->fecha_inicio_inscripcion
                 && $periodoInCurso->fecha_fin_inscripcion
                 && $today >= $periodoInCurso->fecha_inicio_inscripcion
@@ -490,17 +490,17 @@ class MatriculaGrupoService
             'Content-Disposition' => 'attachment; filename="plantilla_notas_grupo_' . $grupo->grupo->codigo . '.csv"',
         ];
 
-        $callback = function() use ($matriculas) {
+        $callback = function () use ($matriculas) {
             $file = fopen('php://output', 'w');
             fputcsv($file, ['codigo_estudiante', 'nota_final']);
-            
+
             foreach ($matriculas as $mat) {
                 fputcsv($file, [
                     $mat->matriculaPeriodo->matriculaCarrera->usuario->codigo_estudiante ?? '',
                     $mat->nota_final ?? ''
                 ]);
             }
-            
+
             fclose($file);
         };
 
@@ -544,7 +544,7 @@ class MatriculaGrupoService
         $header[0] = preg_replace("/^$bom/", '', $header[0]);
 
         // Map headers
-        $header = array_map(function($h) {
+        $header = array_map(function ($h) {
             $cleaned = preg_replace('/[\x00-\x1F\x7F-\x9F]/u', '', $h);
             return strtolower(trim($cleaned, " \t\n\r\0\x0B\"'"));
         }, $header);
