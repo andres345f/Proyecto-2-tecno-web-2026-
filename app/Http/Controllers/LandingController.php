@@ -13,7 +13,7 @@ class LandingController extends Controller
     public function show(): Response
     {
         return Inertia::render('Landing', [
-            'institutionName' => 'Instituto Educa Y Forma',
+            'institutionName' => 'Instituto San Fernando',
             'tagline' => 'Formando el futuro de la educación',
             'features' => [
                 [
